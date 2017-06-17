@@ -73,7 +73,7 @@ controls.dragToLook = false;
 
 var render = function () {
 	
-	stats.begin();
+	stats.update();
 	
 	requestAnimationFrame( render );
 	
@@ -90,8 +90,6 @@ var render = function () {
 				   }
 				   } );
 	/***/
-	
-	stats.end();
 	
 	renderer.render(scene, camera);
 };
