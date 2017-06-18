@@ -21,7 +21,7 @@ class NoiseHeightGenerator {
 			
 			noiseHeight += noiseValue * amplitude;
 			
-			amplitude *= persistance;
+			amplitude *= this.persistance;
 			frequency *= this.lacunarity;
 		}
 		
