@@ -1,8 +1,12 @@
+// lodParams is an array of arrays of 2 elements (e.g. [[25, 10], [20, 50], [15, 100], [5, 200]]),
+// the first element of the pair is the number of chunk segments, the second is the distance from
+// where that detail can be seen
+
 // translateX, translateY, translateZ, rotateX, rotateY
 // determine the position of the chunk w.r.t. the center
 // of the planet
 
-function Chunk(chunkSize, chunkSegments, chunkMaterial,
+function Chunk(chunkSize, lodParams, chunkMaterial,
 			   noiseHeightGenerator,
 			   translateX, translateY, translateZ,
 			   radius, rotateX, rotateY) {
@@ -13,11 +17,9 @@ function Chunk(chunkSize, chunkSegments, chunkMaterial,
 	lodPosition.applyAxisAngle(new THREE.Vector3(1, 0, 0), rotateX);
 	lodPosition.applyAxisAngle(new THREE.Vector3(0, 1, 0), rotateY);
 	
-	var segmentsDistance = [[25, 20], [20, 40], [15, 60]];
-	
-	for (var k = 0; k < segmentsDistance.length; ++k) {
+	for (var k = 0; k < lodParams.length; ++k) {
 		
-		var chunkSegments = segmentsDistance[k][0];
+		var chunkSegments = lodParams[k][0];
 		var extendedChunkSegments = chunkSegments + 2;
 		var segmentSize = chunkSize / chunkSegments;
 		var extendedChunkSize = chunkSize + segmentSize * 2;
@@ -85,7 +87,7 @@ function Chunk(chunkSize, chunkSegments, chunkMaterial,
 		
 		var mesh = new THREE.Mesh(chunkGeometry, chunkMaterial);
 		
-		this.addLevel(mesh, segmentsDistance[k][1]);
+		this.addLevel(mesh, lodParams[k][1]);
 	}
 	
 	this.position.x = lodPosition.x;

@@ -29,9 +29,10 @@ window.onload = function() {
 	var lacunarity = 3;
 	var noiseHeightGenerator = new NoiseHeightGenerator(scale, octaves, persistance, lacunarity);
 
+	// Earth parameters:
 	var radius = 40; // earth: 6371km
 	var chunkPerFaceSide = 8;
-	var segmentsPerChunk = 16;
+	var lodParams = [[25, 10], [20, 50], [15, 100], [5, 200]];
 	var uniforms = THREE.UniformsUtils.merge( [ { radius: { value: radius } }, THREE.UniformsLib[ "lights" ] ] );
 	var earthMaterial = new THREE.ShaderMaterial({ uniforms: uniforms,
 												   //attributes: attributes,
@@ -54,7 +55,7 @@ window.onload = function() {
 														fragmentShader: document.getElementById("classicNoiseFragmentShader").textContent
 														});*/
 
-	var earth = new Planet("earth", radius, chunkPerFaceSide, segmentsPerChunk, earthMaterial, noiseHeightGenerator );
+	var earth = new Planet("earth", radius, chunkPerFaceSide, lodParams, earthMaterial, noiseHeightGenerator );
 	scene.add(earth);
 
 	// TODO: Manage light in the shader
