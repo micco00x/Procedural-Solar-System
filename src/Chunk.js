@@ -17,79 +17,69 @@ function Chunk(chunkSize, chunkSegments, chunkMaterial,
 	
 	for (var k = 0; k < segmentsDistance.length; ++k) {
 		
-		var chunkGeometry = new THREE.PlaneGeometry( chunkSize, chunkSize, segmentsDistance[k][0], segmentsDistance[k][0] );
-		chunkGeometry.translate(translateX, translateY, translateZ);
-		chunkGeometry.rotateX(rotateX);
-		chunkGeometry.rotateY(rotateY);
+		var chunkSegments = segmentsDistance[k][0];
+		var extendedChunkSegments = chunkSegments + 2;
+		var segmentSize = chunkSize / chunkSegments;
+		var extendedChunkSize = chunkSize + segmentSize * 2;
+		
+		var extendedChunkGeometry = new THREE.PlaneGeometry(extendedChunkSize, extendedChunkSize,
+															extendedChunkSegments, extendedChunkSegments);
+		extendedChunkGeometry.translate(translateX, translateY, translateZ);
+		extendedChunkGeometry.rotateX(rotateX);
+		extendedChunkGeometry.rotateY(rotateY);
 		
 		// Define value of points of the geometry of the chunk:
-		for (var i = 0; i < chunkGeometry.vertices.length; ++i) {
+		for (var i = 0; i < extendedChunkGeometry.vertices.length; ++i) {
 			// Spherify cube:
-			chunkGeometry.vertices[i].normalize().multiplyScalar(radius);
+			extendedChunkGeometry.vertices[i].normalize().multiplyScalar(radius);
 			
-			var noiseHeight = noiseHeightGenerator.noise3D(chunkGeometry.vertices[i].x,
-														   chunkGeometry.vertices[i].y,
-														   chunkGeometry.vertices[i].z);
+			var noiseHeight = noiseHeightGenerator.noise3D(extendedChunkGeometry.vertices[i].x,
+														   extendedChunkGeometry.vertices[i].y,
+														   extendedChunkGeometry.vertices[i].z);
 			noiseHeight = Math.pow(2, noiseHeight);
 			
-			chunkGeometry.vertices[i].normalize().multiplyScalar(radius + noiseHeight);
+			extendedChunkGeometry.vertices[i].normalize().multiplyScalar(radius + noiseHeight);
 		}
 		
-		//chunkGeometry.computeVertexNormals();
+		extendedChunkGeometry.computeVertexNormals();
 		
-		// Modified version of chunkGeometry.computeVertexNormals() which considers
-		// borders of the geometry to compute normals correctly:
-		var v, vl, f, fl, face, vertices;
+		var chunkGeometry = new THREE.PlaneGeometry(chunkSize, chunkSize, chunkSegments, chunkSegments);
 		
-		vertices = new Array( chunkGeometry.vertices.length );
-		
-		for ( v = 0, vl = chunkGeometry.vertices.length; v < vl; v ++ ) {
-			vertices[ v ] = new THREE.Vector3();
-		}
-		
-		var vA, vB, vC;
-		var cb = new THREE.Vector3(), ab = new THREE.Vector3();
-		
-		for ( f = 0, fl = chunkGeometry.faces.length; f < fl; f ++ ) {
-			face = chunkGeometry.faces[ f ];
+		// Copy vertices except border:
+		var kVertex = 0;
+		for (var i = 0; i < extendedChunkGeometry.vertices.length; ++i) {
+			var x = Math.floor(i % (extendedChunkSegments+1));
+			var y = Math.floor(i / (extendedChunkSegments+1));
 			
-			vA = chunkGeometry.vertices[ face.a ];
-			vB = chunkGeometry.vertices[ face.b ];
-			vC = chunkGeometry.vertices[ face.c ];
-			
-			cb.subVectors( vC, vB );
-			ab.subVectors( vA, vB );
-			cb.cross( ab );
-			
-			vertices[ face.a ].add( cb );
-			vertices[ face.b ].add( cb );
-			vertices[ face.c ].add( cb );
-		}
-		
-		for ( v = 0, vl = chunkGeometry.vertices.length; v < vl; v ++ ) {
-			vertices[ v ].normalize();
-		}
-		
-		for ( f = 0, fl = chunkGeometry.faces.length; f < fl; f ++ ) {
-			face = chunkGeometry.faces[ f ];
-			
-			var vertexNormals = face.vertexNormals;
-			
-			if ( vertexNormals.length === 3 ) {
-				vertexNormals[ 0 ].copy( vertices[ face.a ] );
-				vertexNormals[ 1 ].copy( vertices[ face.b ] );
-				vertexNormals[ 2 ].copy( vertices[ face.c ] );
-			} else {
-				vertexNormals[ 0 ] = vertices[ face.a ].clone();
-				vertexNormals[ 1 ] = vertices[ face.b ].clone();
-				vertexNormals[ 2 ] = vertices[ face.c ].clone();
+			if (x != 0 && y != 0 && x != extendedChunkSegments && y != extendedChunkSegments) {
+				chunkGeometry.vertices[kVertex] = extendedChunkGeometry.vertices[i].clone();
+				++kVertex;
 			}
 		}
 		
-		if ( chunkGeometry.faces.length > 0 ) {
-			chunkGeometry.normalsNeedUpdate = true;
+		// Copy vertex normals except border:
+		var kFace = 0;
+		for (var f = 0; f < extendedChunkGeometry.faces.length; ++f) {
+			var face = extendedChunkGeometry.faces[f];
+			
+			var xA = Math.floor(face.a % (extendedChunkSegments+1));
+			var yA = Math.floor(face.a / (extendedChunkSegments+1));
+			var xB = Math.floor(face.b % (extendedChunkSegments+1));
+			var yB = Math.floor(face.b / (extendedChunkSegments+1));
+			var xC = Math.floor(face.c % (extendedChunkSegments+1));
+			var yC = Math.floor(face.c / (extendedChunkSegments+1));
+			
+			if ((xA != 0 && yA != 0 && xA != extendedChunkSegments && yA != extendedChunkSegments) &&
+				(xB != 0 && yB != 0 && xB != extendedChunkSegments && yB != extendedChunkSegments) &&
+				(xC != 0 && yC != 0 && xC != extendedChunkSegments && yC != extendedChunkSegments)) {
+				chunkGeometry.faces[kFace].vertexNormals[0] = extendedChunkGeometry.faces[f].vertexNormals[0].clone();
+				chunkGeometry.faces[kFace].vertexNormals[1] = extendedChunkGeometry.faces[f].vertexNormals[1].clone();
+				chunkGeometry.faces[kFace].vertexNormals[2] = extendedChunkGeometry.faces[f].vertexNormals[2].clone();
+				++kFace;
+			}
 		}
-		// End of modified version of chunkGeometry.computeVertexNormals()
+		
+		chunkGeometry.normalsNeedUpdate = true;
 		
 		chunkGeometry.translate(-lodPosition.x, -lodPosition.y, -lodPosition.z);
 		
