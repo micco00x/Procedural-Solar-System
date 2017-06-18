@@ -84,14 +84,11 @@ window.onload = function() {
 		
 		controls.update(clock.getDelta());
 		
-		/***/
-		//scene.updateMatrixWorld();
 		scene.traverse( function ( object ) {
 					   if ( object instanceof THREE.LOD ) {
 					   object.update( camera );
 					   }
 					   } );
-		/***/
 		
 		renderer.render(scene, camera);
 	};
