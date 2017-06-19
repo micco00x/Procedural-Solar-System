@@ -39,47 +39,40 @@ window.onload = function() {
 	var uniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
 											  {
 												radius: { value: radius },
-											    texture0: { value: null },
-											    texture1: { value: null },
-											    texture2: { value: null },
-											    texture3: { value: null },
-											    texture4: { value: null },
-											    texture5: { value: null },
-											    texture6: { value: null },
-											    texture7: { value: null },
+											    texture: { value: Array(8).fill(null) }
 											  }]);
 	
 	// Texture loader lods images asynchronously:
 	textureLoader.load("images/earth/deepsea.jpg", function (texture) {
-		uniforms.texture0.value = texture;
+		uniforms.texture.value[0] = texture;
 	});
 	
 	textureLoader.load("images/earth/sea.jpg", function (texture) {
-		uniforms.texture1.value = texture;
+		uniforms.texture.value[1] = texture;
 	});
 	
 	textureLoader.load("images/earth/sand.jpg", function (texture) {
-		uniforms.texture2.value = texture;
+		uniforms.texture.value[2] = texture;
 	});
 	
 	textureLoader.load("images/earth/grass.jpg", function (texture) {
-		uniforms.texture3.value = texture;
+		uniforms.texture.value[3] = texture;
 	});
 	
 	textureLoader.load("images/earth/grass2.png", function (texture) {
-		uniforms.texture4.value = texture;
+		uniforms.texture.value[4] = texture;
 	});
 	
 	textureLoader.load("images/earth/rock.jpg", function (texture) {
-		uniforms.texture5.value = texture;
+		uniforms.texture.value[5] = texture;
 	});
 	
 	textureLoader.load("images/earth/rock2.jpg", function (texture) {
-		uniforms.texture6.value = texture;
+		uniforms.texture.value[6] = texture;
 	});
 	
 	textureLoader.load("images/earth/snow.jpg", function (texture) {
-		uniforms.texture7.value = texture;
+		uniforms.texture.value[7] = texture;
 	});
 	
 	var earthMaterial = new THREE.ShaderMaterial({ uniforms: uniforms,
