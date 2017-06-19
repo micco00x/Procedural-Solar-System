@@ -29,16 +29,64 @@ window.onload = function() {
 	var lacunarity = 3;
 	var noiseHeightGenerator = new NoiseHeightGenerator(scale, octaves, persistance, lacunarity);
 
+	// Texture loader and textures:
+	var textureLoader = new THREE.TextureLoader();
+	
 	// Earth parameters:
 	var radius = 40; // earth: 6371km
 	var chunkPerFaceSide = 8;
 	var lodParams = [[25, 10], [20, 50], [15, 100], [5, 200]];
-	var uniforms = THREE.UniformsUtils.merge( [ { radius: { value: radius } }, THREE.UniformsLib[ "lights" ] ] );
+	var uniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
+											  {
+												radius: { value: radius },
+											    texture0: { value: null },
+											    texture1: { value: null },
+											    texture2: { value: null },
+											    texture3: { value: null },
+											    texture4: { value: null },
+											    texture5: { value: null },
+											    texture6: { value: null },
+											    texture7: { value: null },
+											  }]);
+	
+	// Texture loader lods images asynchronously:
+	textureLoader.load("images/earth/deepsea.jpg", function (texture) {
+		uniforms.texture0.value = texture;
+	});
+	
+	textureLoader.load("images/earth/sea.jpg", function (texture) {
+		uniforms.texture1.value = texture;
+	});
+	
+	textureLoader.load("images/earth/sand.jpg", function (texture) {
+		uniforms.texture2.value = texture;
+	});
+	
+	textureLoader.load("images/earth/grass.jpg", function (texture) {
+		uniforms.texture3.value = texture;
+	});
+	
+	textureLoader.load("images/earth/grass2.png", function (texture) {
+		uniforms.texture4.value = texture;
+	});
+	
+	textureLoader.load("images/earth/rock.jpg", function (texture) {
+		uniforms.texture5.value = texture;
+	});
+	
+	textureLoader.load("images/earth/rock2.jpg", function (texture) {
+		uniforms.texture6.value = texture;
+	});
+	
+	textureLoader.load("images/earth/snow.jpg", function (texture) {
+		uniforms.texture7.value = texture;
+	});
+	
 	var earthMaterial = new THREE.ShaderMaterial({ uniforms: uniforms,
 												   //attributes: attributes,
 												   vertexShader: document.getElementById("basicVertexShader").textContent,
 												   fragmentShader: document.getElementById("basicFragmentShader").textContent,
-												 lights: true
+												   lights: true
 												 });
 
 	//var texture = new THREE.TextureLoader().load("images/grass.png");

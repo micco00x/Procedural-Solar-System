@@ -20,11 +20,17 @@
 			varying vec3 posCameraCoord; // need this becasue light is in camera coords.
 			varying vec3 n;
 			
+			varying vec2 vUV;
+			
 			void main()
 			{
 				pos = (modelMatrix * vec4(position, 1.0)).xyz;
 				posCameraCoord = (modelViewMatrix * vec4(position, 1.0)).xyz;
+				
 				n = normalMatrix * normal;
+				
+				vUV = uv;
+				
 				gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 			}
 		</script>
@@ -39,10 +45,21 @@
 			float lightIntensity = 1.0;
 		
 			uniform float radius;
+			
+			uniform sampler2D texture0;
+			uniform sampler2D texture1;
+			uniform sampler2D texture2;
+			uniform sampler2D texture3;
+			uniform sampler2D texture4;
+			uniform sampler2D texture5;
+			uniform sampler2D texture6;
+			uniform sampler2D texture7;
 		
 			varying vec3 pos;
 			varying vec3 posCameraCoord;
 			varying vec3 n;
+			
+			varying vec2 vUV;
 			
 			void main()
 			{
@@ -54,21 +71,21 @@
 				
 				// deep sea, sea, sand, grass, grass2, mountain, mountain2, snow
 				if (noiseHeight < 0.8) {
-					gl_FragColor = vec4(0.118, 0.565, 1.0, 1.0);
+					gl_FragColor = texture2D(texture0, vUV); //vec4(0.118, 0.565, 1.0, 1.0);
 				} else if (noiseHeight < 1.0) {
-					gl_FragColor = vec4(0.0, 0.749, 1.0, 1.0);
+					gl_FragColor = texture2D(texture1, vUV); //vec4(0.0, 0.749, 1.0, 1.0);
 				} else if (noiseHeight < 1.15) {
-					gl_FragColor = vec4(0.957, 0.643, 0.376, 1.0);
+					gl_FragColor = texture2D(texture2, vUV); //vec4(0.957, 0.643, 0.376, 1.0);
 				} else if (noiseHeight < 1.35) {
-					gl_FragColor = vec4(0.196, 0.804, 0.196, 1.0);
+					gl_FragColor = texture2D(texture3, vUV); //vec4(0.196, 0.804, 0.196, 1.0);
 				} else if (noiseHeight < 1.6) {
-					gl_FragColor = vec4(0.133, 0.545, 0.133, 1.0);
+					gl_FragColor = texture2D(texture4, vUV); //vec4(0.133, 0.545, 0.133, 1.0);
 				} else if (noiseHeight < 1.75) {
-					gl_FragColor = vec4(0.627, 0.322, 0.176, 1.0);
+					gl_FragColor = texture2D(texture5, vUV); //vec4(0.627, 0.322, 0.176, 1.0);
 				} else if (noiseHeight < 2.0) {
-					gl_FragColor = vec4(0.545, 0.271, 0.075, 1.0);
+					gl_FragColor = texture2D(texture6, vUV); //vec4(0.545, 0.271, 0.075, 1.0);
 				} else {
-					gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+					gl_FragColor = texture2D(texture7, vUV); //vec4(1.0, 1.0, 1.0, 1.0);
 				}
 				
 				gl_FragColor = gl_FragColor * vec4(totLight, 1.0);
