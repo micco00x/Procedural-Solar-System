@@ -19,7 +19,7 @@ window.onload = function() {
 
 	// Stats monitor:
 	var stats = new Stats();
-	stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
+	stats.showPanel(0);
 	document.body.appendChild(stats.dom);
 
 	// Perlin noise parameters:
@@ -29,7 +29,7 @@ window.onload = function() {
 	var lacunarity = 3;
 	var noiseHeightGenerator = new NoiseHeightGenerator(scale, octaves, persistance, lacunarity);
 
-	// Texture loader and textures:
+	// Texture loader:
 	var textureLoader = new THREE.TextureLoader();
 	
 	// Earth parameters:
@@ -81,10 +81,6 @@ window.onload = function() {
 												   fragmentShader: document.getElementById("basicFragmentShader").textContent,
 												   lights: true
 												 });
-
-	//var texture = new THREE.TextureLoader().load("images/grass.png");
-	//var meshPhongMaterial = new THREE.MeshPhongMaterial({ map: texture });
-	//var meshPhongMaterial = new THREE.MeshPhongMaterial();
 
 	/*var classicNoiseMaterial = new THREE.ShaderMaterial({
 														uniforms: { radius: { value: radius },
