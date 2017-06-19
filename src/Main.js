@@ -39,7 +39,8 @@ window.onload = function() {
 	var uniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
 											  {
 												radius: { value: radius },
-											    texture: { value: Array(8).fill(null) }
+											    texture: { value: Array(8).fill(null) },
+											    textureHeight: { type: "fv1", value: [0.8, 1.0, 1.15, 1.35, 1.6, 1.75, 2.0, 2.5] }
 											  }]);
 	
 	// Texture loader lods images asynchronously:

@@ -46,7 +46,8 @@
 		
 			uniform float radius;
 			
-			uniform sampler2D texture[8];
+			uniform sampler2D texture[8];   // textures characterizing the planet
+			uniform float textureHeight[8]; // heights from where the texture changes
 		
 			varying vec3 pos;
 			varying vec3 posCameraCoord;
@@ -63,19 +64,19 @@
 				float noiseHeight = length(pos) - radius; // TODO: here the center of the planet is considered at the origin
 				
 				// deep sea, sea, sand, grass, grass2, mountain, mountain2, snow
-				if (noiseHeight < 0.8) {
+				if (noiseHeight < textureHeight[0]) {
 					gl_FragColor = texture2D(texture[0], vUV); //vec4(0.118, 0.565, 1.0, 1.0);
-				} else if (noiseHeight < 1.0) {
+				} else if (noiseHeight < textureHeight[1]) {
 					gl_FragColor = texture2D(texture[1], vUV); //vec4(0.0, 0.749, 1.0, 1.0);
-				} else if (noiseHeight < 1.15) {
+				} else if (noiseHeight < textureHeight[2]) {
 					gl_FragColor = texture2D(texture[2], vUV); //vec4(0.957, 0.643, 0.376, 1.0);
-				} else if (noiseHeight < 1.35) {
+				} else if (noiseHeight < textureHeight[3]) {
 					gl_FragColor = texture2D(texture[3], vUV); //vec4(0.196, 0.804, 0.196, 1.0);
-				} else if (noiseHeight < 1.6) {
+				} else if (noiseHeight < textureHeight[4]) {
 					gl_FragColor = texture2D(texture[4], vUV); //vec4(0.133, 0.545, 0.133, 1.0);
-				} else if (noiseHeight < 1.75) {
+				} else if (noiseHeight < textureHeight[5]) {
 					gl_FragColor = texture2D(texture[5], vUV); //vec4(0.627, 0.322, 0.176, 1.0);
-				} else if (noiseHeight < 2.0) {
+				} else if (noiseHeight < textureHeight[6]) {
 					gl_FragColor = texture2D(texture[6], vUV); //vec4(0.545, 0.271, 0.075, 1.0);
 				} else {
 					gl_FragColor = texture2D(texture[7], vUV); //vec4(1.0, 1.0, 1.0, 1.0);
