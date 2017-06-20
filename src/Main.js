@@ -345,6 +345,13 @@ window.onload = function() {
 						   marsChunkPerFaceSide, marsLodParams, marsMaterial, noiseHeightGenerator );
 	sun.add(mars);
 	
+	// Add starfield:
+	var starfieldSphere = new THREE.SphereGeometry(2500, 32, 32);
+	var starfieldMaterial = new THREE.MeshBasicMaterial( { map: new THREE.TextureLoader().load( "images/galaxy_starfield.png" ),
+														   side: THREE.BackSide } );
+	var starfieldMesh = new THREE.Mesh(starfieldSphere, starfieldMaterial);
+	scene.add(starfieldMesh);
+	
 	camera.position.z = 500;
 
 	var clock = new THREE.Clock();
