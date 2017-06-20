@@ -34,7 +34,9 @@ window.onload = function() {
 	
 	// Earth parameters:
 	var earthRadius = 40; // earth: 6371km
-	var earthRotationSpeed = 0.0005;
+	var earthRotationSpeed = 0.02;
+	var earthRevolutionSpeed = 0;
+	var earthOrbitalDistance = 0;
 	var earthChunkPerFaceSide = 8;
 	var earthLodParams = [[25, 10], [20, 50], [15, 100], [5, 200]];
 	var earthUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
@@ -95,14 +97,16 @@ window.onload = function() {
 														fragmentShader: document.getElementById("classicNoiseFragmentShader").textContent
 														});*/
 
-	var earth = new Planet("earth", earthRadius, earthRotationSpeed,
+	var earth = new Planet("earth", earthRadius, earthRotationSpeed, earthRevolutionSpeed, earthOrbitalDistance,
 						   earthChunkPerFaceSide, earthLodParams, earthMaterial, noiseHeightGenerator );
 	scene.add(earth);
 	
 	// Moon parameters:
 	noiseHeightGenerator.scale = 35;
 	var moonRadius = 10; // earth: 6371km
-	var moonRotationSpeed = 0.0001;
+	var moonRotationSpeed = 0.005;
+	var moonRevolutionSpeed = 0.05;
+	var moonOrbitalDistance = 75;
 	var moonChunkPerFaceSide = 2;
 	var moonLodParams = [[25, 10], [20, 50], [15, 100], [5, 200]];
 	var moonUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
@@ -132,10 +136,8 @@ window.onload = function() {
 												 lights: true
 												 });
 	
-	var moon = new Planet("moon", moonRadius, moonRotationSpeed,
-						  moonChunkPerFaceSide, moonLodParams, moonMaterial, noiseHeightGenerator );
-	moon.position.x = 60;
-	moon.position.y = 60;
+	var moon = new Planet("moon", moonRadius, moonRotationSpeed, moonRevolutionSpeed, moonOrbitalDistance,
+						  moonChunkPerFaceSide, moonLodParams, moonMaterial, noiseHeightGenerator);
 	earth.add(moon);
 
 	// TODO: Manage light in the shader
@@ -146,24 +148,24 @@ window.onload = function() {
 	camera.position.z = 120;
 
 	var clock = new THREE.Clock();
+	var time = 0;
 	var controls = new THREE.FlyControls( camera );
 	controls.movementSpeed = 5;
 	controls.rollSpeed = Math.PI / 24;
 	controls.domElement = document.body;
-
+	
 	var render = function () {
 		
 		delta = clock.getDelta();
+		time += delta;
 		
 		stats.update();
 		
-		requestAnimationFrame( render );
+		requestAnimationFrame(render);
 		
-		earth.rotation.x += earth.rotationSpeed;
-		earth.rotation.y += earth.rotationSpeed;
-		
-		moon.rotation.x += moon.rotationSpeed;
-		moon.rotation.y += moon.rotationSpeed;
+		// Update position of the planets:
+		earth.updatePosition(time);
+		moon.updatePosition(time);
 		
 		// Send position of the planets to the shader:
 		earthUniforms.planetPosition.value = earth.position;

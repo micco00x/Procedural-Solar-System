@@ -1,4 +1,4 @@
-function Planet(name, radius, rotationSpeed,
+function Planet(name, radius, rotationSpeed, revolutionSpeed, orbitalDistance,
 				chunkPerFaceSide, segmentsPerChunk, planetMaterial, noiseHeightGenerator) {
 	
 	THREE.Object3D.call( this );
@@ -7,6 +7,8 @@ function Planet(name, radius, rotationSpeed,
 	
 	this.radius = radius;
 	this.rotationSpeed = rotationSpeed;
+	this.revolutionSpeed = revolutionSpeed;
+	this.orbitalDistance = orbitalDistance;
 	
 	var faceSize = radius * 2;
 	var chunkSize = faceSize / chunkPerFaceSide;
@@ -29,6 +31,14 @@ function Planet(name, radius, rotationSpeed,
 			}
 		}
 	}
+	
+	this.updatePosition = function(time) {
+		this.rotation.x = this.rotationSpeed * time;
+		this.rotation.y = this.rotationSpeed * time;
+		
+		this.position.x = Math.sin(time * this.revolutionSpeed) * this.orbitalDistance;
+		this.position.y = Math.cos(time * this.revolutionSpeed) * this.orbitalDistance;
+	};
 }
 
 Planet.prototype = Object.create( THREE.Object3D.prototype );
