@@ -1,10 +1,12 @@
-function Planet(name, radius,
+function Planet(name, radius, rotationSpeed,
 				chunkPerFaceSide, segmentsPerChunk, planetMaterial, noiseHeightGenerator) {
 	
 	THREE.Object3D.call( this );
 
 	Math.seedrandom(name);
+	
 	this.radius = radius;
+	this.rotationSpeed = rotationSpeed;
 	
 	var faceSize = radius * 2;
 	var chunkSize = faceSize / chunkPerFaceSide;
