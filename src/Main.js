@@ -3,7 +3,7 @@
 window.onload = function() {
 	
 	var scene = new THREE.Scene();
-	var camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 0.1, 1000 );
+	var camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 0.1, 10000 );
 
 	var renderer = new THREE.WebGLRenderer();
 	renderer.setSize( window.innerWidth, window.innerHeight );
@@ -39,7 +39,7 @@ window.onload = function() {
 	var lightMoon = new THREE.PointLight();
 	
 	// Point light intensity:
-	var pointLightIntensity = [1.0, 0.1];
+	var pointLightIntensity = [1.0, 0.0];
 	
 	// Sun parameters:
 	var sunRadius = 100; // sun: 695700km
@@ -82,12 +82,53 @@ window.onload = function() {
 	scene.add(sun);
 	sun.add(lightSun);
 	
+	// Mercury parameters:
+	noiseHeightGenerator.scale = 50;
+	var mercuryRadius = 20; // earth: 6371km
+	var mercuryRotationSpeed = 0.1;
+	var mercuryRevolutionSpeed = 0.1;
+	var mercuryOrbitalDistance = 250;
+	var mercuryChunkPerFaceSide = 4;
+	var mercuryLodParams = [[20, 50], [15, 100], [5, 200]];
+	var mercuryUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
+												  {
+												  pointLightIntensity: { type: "fv1", value: pointLightIntensity },
+												  emissiveLightIntensity: { type: "f", value: 0.5 },
+												  planetPosition: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
+												  radius: { value: mercuryRadius },
+												  texture: { value: Array(8).fill(null) },
+												  textureHeight: { type: "fv1", value: [0.8, 1.0, 1.15, 1.35, 1.6, 1.75, 2.0, 2.5] }
+												  }]);
+	
+	// Texture loader lods images asynchronously:
+	textureLoader.load("images/moon/moon0.jpg", function(texture) {
+					   mercuryUniforms.texture.value[0] = texture;
+					   mercuryUniforms.texture.value[1] = texture;
+					   mercuryUniforms.texture.value[2] = texture;
+					   mercuryUniforms.texture.value[3] = texture;
+					   mercuryUniforms.texture.value[4] = texture;
+					   mercuryUniforms.texture.value[5] = texture;
+					   mercuryUniforms.texture.value[6] = texture;
+					   mercuryUniforms.texture.value[7] = texture;
+					   });
+	
+	var mercuryMaterial = new THREE.ShaderMaterial({ uniforms: mercuryUniforms,
+												//attributes: attributes,
+												vertexShader: document.getElementById("basicVertexShader").textContent,
+												fragmentShader: document.getElementById("basicFragmentShader").textContent,
+												lights: true
+												});
+	
+	var mercury = new Planet("mercury", mercuryRadius, mercuryRotationSpeed, mercuryRevolutionSpeed, mercuryOrbitalDistance,
+						  mercuryChunkPerFaceSide, mercuryLodParams, mercuryMaterial, noiseHeightGenerator);
+	sun.add(mercury);
+	
 	// Earth parameters:
 	noiseHeightGenerator.scale = 15;
 	var earthRadius = 40; // earth: 6371km
 	var earthRotationSpeed = 0.02;
 	var earthRevolutionSpeed = 0.05;
-	var earthOrbitalDistance = 200;
+	var earthOrbitalDistance = 800;
 	var earthChunkPerFaceSide = 8;
 	var earthLodParams = [[25, 10], [20, 50], [15, 100], [5, 200]];
 	var earthUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
@@ -196,7 +237,7 @@ window.onload = function() {
 	earth.add(moon);
 	moon.add(lightMoon);
 	
-	camera.position.z = 300;
+	camera.position.z = 500;
 
 	var clock = new THREE.Clock();
 	var time = 0;
@@ -215,11 +256,13 @@ window.onload = function() {
 		
 		// Update position of the planets:
 		sun.updatePosition(time);
+		mercury.updatePosition(time);
 		earth.updatePosition(time);
 		moon.updatePosition(time);
 		
 		// Send position of the planets to the shader:
 		sunUniforms.planetPosition.value = sun.position;
+		mercuryUniforms.planetPosition.value = mercury.position;
 		earthUniforms.planetPosition.value = earth.position;
 		moonUniforms.planetPosition.value = moon.position;
 		
