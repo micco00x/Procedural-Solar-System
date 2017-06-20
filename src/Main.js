@@ -95,6 +95,42 @@ window.onload = function() {
 
 	var earth = new Planet("earth", earthRadius, earthChunkPerFaceSide, earthLodParams, earthMaterial, noiseHeightGenerator );
 	scene.add(earth);
+	
+	// Moon parameters:
+	noiseHeightGenerator.scale = 30;
+	var moonRadius = 10; // earth: 6371km
+	var moonChunkPerFaceSide = 2;
+	var moonLodParams = [[25, 10], [20, 50], [15, 100], [5, 200]];
+	var moonUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
+												   {
+												   radius: { value: moonRadius },
+											       texture: { value: Array(8).fill(null) },
+											       textureHeight: { type: "fv1", value: [0.8, 1.0, 1.15, 1.35, 1.6, 1.75, 2.0, 2.5] }
+												   }]);
+	
+	// Texture loader lods images asynchronously:
+	textureLoader.load("images/moon/moon0.jpg", function(texture) {
+		moonUniforms.texture.value[0] = texture;
+		moonUniforms.texture.value[1] = texture;
+		moonUniforms.texture.value[2] = texture;
+		moonUniforms.texture.value[3] = texture;
+		moonUniforms.texture.value[4] = texture;
+		moonUniforms.texture.value[5] = texture;
+		moonUniforms.texture.value[6] = texture;
+		moonUniforms.texture.value[7] = texture;
+	});
+	
+	var moonMaterial = new THREE.ShaderMaterial({ uniforms: moonUniforms,
+												 //attributes: attributes,
+												 vertexShader: document.getElementById("basicVertexShader").textContent,
+												 fragmentShader: document.getElementById("basicFragmentShader").textContent,
+												 lights: true
+												 });
+	
+	var moon = new Planet("moon", moonRadius, moonChunkPerFaceSide, moonLodParams, moonMaterial, noiseHeightGenerator );
+	moon.position.x = 60;
+	moon.position.y = 60;
+	earth.add(moon);
 
 	// TODO: Manage light in the shader
 	var light = new THREE.PointLight();
