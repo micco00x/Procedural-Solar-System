@@ -41,6 +41,7 @@
 				//float distance;
 			};
 		
+			uniform float emissiveLightIntensity;
 			uniform PointLight pointLights[NUM_POINT_LIGHTS];
 			float lightIntensity = 1.0;
 		
@@ -84,7 +85,11 @@
 					gl_FragColor = texture2D(texture[7], vUV); //vec4(1.0, 1.0, 1.0, 1.0);
 				}
 				
-				gl_FragColor = gl_FragColor * vec4(totLight, 1.0);
+				gl_FragColor = gl_FragColor * vec4(totLight, 1.0) + gl_FragColor * emissiveLightIntensity * vec4(1.0, 1.0, 1.0, 1.0);
+				
+				if (gl_FragColor.r > 1.0) gl_FragColor.r = 1.0;
+				if (gl_FragColor.g > 1.0) gl_FragColor.g = 1.0;
+				if (gl_FragColor.b > 1.0) gl_FragColor.b = 1.0;
 			}
 		</script>
 		

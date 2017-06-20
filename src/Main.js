@@ -41,6 +41,7 @@ window.onload = function() {
 	var sunLodParams = [[5, 200]];
 	var sunUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
 												  {
+												  emissiveLightIntensity: { type: "f", value: 1.0 },
 												  planetPosition: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
 												  radius: { value: sunRadius },
 												  texture: { value: Array(8).fill(null) },
@@ -80,6 +81,7 @@ window.onload = function() {
 	var earthLodParams = [[25, 10], [20, 50], [15, 100], [5, 200]];
 	var earthUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
 											  {
+												   emissiveLightIntensity: { type: "f", value: 0.0 },
 												   planetPosition: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
 												   radius: { value: earthRadius },
 												   texture: { value: Array(8).fill(null) },
@@ -150,6 +152,7 @@ window.onload = function() {
 	var moonLodParams = [[20, 50], [15, 100], [5, 200]];
 	var moonUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
 												  {
+												  emissiveLightIntensity: { type: "f", value: 1.0 },
 												  planetPosition: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
 												  radius: { value: moonRadius },
 												  texture: { value: Array(8).fill(null) },
