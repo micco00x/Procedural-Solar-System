@@ -23,7 +23,7 @@ window.onload = function() {
 	document.body.appendChild(stats.dom);
 
 	// Perlin noise parameters:
-	var scale = 15;
+	var scale = 40;
 	var octaves = 4;
 	var persistance = 0.5;
 	var lacunarity = 3;
@@ -37,8 +37,8 @@ window.onload = function() {
 	var sunRotationSpeed = 0.01;
 	var sunRevolutionSpeed = 0;
 	var sunOrbitalDistance = 0;
-	var sunChunkPerFaceSide = 8;
-	var sunLodParams = [[25, 10], [20, 50], [15, 100], [5, 200]];
+	var sunChunkPerFaceSide = 2;
+	var sunLodParams = [[5, 200]];
 	var sunUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
 												  {
 												  planetPosition: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
@@ -71,6 +71,7 @@ window.onload = function() {
 	scene.add(sun);
 	
 	// Earth parameters:
+	noiseHeightGenerator.scale = 15;
 	var earthRadius = 40; // earth: 6371km
 	var earthRotationSpeed = 0.02;
 	var earthRevolutionSpeed = 0.05;
@@ -143,10 +144,10 @@ window.onload = function() {
 	noiseHeightGenerator.scale = 35;
 	var moonRadius = 10; // earth: 6371km
 	var moonRotationSpeed = 0.005;
-	var moonRevolutionSpeed = 0.05;
+	var moonRevolutionSpeed = 0.1;
 	var moonOrbitalDistance = 75;
 	var moonChunkPerFaceSide = 2;
-	var moonLodParams = [[25, 10], [20, 50], [15, 100], [5, 200]];
+	var moonLodParams = [[20, 50], [15, 100], [5, 200]];
 	var moonUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
 												  {
 												  planetPosition: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
@@ -188,7 +189,7 @@ window.onload = function() {
 	var clock = new THREE.Clock();
 	var time = 0;
 	var controls = new THREE.FlyControls( camera );
-	controls.movementSpeed = 5;
+	controls.movementSpeed = 20;
 	controls.rollSpeed = Math.PI / 24;
 	controls.domElement = document.body;
 	
