@@ -143,7 +143,7 @@ window.onload = function() {
 	sun.add(earth);
 	
 	// Moon parameters:
-	noiseHeightGenerator.scale = 35;
+	noiseHeightGenerator.scale = 50;
 	var moonRadius = 10; // earth: 6371km
 	var moonRotationSpeed = 0.005;
 	var moonRevolutionSpeed = 0.1;
@@ -184,8 +184,7 @@ window.onload = function() {
 
 	// TODO: Manage light in the shader
 	var light = new THREE.PointLight();
-	light.position.set( 0, 0, 150 );
-	scene.add( light );
+	sun.add(light);
 
 	camera.position.z = 300;
 
