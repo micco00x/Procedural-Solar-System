@@ -33,50 +33,50 @@ window.onload = function() {
 	var textureLoader = new THREE.TextureLoader();
 	
 	// Earth parameters:
-	var radius = 40; // earth: 6371km
-	var chunkPerFaceSide = 8;
-	var lodParams = [[25, 10], [20, 50], [15, 100], [5, 200]];
-	var uniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
+	var earthRadius = 40; // earth: 6371km
+	var earthChunkPerFaceSide = 8;
+	var earthLodParams = [[25, 10], [20, 50], [15, 100], [5, 200]];
+	var earthUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
 											  {
-												radius: { value: radius },
+												radius: { value: earthRadius },
 											    texture: { value: Array(8).fill(null) },
 											    textureHeight: { type: "fv1", value: [0.8, 1.0, 1.15, 1.35, 1.6, 1.75, 2.0, 2.5] }
 											  }]);
 	
 	// Texture loader lods images asynchronously:
 	textureLoader.load("images/earth/deepsea.jpg", function (texture) {
-		uniforms.texture.value[0] = texture;
+		earthUniforms.texture.value[0] = texture;
 	});
 	
 	textureLoader.load("images/earth/sea.jpg", function (texture) {
-		uniforms.texture.value[1] = texture;
+		earthUniforms.texture.value[1] = texture;
 	});
 	
 	textureLoader.load("images/earth/sand.jpg", function (texture) {
-		uniforms.texture.value[2] = texture;
+		earthUniforms.texture.value[2] = texture;
 	});
 	
 	textureLoader.load("images/earth/grass.jpg", function (texture) {
-		uniforms.texture.value[3] = texture;
+		earthUniforms.texture.value[3] = texture;
 	});
 	
 	textureLoader.load("images/earth/grass2.png", function (texture) {
-		uniforms.texture.value[4] = texture;
+		earthUniforms.texture.value[4] = texture;
 	});
 	
 	textureLoader.load("images/earth/rock.jpg", function (texture) {
-		uniforms.texture.value[5] = texture;
+		earthUniforms.texture.value[5] = texture;
 	});
 	
 	textureLoader.load("images/earth/rock2.jpg", function (texture) {
-		uniforms.texture.value[6] = texture;
+		earthUniforms.texture.value[6] = texture;
 	});
 	
 	textureLoader.load("images/earth/snow.jpg", function (texture) {
-		uniforms.texture.value[7] = texture;
+		earthUniforms.texture.value[7] = texture;
 	});
 	
-	var earthMaterial = new THREE.ShaderMaterial({ uniforms: uniforms,
+	var earthMaterial = new THREE.ShaderMaterial({ uniforms: earthUniforms,
 												   //attributes: attributes,
 												   vertexShader: document.getElementById("basicVertexShader").textContent,
 												   fragmentShader: document.getElementById("basicFragmentShader").textContent,
@@ -93,7 +93,7 @@ window.onload = function() {
 														fragmentShader: document.getElementById("classicNoiseFragmentShader").textContent
 														});*/
 
-	var earth = new Planet("earth", radius, chunkPerFaceSide, lodParams, earthMaterial, noiseHeightGenerator );
+	var earth = new Planet("earth", earthRadius, earthChunkPerFaceSide, earthLodParams, earthMaterial, noiseHeightGenerator );
 	scene.add(earth);
 
 	// TODO: Manage light in the shader
