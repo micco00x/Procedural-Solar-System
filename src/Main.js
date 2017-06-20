@@ -146,33 +146,21 @@ window.onload = function() {
 	// Texture loader lods images asynchronously:
 	textureLoader.load("images/venus/venus0.jpg", function (texture) {
 					   venusUniforms.texture.value[0] = texture;
-					   });
-	
-	textureLoader.load("images/venus/venus0.jpg", function (texture) {
 					   venusUniforms.texture.value[1] = texture;
 					   });
 	
 	textureLoader.load("images/venus/venus1.jpg", function (texture) {
 					   venusUniforms.texture.value[2] = texture;
-					   });
-	
-	textureLoader.load("images/venus/venus1.jpg", function (texture) {
 					   venusUniforms.texture.value[3] = texture;
 					   });
 	
 	textureLoader.load("images/venus/venus2.jpg", function (texture) {
 					   venusUniforms.texture.value[4] = texture;
-					   });
-	
-	textureLoader.load("images/venus/venus2.jpg", function (texture) {
 					   venusUniforms.texture.value[5] = texture;
 					   });
 	
 	textureLoader.load("images/venus/venus3.jpg", function (texture) {
 					   venusUniforms.texture.value[6] = texture;
-					   });
-	
-	textureLoader.load("images/venus/venus3.jpg", function (texture) {
 					   venusUniforms.texture.value[7] = texture;
 					   });
 	
@@ -326,17 +314,11 @@ window.onload = function() {
 	
 	textureLoader.load("images/mars/mars1.jpg", function (texture) {
 					   marsUniforms.texture.value[1] = texture;
-					   });
-	
-	textureLoader.load("images/mars/mars1.jpg", function (texture) {
 					   marsUniforms.texture.value[2] = texture;
 					   });
 	
 	textureLoader.load("images/mars/mars2.png", function (texture) {
 					   marsUniforms.texture.value[3] = texture;
-					   });
-	
-	textureLoader.load("images/mars/mars2.png", function (texture) {
 					   marsUniforms.texture.value[4] = texture;
 					   });
 	
