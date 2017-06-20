@@ -53,7 +53,7 @@ window.onload = function() {
 	var sunUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
 												  {
 												  pointLightIntensity: { type: "fv1", value: pointLightIntensity },
-												  emissiveLightIntensity: { type: "f", value: 1.0 },
+												  emissiveLightIntensity: { type: "f", value: 1.4 },
 												  planetPosition: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
 												  radius: { value: sunRadius },
 												  texture: { value: Array(8).fill(null) },
@@ -95,7 +95,7 @@ window.onload = function() {
 	var mercuryUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
 												  {
 												  pointLightIntensity: { type: "fv1", value: pointLightIntensity },
-												  emissiveLightIntensity: { type: "f", value: 0.5 },
+												  emissiveLightIntensity: { type: "f", value: 0.0 },
 												  planetPosition: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
 												  radius: { value: mercuryRadius },
 												  texture: { value: Array(8).fill(null) },
@@ -125,11 +125,73 @@ window.onload = function() {
 						  mercuryChunkPerFaceSide, mercuryLodParams, mercuryMaterial, noiseHeightGenerator);
 	sun.add(mercury);
 	
+	// Venus parameters:
+	noiseHeightGenerator.scale = 15;
+	var venusRadius = 35; // earth: 6371km
+	var venusRotationSpeed = 0.01;
+	var venusRevolutionSpeed = 0.01;
+	var venusOrbitalDistance = 500;
+	var venusChunkPerFaceSide = 8;
+	var venusLodParams = [[25, 10], [20, 50], [15, 100], [5, 200]];
+	var venusUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
+												   {
+												   pointLightIntensity: { type: "fv1", value: pointLightIntensity },
+												   emissiveLightIntensity: { type: "f", value: 0.3 },
+												   planetPosition: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
+												   radius: { value: venusRadius },
+												   texture: { value: Array(8).fill(null) },
+												   textureHeight: { type: "fv1", value: [0.8, 1.0, 1.15, 1.35, 1.6, 1.75, 2.0, 2.5] }
+												   }]);
+	
+	// Texture loader lods images asynchronously:
+	textureLoader.load("images/venus/venus0.jpg", function (texture) {
+					   venusUniforms.texture.value[0] = texture;
+					   });
+	
+	textureLoader.load("images/venus/venus0.jpg", function (texture) {
+					   venusUniforms.texture.value[1] = texture;
+					   });
+	
+	textureLoader.load("images/venus/venus1.jpg", function (texture) {
+					   venusUniforms.texture.value[2] = texture;
+					   });
+	
+	textureLoader.load("images/venus/venus1.jpg", function (texture) {
+					   venusUniforms.texture.value[3] = texture;
+					   });
+	
+	textureLoader.load("images/venus/venus2.jpg", function (texture) {
+					   venusUniforms.texture.value[4] = texture;
+					   });
+	
+	textureLoader.load("images/venus/venus2.jpg", function (texture) {
+					   venusUniforms.texture.value[5] = texture;
+					   });
+	
+	textureLoader.load("images/venus/venus3.jpg", function (texture) {
+					   venusUniforms.texture.value[6] = texture;
+					   });
+	
+	textureLoader.load("images/venus/venus3.jpg", function (texture) {
+					   venusUniforms.texture.value[7] = texture;
+					   });
+	
+	var venusMaterial = new THREE.ShaderMaterial({ uniforms: venusUniforms,
+												 //attributes: attributes,
+												 vertexShader: document.getElementById("basicVertexShader").textContent,
+												 fragmentShader: document.getElementById("basicFragmentShader").textContent,
+												 lights: true
+												 });
+	
+	var venus = new Planet("venus", venusRadius, venusRotationSpeed, venusRevolutionSpeed, venusOrbitalDistance,
+						   venusChunkPerFaceSide, venusLodParams, venusMaterial, noiseHeightGenerator );
+	sun.add(venus);
+	
 	// Earth parameters:
 	noiseHeightGenerator.scale = 15;
 	var earthRadius = 40; // earth: 6371km
 	var earthRotationSpeed = 0.02;
-	var earthRevolutionSpeed = 0.05;
+	var earthRevolutionSpeed = 0.005;
 	var earthOrbitalDistance = 800;
 	var earthChunkPerFaceSide = 8;
 	var earthLodParams = [[25, 10], [20, 50], [15, 100], [5, 200]];
@@ -244,7 +306,7 @@ window.onload = function() {
 	var clock = new THREE.Clock();
 	var time = 0;
 	var controls = new THREE.FlyControls( camera );
-	controls.movementSpeed = 50;
+	controls.movementSpeed = 100;
 	controls.rollSpeed = Math.PI / 24;
 	controls.domElement = document.body;
 	
@@ -259,12 +321,14 @@ window.onload = function() {
 		// Update position of the planets:
 		sun.updatePosition(time);
 		mercury.updatePosition(time);
+		venus.updatePosition(time);
 		earth.updatePosition(time);
 		moon.updatePosition(time);
 		
 		// Send position of the planets to the shader:
 		sunUniforms.planetPosition.value = sun.position;
 		mercuryUniforms.planetPosition.value = mercury.position;
+		venusUniforms.planetPosition.value = venus.position;
 		earthUniforms.planetPosition.value = earth.position;
 		moonUniforms.planetPosition.value = moon.position;
 		
