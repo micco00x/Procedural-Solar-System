@@ -38,9 +38,10 @@ window.onload = function() {
 	var earthLodParams = [[25, 10], [20, 50], [15, 100], [5, 200]];
 	var earthUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
 											  {
-												radius: { value: earthRadius },
-											    texture: { value: Array(8).fill(null) },
-											    textureHeight: { type: "fv1", value: [0.8, 1.0, 1.15, 1.35, 1.6, 1.75, 2.0, 2.5] }
+												   planetPosition: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
+												   radius: { value: earthRadius },
+												   texture: { value: Array(8).fill(null) },
+												   textureHeight: { type: "fv1", value: [0.8, 1.0, 1.15, 1.35, 1.6, 1.75, 2.0, 2.5] }
 											  }]);
 	
 	// Texture loader lods images asynchronously:
@@ -102,10 +103,11 @@ window.onload = function() {
 	var moonChunkPerFaceSide = 2;
 	var moonLodParams = [[25, 10], [20, 50], [15, 100], [5, 200]];
 	var moonUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
-												   {
-												   radius: { value: moonRadius },
-											       texture: { value: Array(8).fill(null) },
-											       textureHeight: { type: "fv1", value: [0.8, 1.0, 1.15, 1.35, 1.6, 1.75, 2.0, 2.5] }
+												  {
+												  planetPosition: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
+												  radius: { value: moonRadius },
+												  texture: { value: Array(8).fill(null) },
+												  textureHeight: { type: "fv1", value: [0.8, 1.0, 1.15, 1.35, 1.6, 1.75, 2.0, 2.5] }
 												   }]);
 	
 	// Texture loader lods images asynchronously:
@@ -155,6 +157,10 @@ window.onload = function() {
 		
 		earth.rotation.x += r;
 		earth.rotation.y += r;
+		
+		// Send position of the planets to the shader:
+		earthUniforms.planetPosition.value = earth.position;
+		moonUniforms.planetPosition.value = moon.position;
 		
 		controls.update(clock.getDelta());
 		

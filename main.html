@@ -44,6 +44,8 @@
 			uniform PointLight pointLights[NUM_POINT_LIGHTS];
 			float lightIntensity = 1.0;
 		
+			// used to correctly compute noiseHeight when the planet is moved:
+			uniform vec3 planetPosition;
 			uniform float radius;
 			
 			uniform sampler2D texture[8];   // textures characterizing the planet
@@ -61,7 +63,7 @@
 				vec3 lightDirection = normalize(posCameraCoord - pointLights[0].position);
 				vec3 totLight = clamp(dot(-lightDirection, n), 0.0, 1.0) * pointLights[0].color * lightIntensity;
 				
-				float noiseHeight = length(pos) - radius; // TODO: here the center of the planet is considered at the origin
+				float noiseHeight = length(pos - planetPosition) - radius;
 				
 				// deep sea, sea, sand, grass, grass2, mountain, mountain2, snow
 				if (noiseHeight < textureHeight[0]) {
