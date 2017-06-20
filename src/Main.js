@@ -49,7 +49,7 @@ window.onload = function() {
 	var sunRevolutionSpeed = 0;
 	var sunOrbitalDistance = 0;
 	var sunChunkPerFaceSide = 2;
-	var sunLodParams = [[5, 200]];
+	var sunLodParams = [[5, 0]];
 	var sunUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
 												  {
 												  pointLightIntensity: { type: "fv1", value: pointLightIntensity },
@@ -91,7 +91,7 @@ window.onload = function() {
 	var mercuryRevolutionSpeed = 0.1;
 	var mercuryOrbitalDistance = 250;
 	var mercuryChunkPerFaceSide = 4;
-	var mercuryLodParams = [[20, 50], [15, 100], [5, 200]];
+	var mercuryLodParams = [[15, 100], [2, 200]];
 	var mercuryUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
 												  {
 												  pointLightIntensity: { type: "fv1", value: pointLightIntensity },
@@ -131,8 +131,8 @@ window.onload = function() {
 	var venusRotationSpeed = 0.01;
 	var venusRevolutionSpeed = 0.01;
 	var venusOrbitalDistance = 500;
-	var venusChunkPerFaceSide = 8;
-	var venusLodParams = [[25, 10], [20, 50], [15, 100], [5, 200]];
+	var venusChunkPerFaceSide = 6;
+	var venusLodParams = [[25, 10], [20, 50], [15, 100], [2, 200]];
 	var venusUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
 												   {
 												   pointLightIntensity: { type: "fv1", value: pointLightIntensity },
@@ -194,7 +194,7 @@ window.onload = function() {
 	var earthRevolutionSpeed = 0.005;
 	var earthOrbitalDistance = 800;
 	var earthChunkPerFaceSide = 8;
-	var earthLodParams = [[25, 10], [20, 50], [15, 100], [5, 200]];
+	var earthLodParams = [[25, 10], [20, 50], [15, 100], [2, 200]];
 	var earthUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
 											  {
 												   pointLightIntensity: { type: "fv1", value: pointLightIntensity },
@@ -266,7 +266,7 @@ window.onload = function() {
 	var moonRevolutionSpeed = 0.1;
 	var moonOrbitalDistance = 75;
 	var moonChunkPerFaceSide = 2;
-	var moonLodParams = [[20, 50], [15, 100], [5, 200]];
+	var moonLodParams = [[15, 100], [2, 200]];
 	var moonUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
 												  {
 												  pointLightIntensity: { type: "fv1", value: pointLightIntensity },
