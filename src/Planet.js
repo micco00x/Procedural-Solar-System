@@ -10,6 +10,10 @@ function Planet(name, radius, rotationSpeed, revolutionSpeed, orbitalDistance,
 	this.revolutionSpeed = revolutionSpeed;
 	this.orbitalDistance = orbitalDistance;
 	
+	// Pivot to allow the planet rotate on itself without affecting children:
+	this.pivot = new THREE.Group();
+	this.add(this.pivot);
+	
 	var faceSize = radius * 2;
 	var chunkSize = faceSize / chunkPerFaceSide;
 	
@@ -27,14 +31,14 @@ function Planet(name, radius, rotationSpeed, revolutionSpeed, orbitalDistance,
 									  noiseHeightGenerator,
 									  translateX+chunkSize*j, translateY-chunkSize*i, translateZ,
 									  this.radius, THREE.Math.degToRad(rotations[r][0]), THREE.Math.degToRad(rotations[r][1]));
-				this.add(chunk);
+				this.pivot.add(chunk);
 			}
 		}
 	}
 	
 	this.updatePosition = function(time) {
-		this.rotation.x = this.rotationSpeed * time;
-		this.rotation.y = this.rotationSpeed * time;
+		this.pivot.rotation.x = this.rotationSpeed * time;
+		this.pivot.rotation.y = this.rotationSpeed * time;
 		
 		this.position.x = Math.sin(time * this.revolutionSpeed) * this.orbitalDistance;
 		this.position.y = Math.cos(time * this.revolutionSpeed) * this.orbitalDistance;
