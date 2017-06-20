@@ -34,12 +34,14 @@ window.onload = function() {
 	
 	// Light of the sun:
 	var lightSun = new THREE.PointLight();
+	lightSun.distance = 0.0;
 	
 	// Light of the moon:
 	var lightMoon = new THREE.PointLight();
+	lightMoon.distance = 100.0;
 	
 	// Point light intensity:
-	var pointLightIntensity = [1.0, 0.0];
+	var pointLightIntensity = [1.0, 0.1];
 	
 	// Sun parameters:
 	var sunRadius = 100; // sun: 695700km
@@ -242,7 +244,7 @@ window.onload = function() {
 	var clock = new THREE.Clock();
 	var time = 0;
 	var controls = new THREE.FlyControls( camera );
-	controls.movementSpeed = 20;
+	controls.movementSpeed = 50;
 	controls.rollSpeed = Math.PI / 24;
 	controls.domElement = document.body;
 	
