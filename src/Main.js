@@ -86,7 +86,7 @@ window.onload = function() {
 	
 	// Mercury parameters:
 	noiseHeightGenerator.scale = 50;
-	var mercuryRadius = 20; // earth: 6371km
+	var mercuryRadius = 20; // earth: 2440km
 	var mercuryRotationSpeed = 0.1;
 	var mercuryRevolutionSpeed = 0.1;
 	var mercuryOrbitalDistance = 250;
@@ -127,7 +127,7 @@ window.onload = function() {
 	
 	// Venus parameters:
 	noiseHeightGenerator.scale = 15;
-	var venusRadius = 35; // earth: 6371km
+	var venusRadius = 35; // earth: 6052km
 	var venusRotationSpeed = 0.01;
 	var venusRevolutionSpeed = 0.01;
 	var venusOrbitalDistance = 500;
@@ -261,7 +261,7 @@ window.onload = function() {
 	
 	// Moon parameters:
 	noiseHeightGenerator.scale = 50;
-	var moonRadius = 10; // earth: 6371km
+	var moonRadius = 10; // earth: 1737km
 	var moonRotationSpeed = 0.005;
 	var moonRevolutionSpeed = 0.1;
 	var moonOrbitalDistance = 75;
@@ -301,6 +301,68 @@ window.onload = function() {
 	earth.add(moon);
 	moon.add(lightMoon);
 	
+	// Mars parameters:
+	noiseHeightGenerator.scale = 15;
+	var marsRadius = 26; // earth: 3390km
+	var marsRotationSpeed = 0.02;
+	var marsRevolutionSpeed = 0.003;
+	var marsOrbitalDistance = 1150;
+	var marsChunkPerFaceSide = 6;
+	var marsLodParams = [[25, 10], [20, 50], [15, 100], [2, 200]];
+	var marsUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
+												   {
+												   pointLightIntensity: { type: "fv1", value: pointLightIntensity },
+												   emissiveLightIntensity: { type: "f", value: 0.0 },
+												   planetPosition: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
+												   radius: { value: marsRadius },
+												   texture: { value: Array(8).fill(null) },
+												   textureHeight: { type: "fv1", value: [0.8, 1.0, 1.15, 1.35, 1.6, 1.75, 2.0, 2.5] }
+												   }]);
+	
+	// Texture loader lods images asynchronously:
+	textureLoader.load("images/mars/mars0.jpg", function (texture) {
+					   marsUniforms.texture.value[0] = texture;
+					   });
+	
+	textureLoader.load("images/mars/mars1.jpg", function (texture) {
+					   marsUniforms.texture.value[1] = texture;
+					   });
+	
+	textureLoader.load("images/mars/mars1.jpg", function (texture) {
+					   marsUniforms.texture.value[2] = texture;
+					   });
+	
+	textureLoader.load("images/mars/mars2.png", function (texture) {
+					   marsUniforms.texture.value[3] = texture;
+					   });
+	
+	textureLoader.load("images/mars/mars2.png", function (texture) {
+					   marsUniforms.texture.value[4] = texture;
+					   });
+	
+	textureLoader.load("images/mars/mars3.jpg", function (texture) {
+					   marsUniforms.texture.value[5] = texture;
+					   });
+	
+	textureLoader.load("images/mars/mars4.jpg", function (texture) {
+					   marsUniforms.texture.value[6] = texture;
+					   });
+	
+	textureLoader.load("images/mars/mars5.jpg", function (texture) {
+					   marsUniforms.texture.value[7] = texture;
+					   });
+	
+	var marsMaterial = new THREE.ShaderMaterial({ uniforms: marsUniforms,
+												 //attributes: attributes,
+												 vertexShader: document.getElementById("basicVertexShader").textContent,
+												 fragmentShader: document.getElementById("basicFragmentShader").textContent,
+												 lights: true
+												 });
+	
+	var mars = new Planet("mars", marsRadius, marsRotationSpeed, marsRevolutionSpeed, marsOrbitalDistance,
+						   marsChunkPerFaceSide, marsLodParams, marsMaterial, noiseHeightGenerator );
+	sun.add(mars);
+	
 	camera.position.z = 500;
 
 	var clock = new THREE.Clock();
@@ -324,6 +386,7 @@ window.onload = function() {
 		venus.updatePosition(time);
 		earth.updatePosition(time);
 		moon.updatePosition(time);
+		mars.updatePosition(time);
 		
 		// Send position of the planets to the shader:
 		sunUniforms.planetPosition.value = sun.position;
@@ -331,6 +394,7 @@ window.onload = function() {
 		venusUniforms.planetPosition.value = venus.position;
 		earthUniforms.planetPosition.value = earth.position;
 		moonUniforms.planetPosition.value = moon.position;
+		marsUniforms.planetPosition.value = mars.position;
 		
 		controls.update(delta);
 		
