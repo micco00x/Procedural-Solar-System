@@ -32,6 +32,15 @@ window.onload = function() {
 	// Texture loader:
 	var textureLoader = new THREE.TextureLoader();
 	
+	// Light of the sun:
+	var lightSun = new THREE.PointLight();
+	
+	// Light of the moon:
+	var lightMoon = new THREE.PointLight();
+	
+	// Point light intensity:
+	var pointLightIntensity = [1.0, 0.1];
+	
 	// Sun parameters:
 	var sunRadius = 100; // sun: 695700km
 	var sunRotationSpeed = 0.01;
@@ -41,6 +50,7 @@ window.onload = function() {
 	var sunLodParams = [[5, 200]];
 	var sunUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
 												  {
+												  pointLightIntensity: { type: "fv1", value: pointLightIntensity },
 												  emissiveLightIntensity: { type: "f", value: 1.0 },
 												  planetPosition: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
 												  radius: { value: sunRadius },
@@ -70,6 +80,7 @@ window.onload = function() {
 	var sun = new Planet("sun", sunRadius, sunRotationSpeed, sunRevolutionSpeed, sunOrbitalDistance,
 						  sunChunkPerFaceSide, sunLodParams, sunMaterial, noiseHeightGenerator);
 	scene.add(sun);
+	sun.add(lightSun);
 	
 	// Earth parameters:
 	noiseHeightGenerator.scale = 15;
@@ -81,6 +92,7 @@ window.onload = function() {
 	var earthLodParams = [[25, 10], [20, 50], [15, 100], [5, 200]];
 	var earthUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
 											  {
+												   pointLightIntensity: { type: "fv1", value: pointLightIntensity },
 												   emissiveLightIntensity: { type: "f", value: 0.0 },
 												   planetPosition: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
 												   radius: { value: earthRadius },
@@ -152,7 +164,8 @@ window.onload = function() {
 	var moonLodParams = [[20, 50], [15, 100], [5, 200]];
 	var moonUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
 												  {
-												  emissiveLightIntensity: { type: "f", value: 1.0 },
+												  pointLightIntensity: { type: "fv1", value: pointLightIntensity },
+												  emissiveLightIntensity: { type: "f", value: 0.5 },
 												  planetPosition: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
 												  radius: { value: moonRadius },
 												  texture: { value: Array(8).fill(null) },
@@ -181,11 +194,8 @@ window.onload = function() {
 	var moon = new Planet("moon", moonRadius, moonRotationSpeed, moonRevolutionSpeed, moonOrbitalDistance,
 						  moonChunkPerFaceSide, moonLodParams, moonMaterial, noiseHeightGenerator);
 	earth.add(moon);
-
-	// TODO: Manage light in the shader
-	var light = new THREE.PointLight();
-	sun.add(light);
-
+	moon.add(lightMoon);
+	
 	camera.position.z = 300;
 
 	var clock = new THREE.Clock();
