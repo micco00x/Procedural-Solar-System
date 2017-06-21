@@ -18,8 +18,8 @@ window.onload = function() {
 	// Stats monitor:
 	var stats = new Stats();
 	stats.showPanel(0);
-	document.body.appendChild(stats.dom);
-
+	document.body.appendChild(stats.dom);	
+	
 	// Perlin noise parameters:
 	var scale = 40;
 	var octaves = 4;
@@ -122,7 +122,7 @@ window.onload = function() {
 	var mercury = new Planet("mercury", mercuryRadius, mercuryRotationSpeed, mercuryRevolutionSpeed, mercuryOrbitalDistance,
 						  mercuryChunkPerFaceSide, mercuryLodParams, mercuryMaterial, noiseHeightGenerator);
 	sun.add(mercury);
-	
+
 	// Venus parameters:
 	noiseHeightGenerator.scale = 15;
 	var venusRadius = 35; // earth: 6052km
@@ -329,7 +329,7 @@ window.onload = function() {
 	var mars = new Planet("mars", marsRadius, marsRotationSpeed, marsRevolutionSpeed, marsOrbitalDistance,
 						   marsChunkPerFaceSide, marsLodParams, marsMaterial, noiseHeightGenerator );
 	sun.add(mars);
-	
+
 	// Add starfield (spherified cube):
 	var starfieldSphere = new THREE.BoxGeometry(1, 1, 1, 32, 32, 32);
 	for (var i = 0; i < starfieldSphere.vertices.length; ++i) {
@@ -352,6 +352,79 @@ window.onload = function() {
 	controls.movementSpeed = 100;
 	controls.rollSpeed = Math.PI / 24;
 	controls.domElement = document.body;
+	controls.dragToLook = true;
+	
+	
+	// input handlers
+	
+	var solarSystem = { 'sun': sun, 'mercury': mercury, 'venus': venus,
+							'earth': earth, 'moon': moon, 'mars': mars }; 
+	
+	var lookAtPlanet = function(planetName) {
+		var selectedPlanet = solarSystem[planetName];
+		camera.lookAt(selectedPlanet.position);
+		camera.updateProjectionMatrix();
+	}
+	
+	var moveToPlanet = function(planetName) {
+		var selectedPlanet = solarSystem[planetName];
+		
+		var ncp = selectedPlanet.position;	//new camera position
+		ncp.x -= 2 * selectedPlanet.radius;
+		camera.position.set(ncp.x, ncp.y, ncp.z);
+		camera.updateProjectionMatrix();
+		
+		lookAtPlanet(planetName);
+	}
+	
+	// Gui objects:
+	var gui = new dat.GUI({
+		height: 5 * 32 - 1,
+		resizable: false
+	});
+	
+	gui_values = {
+		
+		DragToLook:	controls.dragToLook,
+		
+		MoveToSun:		function() { moveToPlanet('sun'); }, 
+		MoveToMercury:	function() { moveToPlanet('mercury'); },
+		MoveToVenus:	function() { moveToPlanet('venus'); },
+		MoveToEarth:	function() { moveToPlanet('earth'); },
+		MoveToMoon:		function() { moveToPlanet('moon'); },
+		MoveToMars:		function() { moveToPlanet('mars'); },
+		
+		LookAtSun:		function() { lookAtPlanet('sun'); }, 
+		LookAtMercury:	function() { lookAtPlanet('mercury'); },
+		LookAtVenus:	function() { lookAtPlanet('venus'); },
+		LookAtEarth:	function() { lookAtPlanet('earth'); },
+		LookAtMoon:		function() { lookAtPlanet('moon'); },
+		LookAtMars:		function() { lookAtPlanet('mars'); }
+	};
+	
+	var camopt = gui.addFolder("Camera settings");
+	var dragcheck = camopt.add(gui_values, "DragToLook").name("Drag to look").listen();
+	dragcheck.onChange( function(value) { controls.dragToLook = value; } );
+	camopt.open();
+	
+	var moveto = gui.addFolder("Move To");
+	moveto.add(gui_values, 'MoveToSun').name('sun');
+	moveto.add(gui_values, 'MoveToMercury').name('mercury');
+	moveto.add(gui_values, 'MoveToVenus').name('venus');
+	moveto.add(gui_values, 'MoveToEarth').name('earth');
+	moveto.add(gui_values, 'MoveToMoon').name('moon');
+	moveto.add(gui_values, 'MoveToMars').name('mars');
+	moveto.open();
+	
+	var lookat = gui.addFolder("Look At");
+	lookat.add(gui_values, 'LookAtSun').name('sun');
+	lookat.add(gui_values, 'LookAtMercury').name('mercury');
+	lookat.add(gui_values, 'LookAtVenus').name('venus');
+	lookat.add(gui_values, 'LookAtEarth').name('earth');
+	lookat.add(gui_values, 'LookAtMoon').name('moon');
+	lookat.add(gui_values, 'LookAtMars').name('mars');
+	lookat.open();
+	
 	
 	var render = function () {
 		// Update time:
