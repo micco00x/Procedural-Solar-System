@@ -232,6 +232,10 @@ window.onload = function() {
 
 	var earth = new Planet("earth", earthRadius, earthRotationSpeed, earthRevolutionSpeed, earthOrbitalDistance,
 						   earthChunkPerFaceSide, earthLodParams, earthMaterial, noiseHeightGenerator );
+	
+	var ocean = new SimpleSphericalOcean("sea", earthRadius+1, earthMaterial);
+	earth.add(ocean);
+	
 	sun.add(earth);
 	
 	// Moon parameters:
