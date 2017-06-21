@@ -131,8 +131,8 @@ window.onload = function() {
 	var venusRotationSpeed = 0.01;
 	var venusRevolutionSpeed = 0.01;
 	var venusOrbitalDistance = 500;
-	var venusChunkPerFaceSide = 6;
-	var venusLodParams = [[25, 10], [20, 50], [15, 100], [2, 200]];
+	var venusChunkPerFaceSide = 4;
+	var venusLodParams = [[38, 10], [30, 50], [22, 100], [8, 200]];
 	var venusUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
 												   {
 												   pointLightIntensity: { type: "fv1", value: pointLightIntensity },
@@ -181,8 +181,8 @@ window.onload = function() {
 	var earthRotationSpeed = 0.02;
 	var earthRevolutionSpeed = 0.005;
 	var earthOrbitalDistance = 800;
-	var earthChunkPerFaceSide = 8;
-	var earthLodParams = [[25, 10], [20, 50], [15, 100], [2, 200]];
+	var earthChunkPerFaceSide = 4;
+	var earthLodParams = [[50, 10], [40, 50], [30, 100], [10, 200]];
 	var earthUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
 											  {
 												   pointLightIntensity: { type: "fv1", value: pointLightIntensity },
@@ -254,7 +254,7 @@ window.onload = function() {
 	var moonRevolutionSpeed = 0.1;
 	var moonOrbitalDistance = 75;
 	var moonChunkPerFaceSide = 2;
-	var moonLodParams = [[15, 100], [2, 200]];
+	var moonLodParams = [[15, 100], [5, 200]];
 	var moonUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
 												  {
 												  pointLightIntensity: { type: "fv1", value: pointLightIntensity },
@@ -295,8 +295,8 @@ window.onload = function() {
 	var marsRotationSpeed = 0.02;
 	var marsRevolutionSpeed = 0.003;
 	var marsOrbitalDistance = 1150;
-	var marsChunkPerFaceSide = 6;
-	var marsLodParams = [[25, 10], [20, 50], [15, 100], [2, 200]];
+	var marsChunkPerFaceSide = 3;
+	var marsLodParams = [[50, 10], [40, 50], [30, 100], [10, 200]];
 	var marsUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
 												   {
 												   pointLightIntensity: { type: "fv1", value: pointLightIntensity },
