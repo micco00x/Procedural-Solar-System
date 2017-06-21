@@ -355,29 +355,35 @@ window.onload = function() {
 	controls.dragToLook = true;
 	
 	
-	// input handlers
-	
+	// Input handler functions:
 	var solarSystem = { 'sun': sun, 'mercury': mercury, 'venus': venus,
 							'earth': earth, 'moon': moon, 'mars': mars }; 
 	
 	var lookAtPlanet = function(planetName) {
 		var selectedPlanet = solarSystem[planetName];
-		camera.lookAt(selectedPlanet.position);
+		
+		var target_position = new THREE.Vector3();
+		target_position.setFromMatrixPosition( selectedPlanet.matrixWorld );
+		
+		camera.lookAt(target_position);
 		camera.updateProjectionMatrix();
 	}
 	
 	var moveToPlanet = function(planetName) {
 		var selectedPlanet = solarSystem[planetName];
 		
-		var ncp = selectedPlanet.position;	//new camera position
-		ncp.x -= 2 * selectedPlanet.radius;
+		var ncp = new THREE.Vector3();	//new camera position
+		ncp.setFromMatrixPosition( selectedPlanet.matrixWorld );
+		ncp.z += 4 * selectedPlanet.radius;
+		
 		camera.position.set(ncp.x, ncp.y, ncp.z);
 		camera.updateProjectionMatrix();
 		
 		lookAtPlanet(planetName);
 	}
 	
-	// Gui objects:
+	
+	// GUI definition:
 	var gui = new dat.GUI({
 		height: 5 * 32 - 1,
 		resizable: false
