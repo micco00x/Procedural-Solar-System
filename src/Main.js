@@ -1,5 +1,3 @@
-//Math.seedrandom("earth");
-
 window.onload = function() {
 	
 	var scene = new THREE.Scene();
@@ -51,14 +49,14 @@ window.onload = function() {
 	var sunChunkPerFaceSide = 2;
 	var sunLodParams = [[5, 0]];
 	var sunUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
-												  {
-												  pointLightIntensity: { type: "fv1", value: pointLightIntensity },
-												  emissiveLightIntensity: { type: "f", value: 1.4 },
-												  planetPosition: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
-												  radius: { value: sunRadius },
-												  texture: { value: Array(8).fill(null) },
-												  textureHeight: { type: "fv1", value: [0.8, 1.0, 1.15, 1.35, 1.6, 1.75, 2.0, 2.5] }
-												  }]);
+												{
+												 pointLightIntensity: { type: "fv1", value: pointLightIntensity },
+												 emissiveLightIntensity: { type: "f", value: 1.4 },
+												 planetPosition: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
+												 radius: { value: sunRadius },
+												 texture: { value: Array(8).fill(null) },
+												 textureHeight: { type: "fv1", value: [0.8, 1.0, 1.15, 1.35, 1.6, 1.75, 2.0, 2.5] }
+												}]);
 	
 	// Texture loader lods images asynchronously:
 	textureLoader.load("images/sun/sun0.png", function(texture) {
@@ -72,12 +70,12 @@ window.onload = function() {
 					   sunUniforms.texture.value[7] = texture;
 					   });
 	
-	var sunMaterial = new THREE.ShaderMaterial({ uniforms: sunUniforms,
-												//attributes: attributes,
+	var sunMaterial = new THREE.ShaderMaterial({
+												uniforms: sunUniforms,
 												vertexShader: document.getElementById("basicVertexShader").textContent,
 												fragmentShader: document.getElementById("basicFragmentShader").textContent,
 												lights: true
-												});
+											   });
 	
 	var sun = new Planet("sun", sunRadius, sunRotationSpeed, sunRevolutionSpeed, sunOrbitalDistance,
 						  sunChunkPerFaceSide, sunLodParams, sunMaterial, noiseHeightGenerator);
@@ -93,14 +91,14 @@ window.onload = function() {
 	var mercuryChunkPerFaceSide = 4;
 	var mercuryLodParams = [[15, 100], [2, 200]];
 	var mercuryUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
-												  {
-												  pointLightIntensity: { type: "fv1", value: pointLightIntensity },
-												  emissiveLightIntensity: { type: "f", value: 0.0 },
-												  planetPosition: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
-												  radius: { value: mercuryRadius },
-												  texture: { value: Array(8).fill(null) },
-												  textureHeight: { type: "fv1", value: [0.8, 1.0, 1.15, 1.35, 1.6, 1.75, 2.0, 2.5] }
-												  }]);
+													{
+													 pointLightIntensity: { type: "fv1", value: pointLightIntensity },
+													 emissiveLightIntensity: { type: "f", value: 0.0 },
+													 planetPosition: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
+													 radius: { value: mercuryRadius },
+													 texture: { value: Array(8).fill(null) },
+													 textureHeight: { type: "fv1", value: [0.8, 1.0, 1.15, 1.35, 1.6, 1.75, 2.0, 2.5] }
+													}]);
 	
 	// Texture loader lods images asynchronously:
 	textureLoader.load("images/moon/moon0.jpg", function(texture) {
@@ -114,12 +112,12 @@ window.onload = function() {
 					   mercuryUniforms.texture.value[7] = texture;
 					   });
 	
-	var mercuryMaterial = new THREE.ShaderMaterial({ uniforms: mercuryUniforms,
-												//attributes: attributes,
-												vertexShader: document.getElementById("basicVertexShader").textContent,
-												fragmentShader: document.getElementById("basicFragmentShader").textContent,
-												lights: true
-												});
+	var mercuryMaterial = new THREE.ShaderMaterial({
+													uniforms: mercuryUniforms,
+													vertexShader: document.getElementById("basicVertexShader").textContent,
+													fragmentShader: document.getElementById("basicFragmentShader").textContent,
+													lights: true
+												   });
 	
 	var mercury = new Planet("mercury", mercuryRadius, mercuryRotationSpeed, mercuryRevolutionSpeed, mercuryOrbitalDistance,
 						  mercuryChunkPerFaceSide, mercuryLodParams, mercuryMaterial, noiseHeightGenerator);
@@ -134,14 +132,14 @@ window.onload = function() {
 	var venusChunkPerFaceSide = 4;
 	var venusLodParams = [[38, 10], [30, 50], [22, 100], [8, 200]];
 	var venusUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
-												   {
+												  {
 												   pointLightIntensity: { type: "fv1", value: pointLightIntensity },
 												   emissiveLightIntensity: { type: "f", value: 0.3 },
 												   planetPosition: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
 												   radius: { value: venusRadius },
 												   texture: { value: Array(8).fill(null) },
 												   textureHeight: { type: "fv1", value: [0.8, 1.0, 1.15, 1.35, 1.6, 1.75, 2.0, 2.5] }
-												   }]);
+												  }]);
 	
 	// Texture loader lods images asynchronously:
 	textureLoader.load("images/venus/venus0.jpg", function (texture) {
@@ -164,11 +162,11 @@ window.onload = function() {
 					   venusUniforms.texture.value[7] = texture;
 					   });
 	
-	var venusMaterial = new THREE.ShaderMaterial({ uniforms: venusUniforms,
-												 //attributes: attributes,
-												 vertexShader: document.getElementById("basicVertexShader").textContent,
-												 fragmentShader: document.getElementById("basicFragmentShader").textContent,
-												 lights: true
+	var venusMaterial = new THREE.ShaderMaterial({
+													uniforms: venusUniforms,
+													vertexShader: document.getElementById("basicVertexShader").textContent,
+													fragmentShader: document.getElementById("basicFragmentShader").textContent,
+													lights: true
 												 });
 	
 	var venus = new Planet("venus", venusRadius, venusRotationSpeed, venusRevolutionSpeed, venusOrbitalDistance,
@@ -184,14 +182,14 @@ window.onload = function() {
 	var earthChunkPerFaceSide = 4;
 	var earthLodParams = [[50, 10], [40, 50], [30, 100], [10, 200]];
 	var earthUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
-											  {
+												  {
 												   pointLightIntensity: { type: "fv1", value: pointLightIntensity },
 												   emissiveLightIntensity: { type: "f", value: 0.0 },
 												   planetPosition: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
 												   radius: { value: earthRadius },
 												   texture: { value: Array(8).fill(null) },
 												   textureHeight: { type: "fv1", value: [0.8, 1.0, 1.15, 1.35, 1.6, 1.75, 2.0, 2.5] }
-											  }]);
+												  }]);
 	
 	// Texture loader lods images asynchronously:
 	textureLoader.load("images/earth/deepsea.jpg", function (texture) {
@@ -227,21 +225,10 @@ window.onload = function() {
 	});
 	
 	var earthMaterial = new THREE.ShaderMaterial({ uniforms: earthUniforms,
-												   //attributes: attributes,
 												   vertexShader: document.getElementById("basicVertexShader").textContent,
 												   fragmentShader: document.getElementById("basicFragmentShader").textContent,
 												   lights: true
 												 });
-
-	/*var classicNoiseMaterial = new THREE.ShaderMaterial({
-														uniforms: { radius: { value: radius },
-																	scale: { value: scale },
-																	octaves: { value: octaves },
-																	persistance: { value: persistance },
-																	lacunarity: { value: lacunarity } },
-														vertexShader: document.getElementById("classicNoiseVertexShader").textContent,
-														fragmentShader: document.getElementById("classicNoiseFragmentShader").textContent
-														});*/
 
 	var earth = new Planet("earth", earthRadius, earthRotationSpeed, earthRevolutionSpeed, earthOrbitalDistance,
 						   earthChunkPerFaceSide, earthLodParams, earthMaterial, noiseHeightGenerator );
@@ -256,14 +243,14 @@ window.onload = function() {
 	var moonChunkPerFaceSide = 2;
 	var moonLodParams = [[15, 100], [5, 200]];
 	var moonUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
-												  {
+												 {
 												  pointLightIntensity: { type: "fv1", value: pointLightIntensity },
 												  emissiveLightIntensity: { type: "f", value: 0.5 },
 												  planetPosition: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
 												  radius: { value: moonRadius },
 												  texture: { value: Array(8).fill(null) },
 												  textureHeight: { type: "fv1", value: [0.8, 1.0, 1.15, 1.35, 1.6, 1.75, 2.0, 2.5] }
-												   }]);
+												 }]);
 	
 	// Texture loader lods images asynchronously:
 	textureLoader.load("images/moon/moon0.jpg", function(texture) {
@@ -278,7 +265,6 @@ window.onload = function() {
 	});
 	
 	var moonMaterial = new THREE.ShaderMaterial({ uniforms: moonUniforms,
-												 //attributes: attributes,
 												 vertexShader: document.getElementById("basicVertexShader").textContent,
 												 fragmentShader: document.getElementById("basicFragmentShader").textContent,
 												 lights: true
@@ -298,14 +284,14 @@ window.onload = function() {
 	var marsChunkPerFaceSide = 3;
 	var marsLodParams = [[50, 10], [40, 50], [30, 100], [10, 200]];
 	var marsUniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
-												   {
-												   pointLightIntensity: { type: "fv1", value: pointLightIntensity },
-												   emissiveLightIntensity: { type: "f", value: 0.0 },
-												   planetPosition: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
-												   radius: { value: marsRadius },
-												   texture: { value: Array(8).fill(null) },
-												   textureHeight: { type: "fv1", value: [0.8, 1.0, 1.15, 1.35, 1.6, 1.75, 2.0, 2.5] }
-												   }]);
+												 {
+												  pointLightIntensity: { type: "fv1", value: pointLightIntensity },
+												  emissiveLightIntensity: { type: "f", value: 0.0 },
+												  planetPosition: { type: "v3", value: new THREE.Vector3(0, 0, 0) },
+												  radius: { value: marsRadius },
+												  texture: { value: Array(8).fill(null) },
+												  textureHeight: { type: "fv1", value: [0.8, 1.0, 1.15, 1.35, 1.6, 1.75, 2.0, 2.5] }
+												 }]);
 	
 	// Texture loader lods images asynchronously:
 	textureLoader.load("images/mars/mars0.jpg", function (texture) {
@@ -335,7 +321,6 @@ window.onload = function() {
 					   });
 	
 	var marsMaterial = new THREE.ShaderMaterial({ uniforms: marsUniforms,
-												 //attributes: attributes,
 												 vertexShader: document.getElementById("basicVertexShader").textContent,
 												 fragmentShader: document.getElementById("basicFragmentShader").textContent,
 												 lights: true
@@ -355,19 +340,25 @@ window.onload = function() {
 	var starfieldMesh = new THREE.Mesh(starfieldSphere, starfieldMaterial);
 	scene.add(starfieldMesh);
 	
+	// Move camera:
 	camera.position.z = 500;
 
+	// Time:
 	var clock = new THREE.Clock();
 	var time = 0;
-	var controls = new THREE.FlyControls( camera );
+	
+	// Fly controls:
+	var controls = new THREE.FlyControls(camera);
 	controls.movementSpeed = 100;
 	controls.rollSpeed = Math.PI / 24;
 	controls.domElement = document.body;
 	
 	var render = function () {
+		// Update time:
 		delta = clock.getDelta();
 		time += delta;
 		
+		// Update performance monitor:
 		stats.update();
 		
 		requestAnimationFrame(render);
@@ -388,13 +379,17 @@ window.onload = function() {
 		moonUniforms.planetPosition.value = moon.position;
 		marsUniforms.planetPosition.value = mars.position;
 		
+		// Update controls:
 		controls.update(delta);
 		
-		scene.traverse( function ( object ) {
-					   if ( object instanceof THREE.LOD ) {
-					   object.update( camera );
-					   }
-					   } );
+		// Update chunk details (LOD):
+		scene.traverse(
+			function (object) {
+				if (object instanceof THREE.LOD) {
+					object.update(camera);
+				}
+			}
+		);
 		
 		renderer.render(scene, camera);
 	};

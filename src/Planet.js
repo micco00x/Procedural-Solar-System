@@ -36,6 +36,7 @@ function Planet(name, radius, rotationSpeed, revolutionSpeed, orbitalDistance,
 		}
 	}
 	
+	// Update position of the planet depending on time:
 	this.updatePosition = function(time) {
 		this.pivot.rotation.x = this.rotationSpeed * time;
 		this.pivot.rotation.y = this.rotationSpeed * time;
