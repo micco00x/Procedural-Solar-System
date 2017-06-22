@@ -233,8 +233,11 @@ window.onload = function() {
 	var earth = new Planet("earth", earthRadius, earthRotationSpeed, earthRevolutionSpeed, earthOrbitalDistance,
 						   earthChunkPerFaceSide, earthLodParams, earthMaterial, noiseHeightGenerator );
 	
-	var ocean = new SimpleSphericalOcean("sea", earthRadius+1, earthMaterial);
+	var oceanMaterial =  new THREE.MeshPhongMaterial( { color: 0x219e4, transparent: true, opacity: 0.9, shininess:100} );
+	var ocean = new SimpleSphericalOcean("earthOcean", earthRadius+1, 50, oceanMaterial);
+	var atmosphere = new SimpleAtmosphere("earthAtmosphere", earthRadius+3, 40, "images/earth/atmosphere.png");
 	earth.add(ocean);
+	earth.add(atmosphere);
 	
 	sun.add(earth);
 	

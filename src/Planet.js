@@ -48,3 +48,58 @@ function Planet(name, radius, rotationSpeed, revolutionSpeed, orbitalDistance,
 
 Planet.prototype = Object.create( THREE.Object3D.prototype );
 Planet.prototype.constructor = Planet;
+
+
+
+
+// Ocean object
+function SimpleSphericalOcean(name, radius, resolution, material) {
+	
+	this.type = 'SimpleSphericalOcean';
+	this.name = name;
+
+	this.radius = radius;
+	this.resolution = resolution;
+	
+	this.geometry = new THREE.SphereGeometry(this.radius, this.resolution, this.resolution);
+    
+	
+	if(material == null)
+		this.material = new THREE.MeshPhongMaterial( { color: 0x0, transparent: true, opacity: 0.9, shininess:100} );
+	else
+		this.material = material;
+	
+    THREE.Mesh.call( this, this.geometry, this.material );
+}
+
+SimpleSphericalOcean.prototype = Object.create( THREE.Mesh.prototype );
+SimpleSphericalOcean.prototype.constructor = SimpleSphericalOcean;
+
+SimpleSphericalOcean.prototype.getMesh = function() {
+    return this.mesh;
+}
+
+
+
+// Ocean object
+function SimpleAtmosphere(name, radius, resolution, image) {
+	
+	this.type = 'SimpleAtmosphere';
+	this.name = name;
+
+	this.radius = radius;
+	this.resolution = resolution;
+	
+	this.geometry = new THREE.SphereGeometry(this.radius, this.resolution, this.resolution);
+	this.material = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture(image), transparent: true } );
+	
+    THREE.Mesh.call( this, this.geometry, this.material );
+}
+
+SimpleAtmosphere.prototype = Object.create( THREE.Mesh.prototype );
+SimpleAtmosphere.prototype.constructor = SimpleAtmosphere;
+
+SimpleAtmosphere.prototype.getMesh = function() {
+    return this.mesh;
+}
+
