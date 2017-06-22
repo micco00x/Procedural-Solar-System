@@ -56,7 +56,6 @@ Planet.prototype.constructor = Planet;
 function SimpleSphericalOcean(name, radius, resolution, material) {
 	
 	this.type = 'SimpleSphericalOcean';
-	this.name = name;
 
 	this.radius = radius;
 	this.resolution = resolution;
@@ -81,11 +80,10 @@ SimpleSphericalOcean.prototype.getMesh = function() {
 
 
 
-// Ocean object
+// Atmosphere object
 function SimpleAtmosphere(name, radius, resolution, image) {
 	
 	this.type = 'SimpleAtmosphere';
-	this.name = name;
 
 	this.radius = radius;
 	this.resolution = resolution;
