@@ -468,6 +468,24 @@ window.onload = function() {
 		// Update controls:
 		controls.update(delta);
 		
+		// Check for collisions:
+		for(planetName in solarSystem) {
+			planet = solarSystem[planetName];
+			
+			//check collision and get the suggested new position for the camera
+			var sgp = checkCollisionBetween(camera, planet, 2.8);
+			
+			if( sgp != null ) {
+				camera.position.set(sgp.x, sgp.y, sgp.z);
+				break;
+			}
+		}
+		
+		// Force camera position inside starfield:
+		var sgp = forceCameraInsideSphere(camera, new THREE.Vector3(), 2400);
+		if( sgp != null ) 
+			camera.position.set(sgp.x, sgp.y, sgp.z);
+		
 		// Update chunk details (LOD):
 		scene.traverse(
 			function (object) {
