@@ -421,21 +421,21 @@ window.onload = function() {
 	camopt.open();
 	
 	var moveto = gui.addFolder("Move To");
-	moveto.add(gui_values, 'MoveToSun').name('sun');
-	moveto.add(gui_values, 'MoveToMercury').name('mercury');
-	moveto.add(gui_values, 'MoveToVenus').name('venus');
-	moveto.add(gui_values, 'MoveToEarth').name('earth');
-	moveto.add(gui_values, 'MoveToMoon').name('moon');
-	moveto.add(gui_values, 'MoveToMars').name('mars');
+	moveto.add(gui_values, 'MoveToSun').name('Sun');
+	moveto.add(gui_values, 'MoveToMercury').name('Mercury');
+	moveto.add(gui_values, 'MoveToVenus').name('Venus');
+	moveto.add(gui_values, 'MoveToEarth').name('Earth');
+	moveto.add(gui_values, 'MoveToMoon').name('Moon');
+	moveto.add(gui_values, 'MoveToMars').name('Mars');
 	moveto.open();
 	
 	var lookat = gui.addFolder("Look At");
-	lookat.add(gui_values, 'LookAtSun').name('sun');
-	lookat.add(gui_values, 'LookAtMercury').name('mercury');
-	lookat.add(gui_values, 'LookAtVenus').name('venus');
-	lookat.add(gui_values, 'LookAtEarth').name('earth');
-	lookat.add(gui_values, 'LookAtMoon').name('moon');
-	lookat.add(gui_values, 'LookAtMars').name('mars');
+	lookat.add(gui_values, 'LookAtSun').name('Sun');
+	lookat.add(gui_values, 'LookAtMercury').name('Mercury');
+	lookat.add(gui_values, 'LookAtVenus').name('Venus');
+	lookat.add(gui_values, 'LookAtEarth').name('Earth');
+	lookat.add(gui_values, 'LookAtMoon').name('Moon');
+	lookat.add(gui_values, 'LookAtMars').name('Mars');
 	lookat.open();
 	
 	
