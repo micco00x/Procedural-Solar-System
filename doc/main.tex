@@ -113,7 +113,7 @@ The program is characterized by having a solar system composed by four planets,
 a star and a satellite (the Sun, the first four planets of our solar system and the
 Moon, orbiting the Earth). The meshes are generated using Perlin noise, each
 planet is composed by multiple chunks which change definition depending on
-the distance, allowing high performance even with a high number of details.
+the distance, allowing high performances even with a high number of details.
 The system supports multiple lights and textures, managed in shaders developed
 with GLSL. Objects are animated with rotation around themselves and
 revolution around the parents' object (the Sun for the planets, the Earth for
@@ -143,12 +143,12 @@ these features change the shape of it.
 Noise values are used to determine the height of the terrain for each vertex of
 the planet. To do this without loosing continuity between adjacent vertices, a 3D
 Perlin noise function has been implemented passing as parameters the points of
-a hypothetical sphere. Hence, for a point $(x, y, z)$ on the sphere corresponds
-a height $h$.
+a hypothetical sphere. Hence, for a point $(x, y, z)$ on the sphere there is a
+corresponding height $h$.
 The algorithm for the generation of the heights is
 Algorithm \ref{algorithm:noise3D}. Note that the number of octaves, the persistance,
-the lacunarity and the scale are constant value (choosen before the execution
-of the function). The scale value directly changes the frequency of the function.
+the lacunarity and the scale are constant values (choosen before the execution
+of the function). The scale value directly affects the frequency of the function.
 An external \textsc{Perlin} function is used to compute the gradient noise.
 
 \begin{algorithm}
@@ -218,16 +218,17 @@ Choosing the number of chunks which compose the planet is important both to
 have high details and to have good performances. In particular, a low number
 of chunks improves the performances when the camera is far away; this is due
 to the fact that all the meshes of all the planets in the viewport must be
-renderded. A high number of chunks increases the number of details, but
+rendered. A high number of chunks increases the number of details, but
 must not be too high, otherwise the performances will be bad when moving away
 from the planet. The number of chunks can be decreased by increasing the
-number of vertices of each chunk. Nevertheless, this number shouldn't be
+number of vertices of each chunk obtaining the same level of details.
+Nevertheless, this number shouldn't be
 too high otherwise the rendering will be slow when approaching the planet. 
 
 One of the problem of creating a terrain with multiple meshes instead of just
 one is the wrong value assigned to the normals at the border. This is due to
 the fact that normals are computed considering the adjacent vertices, which
-are not available for the vertices at the border of the mesh.
+are not available for the vertices at the borders of the mesh.
 
 A simple solution is to define an extended chunk which overlaps the
 chunk that will be used for the planet, but contains a new, bigger border.
@@ -247,14 +248,14 @@ terrains.
 The idea is simple, instead of composing the planet with multiple chunks,
 the planet is composed by multiple LOD objects that contain the same
 chunk with different amounts of vertices. Thus, the same chunk is ``computed
-more times'' with different resolutions. Then, at rendering time, each LOD
+more times'' with different details. Then, at rendering time, each LOD
 object is updated depending on the position of the camera, in this way it's
 possible to gradually change the amount of vertices of the mesh while
 approaching the planet (Figure \ref{fig:LOD-venus}).
 
 Choosing the right amount of LODs' chunks its important to have good
-performances while being far away from a planet and approaching it.
-In particular, this allows the GPU to handle a slower number of vertices
+performances both while being far away from a planet and while approaching it.
+In particular, this allows the GPU to handle a lower number of vertices
 for the planets distant from the camera, making it possible to have more
 resources for the closer meshes, that needs to be more detailed.
 
@@ -287,8 +288,8 @@ as a child of the Planet in the hierarchical structure, making it easy to
 manage their movement. Since the custom shader increases the flexibility in
 the development,
 the parameter ``distance'' of each light has been used to determine for how much
-distance the lights affects the objects, instead of being used to computing the attenuation
-value.
+distance the lights affects the objects, instead of being used to compute the
+attenuation value.
 
 The shader supports also the light emitted by the planet, used to make the Sun,
 the Moon and Venus brighter.
@@ -318,10 +319,8 @@ movements from the keyboard and the mouse.
 The solar system is composed by the Sun, positioned at the center of the scene,
 four planets orbiting around the Sun which have similar characteristics to
 Mercury, Venus, the Earth and Mars, and the Moon, which is orbiting around the
-Earth. Moreover all these objects are rotating on themselves (Figure
+Earth. Moreover all these objects are rotating around themselves (Figure
 \ref{fig:solar-system}).
-
-IMAGE WITH STRUCTURE OF THE SCENE ?
 
 The implementation of the orbital revolution is quite straightforward, it's necessary
 in fact, to slightly change the position of the planets following a
@@ -332,7 +331,8 @@ On the other hand, the rotation has to be
 managed in a different way, otherwise the children will rotate with the
 rotation of the parent. To solve this problem, instead of adding the LOD objects
 directly to the planet, a pivot object is used. This object is added to the
-planet and is parent of all the LOD objects of the planet. Thus, instead of
+planet and it's, in turn, parent of all the LOD objects of the planet itself.
+Thus, instead of
 rotating the planet, only the pivot is rotated, preserving the position of
 the children.
 
@@ -395,7 +395,7 @@ level of details is a must to deal with large terrains and with a high number
 of meshes.
 
 THREE.js simplifies the management of objects like planets and lights, making
-it easy to manage the scene, moreover, having a large number of tools, like
+it easy to manage the scene; moreover, having a large number of tools, like
 different geometries and controls, speeds up the development of the project,
 allowing the developers to concentrate more on the details of the program
 than the structure of it.
