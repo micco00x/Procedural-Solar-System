@@ -1,0 +1,8 @@
+# Latex files #
+.aux
+.auxlock
+.bbl
+.blg
+.log
+.out
+.md5
