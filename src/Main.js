@@ -439,6 +439,8 @@ window.onload = function() {
 	lookat.open();
 	
 	
+	var first_frame = true; //useful in collision detection (avoid collision detection in the first frame)
+	
 	var render = function () {
 		// Update time:
 		delta = clock.getDelta();
@@ -475,7 +477,7 @@ window.onload = function() {
 			//check collision and get the suggested new position for the camera
 			var sgp = checkCollisionBetween(camera, planet, 2.8);
 			
-			if( sgp != null ) {
+			if(sgp != null && !first_frame) {
 				camera.position.set(sgp.x, sgp.y, sgp.z);
 				break;
 			}
@@ -483,7 +485,7 @@ window.onload = function() {
 		
 		// Force camera position inside starfield:
 		var sgp = forceCameraInsideSphere(camera, new THREE.Vector3(), 2400);
-		if( sgp != null ) 
+		if(sgp != null && !first_frame) 
 			camera.position.set(sgp.x, sgp.y, sgp.z);
 		
 		// Update chunk details (LOD):
@@ -495,6 +497,7 @@ window.onload = function() {
 			}
 		);
 		
+		first_frame = false;
 		renderer.render(scene, camera);
 	};
 
