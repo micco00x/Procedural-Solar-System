@@ -370,10 +370,9 @@ window.onload = function() {
 	var time_speed = 1.0;
 	
 	// Fly controls:
-	var controls = new THREE.FlyControls(camera);
+	var controls = new THREE.FlyControls(camera, renderer.domElement);
 	controls.movementSpeed = 100;
 	controls.rollSpeed = Math.PI / 24;
-	controls.domElement = document.body;
 	controls.dragToLook = true;
 	
 	
@@ -433,7 +432,7 @@ window.onload = function() {
 	};
 	
 	var timeopt = gui.addFolder("Time settings");
-	var time_speed_slider = timeopt.add(gui_values, "TimeSpeed", 0.0, 10.0).name("Velocity multiplier");
+	var time_speed_slider = timeopt.add(gui_values, "TimeSpeed", 0.0, 10.0).name("Speed multiplier");
 	time_speed_slider.onChange( function(value) { time_speed = value; } );
 	timeopt.open();
 	
@@ -459,9 +458,6 @@ window.onload = function() {
 	lookat.add(gui_values, 'LookAtMoon').name('Moon');
 	lookat.add(gui_values, 'LookAtMars').name('Mars');
 	lookat.open();
-	
-	
-	var first_frame = true; //useful in collision detection (avoid collision detection in the first frame)
 	
 	var render = function () {
 		// Update time:
@@ -519,7 +515,7 @@ window.onload = function() {
 			//check collision and get the suggested new position for the camera
 			var sgp = checkCollisionBetween(camera, planet, 2.8);
 			
-			if(sgp != null && !first_frame) {
+			if(sgp != null) {
 				camera.position.set(sgp.x, sgp.y, sgp.z);
 				break;
 			}
@@ -527,7 +523,7 @@ window.onload = function() {
 		
 		// Force camera position inside starfield:
 		var sgp = forceCameraInsideSphere(camera, new THREE.Vector3(), 2400);
-		if(sgp != null && !first_frame) 
+		if(sgp != null) 
 			camera.position.set(sgp.x, sgp.y, sgp.z);
 		
 		// Update chunk details (LOD):
@@ -539,7 +535,6 @@ window.onload = function() {
 			}
 		);
 		
-		first_frame = false;
 		renderer.render(scene, camera);
 	};
 
