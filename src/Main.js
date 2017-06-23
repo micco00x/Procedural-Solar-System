@@ -367,6 +367,7 @@ window.onload = function() {
 	// Time:
 	var clock = new THREE.Clock();
 	var time = 0;
+	var time_speed = 1.0;
 	
 	// Fly controls:
 	var controls = new THREE.FlyControls(camera);
@@ -412,6 +413,8 @@ window.onload = function() {
 	
 	gui_values = {
 		
+		TimeSpeed:	1.0,
+		
 		DragToLook:	controls.dragToLook,
 		
 		MoveToSun:		function() { moveToPlanet('sun'); }, 
@@ -428,6 +431,11 @@ window.onload = function() {
 		LookAtMoon:		function() { lookAtPlanet('moon'); },
 		LookAtMars:		function() { lookAtPlanet('mars'); }
 	};
+	
+	var timeopt = gui.addFolder("Time settings");
+	var time_speed_slider = timeopt.add(gui_values, "TimeSpeed", 0.0, 10.0).name("Velocity multiplier");
+	time_speed_slider.onChange( function(value) { time_speed = value; } );
+	timeopt.open();
 	
 	var camopt = gui.addFolder("Camera settings");
 	var dragcheck = camopt.add(gui_values, "DragToLook").name("Drag to look").listen();
@@ -458,7 +466,7 @@ window.onload = function() {
 	var render = function () {
 		// Update time:
 		delta = clock.getDelta();
-		time += delta;
+		time += delta * time_speed;
 		
 		// Update performance monitor:
 		stats.update();
