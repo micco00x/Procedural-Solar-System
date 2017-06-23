@@ -82,7 +82,7 @@ window.onload = function() {
 	scene.add(sun);
 	sun.add(lightSun);
 	
-	var sunTag = new GraphicalTag("Sun", camera, sun, sunRadius+10.0);
+	var sunTag = new GraphicalTag("images/tags/sun.png", camera, sun, sunRadius+10.0);
 	scene.add(sunTag);
 	
 	// Mercury parameters:
@@ -126,7 +126,7 @@ window.onload = function() {
 						  mercuryChunkPerFaceSide, mercuryLodParams, mercuryMaterial, noiseHeightGenerator);
 	sun.add(mercury);
 	
-	var mercuryTag = new GraphicalTag("Mercury", camera, mercury, mercuryRadius+10.0);
+	var mercuryTag = new GraphicalTag("images/tags/mercury.png", camera, mercury, mercuryRadius+10.0);
 	scene.add(mercuryTag);
 
 	// Venus parameters:
@@ -178,7 +178,7 @@ window.onload = function() {
 	var venus = new Planet("venus", venusRadius, venusRotationSpeed, venusRevolutionSpeed, venusOrbitalDistance,
 						   venusChunkPerFaceSide, venusLodParams, venusMaterial, noiseHeightGenerator );
 	sun.add(venus);
-	var venusTag = new GraphicalTag("Venus", camera, venus, venusRadius+10.0);
+	var venusTag = new GraphicalTag("images/tags/venus.png", camera, venus, venusRadius+10.0);
 	scene.add(venusTag);
 	
 	// Earth parameters:
@@ -248,7 +248,7 @@ window.onload = function() {
 	earth.add(atmosphere);
 	
 	sun.add(earth);
-	var earthTag = new GraphicalTag("Earth", camera, earth, earthRadius+10.0);
+	var earthTag = new GraphicalTag("images/tags/earth.png", camera, earth, earthRadius+10.0);
 	scene.add(earthTag);
 	
 	// Moon parameters:
@@ -291,7 +291,7 @@ window.onload = function() {
 						  moonChunkPerFaceSide, moonLodParams, moonMaterial, noiseHeightGenerator);
 	earth.add(moon);
 	moon.add(lightMoon);
-	var moonTag = new GraphicalTag("Moon", camera, moon, moonRadius+10.0);
+	var moonTag = new GraphicalTag("images/tags/moon.png", camera, moon, moonRadius+10.0);
 	scene.add(moonTag);
 	
 	// Mars parameters:
@@ -348,7 +348,7 @@ window.onload = function() {
 	var mars = new Planet("mars", marsRadius, marsRotationSpeed, marsRevolutionSpeed, marsOrbitalDistance,
 						   marsChunkPerFaceSide, marsLodParams, marsMaterial, noiseHeightGenerator );
 	sun.add(mars);
-	var marsTag = new GraphicalTag("Mars", camera, mars, marsRadius+10.0);
+	var marsTag = new GraphicalTag("images/tags/mars.png", camera, mars, marsRadius+10.0);
 	scene.add(marsTag);
 
 	// Add starfield (spherified cube):
