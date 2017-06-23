@@ -12,7 +12,7 @@ function GraphicalTag(texture, camera, target, distance_tag_target) {
 	this.invisible_distance = 120.0;	//distance from where this tag is fully transparent
 	this.transparent_distance = 140.0;	//distanfe from where this tag starts to become transparents
 	
-	this.minimum_scale_at = 500.0;
+	this.minimum_scale_at = 1000.0;
 	this.maximum_scale_at = 200.0;
 	
 	this.minimum_scale_factor = 0.5;
