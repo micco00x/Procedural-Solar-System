@@ -82,6 +82,9 @@ window.onload = function() {
 	scene.add(sun);
 	sun.add(lightSun);
 	
+	var sunTag = new GraphicalTag("Sun", camera, sun, sunRadius+10.0);
+	scene.add(sunTag);
+	
 	// Mercury parameters:
 	noiseHeightGenerator.scale = 50;
 	var mercuryRadius = 20; // earth: 2440km
@@ -122,6 +125,9 @@ window.onload = function() {
 	var mercury = new Planet("mercury", mercuryRadius, mercuryRotationSpeed, mercuryRevolutionSpeed, mercuryOrbitalDistance,
 						  mercuryChunkPerFaceSide, mercuryLodParams, mercuryMaterial, noiseHeightGenerator);
 	sun.add(mercury);
+	
+	var mercuryTag = new GraphicalTag("Mercury", camera, mercury, mercuryRadius+10.0);
+	scene.add(mercuryTag);
 
 	// Venus parameters:
 	noiseHeightGenerator.scale = 15;
@@ -172,6 +178,8 @@ window.onload = function() {
 	var venus = new Planet("venus", venusRadius, venusRotationSpeed, venusRevolutionSpeed, venusOrbitalDistance,
 						   venusChunkPerFaceSide, venusLodParams, venusMaterial, noiseHeightGenerator );
 	sun.add(venus);
+	var venusTag = new GraphicalTag("Venus", camera, venus, venusRadius+10.0);
+	scene.add(venusTag);
 	
 	// Earth parameters:
 	noiseHeightGenerator.scale = 15;
@@ -240,6 +248,8 @@ window.onload = function() {
 	earth.add(atmosphere);
 	
 	sun.add(earth);
+	var earthTag = new GraphicalTag("Earth", camera, earth, earthRadius+10.0);
+	scene.add(earthTag);
 	
 	// Moon parameters:
 	noiseHeightGenerator.scale = 50;
@@ -281,6 +291,8 @@ window.onload = function() {
 						  moonChunkPerFaceSide, moonLodParams, moonMaterial, noiseHeightGenerator);
 	earth.add(moon);
 	moon.add(lightMoon);
+	var moonTag = new GraphicalTag("Moon", camera, moon, moonRadius+10.0);
+	scene.add(moonTag);
 	
 	// Mars parameters:
 	noiseHeightGenerator.scale = 15;
@@ -336,6 +348,8 @@ window.onload = function() {
 	var mars = new Planet("mars", marsRadius, marsRotationSpeed, marsRevolutionSpeed, marsOrbitalDistance,
 						   marsChunkPerFaceSide, marsLodParams, marsMaterial, noiseHeightGenerator );
 	sun.add(mars);
+	var marsTag = new GraphicalTag("Mars", camera, mars, marsRadius+10.0);
+	scene.add(marsTag);
 
 	// Add starfield (spherified cube):
 	var starfieldSphere = new THREE.BoxGeometry(1, 1, 1, 32, 32, 32);
@@ -469,6 +483,26 @@ window.onload = function() {
 		
 		// Update controls:
 		controls.update(delta);
+		
+		
+		// Update matrixWorld of the objects before the rendering
+		// this permits to compute collisions and tags position with more accuracy
+		sun.updateMatrixWorld(true);
+		mercury.updateMatrixWorld(true);
+		venus.updateMatrixWorld(true);
+		earth.updateMatrixWorld(true);
+		moon.updateMatrixWorld(true);
+		mars.updateMatrixWorld(true);
+		
+		camera.updateMatrixWorld(true);
+		
+		// Update tags positions:
+		sunTag.update();
+		mercuryTag.update();
+		venusTag.update();
+		earthTag.update();
+		moonTag.update();
+		marsTag.update();
 		
 		// Check for collisions:
 		for(planetName in solarSystem) {
