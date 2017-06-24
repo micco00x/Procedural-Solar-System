@@ -19,7 +19,7 @@ function GraphicalTag(texture, camera, target, distance_tag_target) {
 	this.maximum_scale_factor = 1.0;
 	
 	this.geometry = new THREE.PlaneGeometry(0.1, 0.03);	//size at distance 1
-	this.material = new THREE.MeshBasicMaterial( {map: THREE.ImageUtils.loadTexture(texture), side: THREE.DoubleSide, transparent: true, opacity: 1.0} );
+	this.material = new THREE.MeshBasicMaterial( {map: texture, side: THREE.DoubleSide, transparent: true, opacity: 1.0} );
 	
     THREE.Mesh.call( this, this.geometry, this.material );
 }

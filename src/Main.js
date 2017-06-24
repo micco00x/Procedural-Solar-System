@@ -82,9 +82,6 @@ window.onload = function() {
 	scene.add(sun);
 	sun.add(lightSun);
 	
-	var sunTag = new GraphicalTag("images/tags/sun.png", camera, sun, sunRadius+10.0);
-	scene.add(sunTag);
-	
 	// Mercury parameters:
 	noiseHeightGenerator.scale = 50;
 	var mercuryRadius = 20; // earth: 2440km
@@ -125,9 +122,6 @@ window.onload = function() {
 	var mercury = new Planet("mercury", mercuryRadius, mercuryRotationSpeed, mercuryRevolutionSpeed, mercuryOrbitalDistance,
 						  mercuryChunkPerFaceSide, mercuryLodParams, mercuryMaterial, noiseHeightGenerator);
 	sun.add(mercury);
-	
-	var mercuryTag = new GraphicalTag("images/tags/mercury.png", camera, mercury, mercuryRadius+10.0);
-	scene.add(mercuryTag);
 
 	// Venus parameters:
 	noiseHeightGenerator.scale = 15;
@@ -178,8 +172,6 @@ window.onload = function() {
 	var venus = new Planet("venus", venusRadius, venusRotationSpeed, venusRevolutionSpeed, venusOrbitalDistance,
 						   venusChunkPerFaceSide, venusLodParams, venusMaterial, noiseHeightGenerator );
 	sun.add(venus);
-	var venusTag = new GraphicalTag("images/tags/venus.png", camera, venus, venusRadius+10.0);
-	scene.add(venusTag);
 	
 	// Earth parameters:
 	noiseHeightGenerator.scale = 15;
@@ -248,8 +240,6 @@ window.onload = function() {
 	earth.add(atmosphere);
 	
 	sun.add(earth);
-	var earthTag = new GraphicalTag("images/tags/earth.png", camera, earth, earthRadius+10.0);
-	scene.add(earthTag);
 	
 	// Moon parameters:
 	noiseHeightGenerator.scale = 50;
@@ -291,8 +281,6 @@ window.onload = function() {
 						  moonChunkPerFaceSide, moonLodParams, moonMaterial, noiseHeightGenerator);
 	earth.add(moon);
 	moon.add(lightMoon);
-	var moonTag = new GraphicalTag("images/tags/moon.png", camera, moon, moonRadius+10.0);
-	scene.add(moonTag);
 	
 	// Mars parameters:
 	noiseHeightGenerator.scale = 15;
@@ -348,8 +336,6 @@ window.onload = function() {
 	var mars = new Planet("mars", marsRadius, marsRotationSpeed, marsRevolutionSpeed, marsOrbitalDistance,
 						   marsChunkPerFaceSide, marsLodParams, marsMaterial, noiseHeightGenerator );
 	sun.add(mars);
-	var marsTag = new GraphicalTag("images/tags/mars.png", camera, mars, marsRadius+10.0);
-	scene.add(marsTag);
 
 	// Add starfield (spherified cube):
 	var starfieldSphere = new THREE.BoxGeometry(1, 1, 1, 32, 32, 32);
@@ -360,6 +346,28 @@ window.onload = function() {
 														   side: THREE.BackSide } );
 	var starfieldMesh = new THREE.Mesh(starfieldSphere, starfieldMaterial);
 	scene.add(starfieldMesh);
+	
+	// Add celestial objects tags
+	var mars_tag_texture = generateTextureFromCanvas(drawTagsTexture, ['Mars', 'Terrestrial planet']);
+	var moon_tag_texture = generateTextureFromCanvas(drawTagsTexture, ['Moon', 'Natural satellite']);
+	var earth_tag_texture = generateTextureFromCanvas(drawTagsTexture, ['Earth', 'Terrestrial planet']);
+	var venus_tag_texture = generateTextureFromCanvas(drawTagsTexture, ['Venus', 'Terrestrial planet']);
+	var mercury_tag_texture = generateTextureFromCanvas(drawTagsTexture, ['Mercury', 'Terrestrial planet']);
+	var sun_tag_texture = generateTextureFromCanvas(drawTagsTexture, ['Sun', 'Yellow dwarfs']);
+	
+	var marsTag = new GraphicalTag(mars_tag_texture, camera, mars, marsRadius+10.0);
+	var moonTag = new GraphicalTag(moon_tag_texture, camera, moon, moonRadius+10.0);
+	var earthTag = new GraphicalTag(earth_tag_texture, camera, earth, earthRadius+10.0);
+	var venusTag = new GraphicalTag(venus_tag_texture, camera, venus, venusRadius+10.0);
+	var mercuryTag = new GraphicalTag(mercury_tag_texture, camera, mercury, mercuryRadius+10.0);
+	var sunTag = new GraphicalTag(sun_tag_texture, camera, sun, sunRadius+10.0);
+	
+	scene.add(sunTag);
+	scene.add(mercuryTag);
+	scene.add(venusTag);
+	scene.add(earthTag);
+	scene.add(moonTag);
+	scene.add(marsTag);
 	
 	// Move camera:
 	camera.position.z = 500;
