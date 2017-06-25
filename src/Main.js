@@ -411,6 +411,12 @@ window.onload = function() {
 		lookAtPlanet(planetName);
 	}
 	
+	// Sun particles effects
+	var sp = new SphereParticleEffect(1);
+	sp.position.x = 0;
+	sp.position.y = 0;
+	sp.position.z = 0;
+	scene.add(sp);
 	
 	// GUI definition:
 	var gui = new dat.GUI({
@@ -484,6 +490,8 @@ window.onload = function() {
 		earth.updatePosition(time);
 		moon.updatePosition(time);
 		mars.updatePosition(time);
+		
+		sp.update(time); 	//TODO ----------------------------------------------------------------
 		
 		// Send position of the planets to the shader:
 		sunUniforms.planetPosition.value = sun.position;
