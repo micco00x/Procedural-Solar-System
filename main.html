@@ -110,14 +110,14 @@
 			uniform float uStartDistance;
 			uniform float uEndDistance;
 			uniform float uTime;
-			//uniform vec3 uCenter;
+			uniform float uParticleSize;
 			
 			varying vec3 vColor;
 			
 			void main() {
 				
-				//vec3 position = aPosition;
-				vec3 nposition = 10.0 * position;
+				// scale particles
+				vec3 nposition = uParticleSize * position;
 				
 				// covered distance
 				float movement = mod((speed * uTime), (uEndDistance - uStartDistance));
@@ -144,21 +144,18 @@
 						0.0,  0.0, 0.0, 1.0 );
 				
 				vec4 npos = rz * ry * rx * vec4(nposition, 1.0);
-				// scale particles
-			
-				// translate particles at the correct position (between start_position and end position)
-				// translate WRT system center and particle local position
-				vec4 local_translation = vec4(movement * direction, 0.0);
-				//vec3 translation = uCenter + local_translation;
-				npos = npos + local_translation;
 				
-				vColor = color; //vec4(1.0, 1.0, 1.0, 1.0);
-				gl_Position = projectionMatrix * modelViewMatrix * npos;// vec4(nposition, 1.0);
+				// translate particles at the correct position (between start_position and end position)
+				// translate WRT particle local position
+				vec4 translation = vec4(movement * direction, 0.0);
+				npos = npos + translation;
+				
+				vColor = color;
+				gl_Position = projectionMatrix * modelViewMatrix * npos;
 			}
 		</script>
 		<script type="x-shader/x-fragment" id="particlesFragmentShader">
 			varying vec3 vColor;
-			
 			void main() 
 			{
 				gl_FragColor = vec4(vColor, 1.0);

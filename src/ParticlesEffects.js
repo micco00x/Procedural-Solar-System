@@ -1,31 +1,15 @@
 
-function set_particles(particles_system, number_of_particles) {
+function build_particles_geometry(particles_system, number_of_particles) {
 	
 	number_of_particles = Math.max(number_of_particles, 0);
 	
 	var geometry = new THREE.BufferGeometry();
-	/*
-	geometry.attributes = {
-		position: {
-			itemSize: 3,
-			array: new Float32Array(number_of_particles * 3 * 3),
-			numItems: number_of_particles * 3 * 3,
-			onUploadCallback: function() {}
-		},
-		color: {
-			itemSize: 3,
-			array: new Float32Array(number_of_particles * 3 * 3),
-			numItems: number_of_particles * 3 * 3,
-			onUploadCallback: function() {}
-		},
-	};
-	*/
+
 	var particles_positions = new Float32Array(number_of_particles * 3 * 3); var pid = 0;
 	var particles_direction = new Float32Array(number_of_particles * 3 * 3); var did = 0;
 	var particles_rotation = new Float32Array(number_of_particles * 3 * 3); var rid = 0;
 	var particles_speed = new Float32Array(number_of_particles * 3 * 1); var sid = 0;
 	var particles_color = new Float32Array(number_of_particles * 3 * 3); var cid = 0;
-	//var pid = 0; var cid = 0;
 	
 	for(var particle = 0; particle < number_of_particles; particle++)	// attributes for each single particle
 	{
@@ -34,16 +18,18 @@ function set_particles(particles_system, number_of_particles) {
 		var direction = new THREE.Vector3( Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5).normalize(); direction = [direction.x, direction.y, direction.z];
 		
 		var rotation = [Math.random()*Math.PI, Math.random()*Math.PI, Math.random()*Math.PI];
-		var color = new THREE.Color( 0xffffff ); color = [color.r, color.g, color.b]; color = [0.8, 0.5, 0.1];
-		var speed = 50.0;
+		
+		var colors = [new THREE.Color(0xffd859), new THREE.Color(0xff8c00), new THREE.Color(0xffdb3a)];
+		var selected_color = Math.round(Math.random() * 2.49);
+		var color = colors[selected_color]; color = [color.r, color.g, color.b];// color = [0.8, 0.5, 0.1];
+		
+		var speed = Math.random() * 5.0 + 8.0;
 		
 		for(var vertex=0; vertex<3; vertex++) {
 			
 			particles_speed[sid++] = speed;
 			
 			for(var v = 0; v < 3; v++) {
-				//geometry.attributes.position[pid++] = positions[vertex][v];
-				//geometry.attributes.color[cid++] = color[v];
 				particles_positions[pid++] = positions[vertex][v];
 				particles_color[cid++] = color[v];
 				particles_direction[did++] = direction[v];
@@ -62,22 +48,23 @@ function set_particles(particles_system, number_of_particles) {
 	geometry.computeBoundingSphere();
 	
 	particles_system.number_of_particles = number_of_particles;
-	//particles_system.geometry = geometry;
 	return geometry;
 }
 
 
 
 // Sphere particle object
-function SphereParticleEffect(number_of_particles) {
+function SphereParticleEffect(number_of_particles, start_distance, end_distance) {
 	
 	
 	this.type = 'SphereParticleEffect';	
 	
 	//this.number_of_particles = 10;
 	
-	this.start_distance = 10.0;	//distance (from the center) from where particles appear
-	this.end_distance = 600.0;	//distance (from the center) from where particles disappear
+	this.start_distance = start_distance;	//distance (from the center) from where particles appear
+	this.end_distance = end_distance;		//distance (from the center) from where particles disappear
+	
+	this.size = 3.0;
 	
 	this.min_speed = 0.1;
 	this.max_speed = 1.0;
@@ -91,15 +78,14 @@ function SphereParticleEffect(number_of_particles) {
 	};
 	
 	this.uniforms = {
-		//uCenter:		{ type: 'v3', value: [0.0, 0.0, 400.0] },
 		uTime:			{ type: 'f', value: 0.0 },
 		uStartDistance:	{ type: 'f', value: this.start_distance },
-		uEndDistance:	{ type: 'f', value: this.end_distance }
+		uEndDistance:	{ type: 'f', value: this.end_distance },
+		uParticleSize:	{ type: 'f', value: this.size }
 	};
 	
-	this.geometry = set_particles(this, number_of_particles);
+	this.geometry = build_particles_geometry(this, number_of_particles);
 	
-	this.material = new THREE.MeshLambertMaterial( { color: 0xffffff, vertexColors: THREE.VertexColors } );
 	this.material = new THREE.ShaderMaterial( {
 		uniforms:		this.uniforms,
 		vertexShader:	document.getElementById("particlesVertexShader").textContent,

@@ -42,7 +42,7 @@ window.onload = function() {
 	var pointLightIntensity = [1.0, 0.1];
 	
 	// Sun parameters:
-	var sunRadius = 0.01; // sun: 695700km
+	var sunRadius = 100; // sun: 695700km
 	var sunRotationSpeed = 0.01;
 	var sunRevolutionSpeed = 0;
 	var sunOrbitalDistance = 0;
@@ -81,6 +81,11 @@ window.onload = function() {
 						  sunChunkPerFaceSide, sunLodParams, sunMaterial, noiseHeightGenerator);
 	scene.add(sun);
 	sun.add(lightSun);
+	
+	//Sun particles effects
+	var sun_particles = new SphereParticleEffect(1000000, sunRadius-2, sunRadius+2);
+	sun_particles.frustumCulled = false;
+	sun.add(sun_particles);
 	
 	// Mercury parameters:
 	noiseHeightGenerator.scale = 50;
@@ -410,14 +415,8 @@ window.onload = function() {
 		
 		lookAtPlanet(planetName);
 	}
-	alert("Inizio");
-	//Sun particles effects
-	var sp = new SphereParticleEffect(100000);
-	sp.position.x = 0;
-	sp.position.y = 0;
-	sp.position.z = 0;
-	scene.add(sp);
-	alert("Fine");
+	
+	
 	// GUI definition:
 	var gui = new dat.GUI({
 		height: 5 * 32 - 1,
@@ -491,7 +490,7 @@ window.onload = function() {
 		moon.updatePosition(time);
 		mars.updatePosition(time);
 		
-		sp.update(time); 	//TODO ----------------------------------------------------------------
+		sun_particles.update(time);
 		
 		// Send position of the planets to the shader:
 		sunUniforms.planetPosition.value = sun.position;
