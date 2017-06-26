@@ -410,14 +410,14 @@ window.onload = function() {
 		
 		lookAtPlanet(planetName);
 	}
-	
+	alert("Inizio");
 	//Sun particles effects
-	var sp = new SphereParticleEffect(10);
+	var sp = new SphereParticleEffect(100000);
 	sp.position.x = 0;
 	sp.position.y = 0;
 	sp.position.z = 0;
 	scene.add(sp);
-	
+	alert("Fine");
 	// GUI definition:
 	var gui = new dat.GUI({
 		height: 5 * 32 - 1,

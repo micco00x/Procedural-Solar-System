@@ -31,11 +31,11 @@ function set_particles(particles_system, number_of_particles) {
 	{
 		
 		var positions = [[0.0, 0.0, 0.0], [0.5, 0.0, 0.0], [0.5, 0.5, 0.0]];
-		var direction = new THREE.Vector3( Math.random(), Math.random(), Math.random()).normalize(); direction = [direction.x, direction.y, direction.z];
+		var direction = new THREE.Vector3( Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5).normalize(); direction = [direction.x, direction.y, direction.z];
 		
 		var rotation = [Math.random()*Math.PI, Math.random()*Math.PI, Math.random()*Math.PI];
 		var color = new THREE.Color( 0xffffff ); color = [color.r, color.g, color.b]; color = [0.8, 0.5, 0.1];
-		var speed = 0.05;
+		var speed = 50.0;
 		
 		for(var vertex=0; vertex<3; vertex++) {
 			
@@ -76,8 +76,8 @@ function SphereParticleEffect(number_of_particles) {
 	
 	//this.number_of_particles = 10;
 	
-	this.start_distance = 0.0;	//distance (from the center) from where particles appear
-	this.end_distance = 1000.0;	//distance (from the center) from where particles disappear
+	this.start_distance = 10.0;	//distance (from the center) from where particles appear
+	this.end_distance = 600.0;	//distance (from the center) from where particles disappear
 	
 	this.min_speed = 0.1;
 	this.max_speed = 1.0;
@@ -122,5 +122,5 @@ SphereParticleEffect.prototype.setNumberOfParticles = function(value) {
 
 SphereParticleEffect.prototype.update = function(time) {
 	//this.uniforms.uCenter = [this.position.x, this.position.y, this.position.z];
-	this.uniforms.uTime = time;
+	this.uniforms.uTime.value = time;
 }
