@@ -42,7 +42,7 @@ window.onload = function() {
 	var pointLightIntensity = [1.0, 0.1];
 	
 	// Sun parameters:
-	var sunRadius = 100; // sun: 695700km
+	var sunRadius = 0.01; // sun: 695700km
 	var sunRotationSpeed = 0.01;
 	var sunRevolutionSpeed = 0;
 	var sunOrbitalDistance = 0;
@@ -411,8 +411,8 @@ window.onload = function() {
 		lookAtPlanet(planetName);
 	}
 	
-	// Sun particles effects
-	var sp = new SphereParticleEffect(1);
+	//Sun particles effects
+	var sp = new SphereParticleEffect(10);
 	sp.position.x = 0;
 	sp.position.y = 0;
 	sp.position.z = 0;

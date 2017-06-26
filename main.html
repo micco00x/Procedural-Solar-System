@@ -102,31 +102,32 @@
 		</script>
 		
 		<script type="x-shader/x-vertex" id="particlesVertexShader">
-			
+			//attribute vec3 normal;
 			//attribute vec3 aPosition;
-			//attribute vec3 aDirection;
-			//attribute vec3 aRotation;
+			attribute vec3 direction;
+			attribute vec3 rotation;
 			//attribute vec3 aColor;
-			//attribute float aSpeed;
+			attribute float speed;
 			
-			//uniform float uStartDistance;
-			//uniform float uEndDistance;
+			uniform float uStartDistance;
+			uniform float uEndDistance;
+			uniform float uTime;
 			//uniform vec3 uCenter;
-			//uniform float uTime;
 			
-			//varying vec3 vColor;
+			
+			varying vec3 vColor;
 			
 			void main() {
 				
 				//vec3 position = aPosition;
-				position[0] = 10000.0 * position[0];
-				position[1] = 10000.0 * position[1];
-				position[2] = 10000.0 * position[2];
+				vec3 nposition = 100.0 * position;
+				//position[1] = 10000.0 * position[1];
+				//position[2] = 10000.0 * position[2];
 				
 				
 				// covered distance
 				//float movement = mod((aSpeed * uTime), (uEndDistance - uStartDistance));
-				//movement = movement +  uStartDistance;
+				//movement = movement + uStartDistance;
 				//
 				// rotate particles
 				
@@ -136,18 +137,18 @@
 				// translate WRT system center and particle local position
 				//vec3 local_translation = movement * aDirection;
 				//vec3 translation = uCenter + local_translation;
-				//position = position + translation;
+				//nposition = nposition + local_translation;
 				
-				//vColor = aColor;
-				gl_Position = position;
+				vColor = direction; //vec4(1.0, 1.0, 1.0, 1.0);
+				gl_Position = projectionMatrix * modelViewMatrix * vec4(nposition, 1.0);
 			}
 		</script>
 		<script type="x-shader/x-fragment" id="particlesFragmentShader">
-			//varying vec3 vColor;
+			varying vec3 vColor;
 			
 			void main() 
 			{
-				gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+				gl_FragColor = vec4(vColor, 1.0);
 			}
 		</script>
 		
