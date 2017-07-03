@@ -1,4 +1,40 @@
 
+function deform_geometry(geometry) {
+	
+}
+
+
+// build a buffer geometry of a particle system using verteces, normals, uv mapping, from a set of given geometries.
+// a single particle have a random geometry from the given ones.
+// for every particles are added a set of randomize attribute, following the specs of 'random_attributes' parameter.
+// In total are created attributes buffers for the equivalent of 'number_of_particles'
+function randomized_particles_from_geometries(geometries, random_attributes, number_of_particles) {
+	
+	//for number_of particles
+	{
+		//sort geometry
+	
+		//for each face get vertices, normals and uvs
+		
+		//randomize attributes
+			
+		// add values to attributes buffers
+	}
+	
+	return geometry;
+	
+}
+
+
+
+// Particles Effect class
+function RotatingParticlesEffect() {
+	
+}
+
+
+
+
 function build_particles_geometry(particles_system, number_of_particles) {
 	
 	number_of_particles = Math.max(number_of_particles, 0);
