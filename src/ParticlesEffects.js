@@ -1,6 +1,15 @@
 
-function deform_geometry(geometry) {
-	
+function deform_sphere_geometry(geometry) {
+	for( var vertex in geometry.vertices ) {
+		var vector_scale = Math.random() + 0.5;
+		vertex *= vector_scale;
+		// vertex.x *= vector_scale;
+		// vertex.y *= vector_scale;
+		// vertex.z *= vector_scale;
+	}
+	geometry.verticesNeedUpdate = true;
+	geometry.computeFaceNormals();
+	geometry.computeVertexNormals();
 }
 
 
@@ -10,15 +19,24 @@ function deform_geometry(geometry) {
 // In total are created attributes buffers for the equivalent of 'number_of_particles'
 function randomized_particles_from_geometries(geometries, random_attributes, number_of_particles) {
 	
-	//for number_of particles
-	{
+	var geometries_number = geometries.length;
+	
+	for(var vid = 0; vid < number_of_particles; vid++) {
 		//sort geometry
+		var gid = Math.floor( Math.random() * geometries_number );
+		var sample_geometry = geometries[gid];
+		var number_of_verteces = 3 * sample_geometry.faces.length;
+		
 	
 		//for each face get vertices, normals and uvs
-		
-		//randomize attributes
+		for(var face in sample_geometry.faces) {
 			
-		// add values to attributes buffers
+			//randomize attributes
+			
+			// add values to attributes buffers
+		}
+		
+
 	}
 	
 	return geometry;
