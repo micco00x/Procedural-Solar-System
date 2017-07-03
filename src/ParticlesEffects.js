@@ -4,7 +4,7 @@ function deform_sphere_geometry(geometry) {
 		var vector_scale = Math.random() + 0.5;
 		vertex.multiplyScalar(vector_scale);
 	}
-	geometry.verticesNeedUpdate = true;
+	//geometry.verticesNeedUpdate = true;
 	geometry.computeFaceNormals();
 	geometry.computeVertexNormals();
 }
@@ -34,7 +34,7 @@ function randomized_particles_from_geometries(geometries, random_attributes, num
 	var buffer = { 
 		'position': { data: new Float32Array(total_vertices * 3), components: 3, cid: 0 },
 		'normal':	{ data: new Float32Array(total_vertices * 3), components: 3, cid: 0 },
-		'uv':		{ data: new Float32Array(total_vertices * 3), components: 3, cid: 0 }
+		'uv':		{ data: new Float32Array(total_vertices * 3), components: 2, cid: 0 }
 	};
 	
 	for(var attribute_name in random_attributes) {
@@ -47,6 +47,8 @@ function randomized_particles_from_geometries(geometries, random_attributes, num
 
 		sample_geometry = particles_geometries[particle];
 	
+		var current_uv = 0;
+		
 		//for each face get vertices, normals and uvs + additional random attribute
 		for(var face in sample_geometry.faces) {
 			
@@ -56,16 +58,21 @@ function randomized_particles_from_geometries(geometries, random_attributes, num
 			var n1 = face.vertexNormals[0];
 			var n2 = face.vertexNormals[0];
 			var n3 = face.vertexNormals[0];
+			var u1 = sample_geometry.faceVertexUvs[0][current_uv++];
+			var u2 = sample_geometry.faceVertexUvs[0][current_uv++];
+			var u3 = sample_geometry.faceVertexUvs[0][current_uv++];
 			
 			var verts	= [v1.x, v1.y, v1.z, v2.x, v2.y, v2.z, v3.x, v3.y, v3.z];
 			var norms	= [n1.x, n1.y, n1.z, n2.x, n2.y, n2.z, n3.x, n3.y, n3.z];
-			var uvs		= [];	//TODO
+			var uvs		= [u1.x, u1.y, u2.x, u2.y, u3.x, u3.y];
 			
 			for(var i = 0; i < 9; i++) {
 				buffer['position'].data[ buffer['position'].cid++ ] = verts[i];
 				buffer['normal'].data[ buffer['normal'].cid++ ] 	= norms[i];
-				buffer['uv'].data[ buffer['uv'].cid++ ] 			= uvs[i];
 			}
+			
+			for(var i = 0; i < 6; i++)
+				buffer['uv'].data[ buffer['uv'].cid++ ] = uvs[i];
 			
 			//randomize additional attributes TODO
 			for(var attribute in random_attributes) {
