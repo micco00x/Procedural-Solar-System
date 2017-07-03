@@ -2,10 +2,7 @@
 function deform_sphere_geometry(geometry) {
 	for( var vertex in geometry.vertices ) {
 		var vector_scale = Math.random() + 0.5;
-		vertex *= vector_scale;
-		// vertex.x *= vector_scale;
-		// vertex.y *= vector_scale;
-		// vertex.z *= vector_scale;
+		vertex.multiplyScalar(vector_scale);
 	}
 	geometry.verticesNeedUpdate = true;
 	geometry.computeFaceNormals();
@@ -19,25 +16,84 @@ function deform_sphere_geometry(geometry) {
 // In total are created attributes buffers for the equivalent of 'number_of_particles'
 function randomized_particles_from_geometries(geometries, random_attributes, number_of_particles) {
 	
-	var geometries_number = geometries.length;
+	var geometries_number = geometries.length;	// number of sample geometries
 	
-	for(var vid = 0; vid < number_of_particles; vid++) {
-		//sort geometry
+	var total_vertices = 0;						// total number of vertices for the particle system
+	
+	var particles_geometries = [];				// array of corresponding geometry for particles
+	var pg = 0;									// index of next particles for the geometry assignement
+	
+	// sort particles' geometry (assignement)
+	for(var particle = 0; particle < number_of_particles; particle++) {
 		var gid = Math.floor( Math.random() * geometries_number );
-		var sample_geometry = geometries[gid];
-		var number_of_verteces = 3 * sample_geometry.faces.length;
-		
+		particles_geometries[pg++] = geometries[gid];
+		total_vertices += 3 * geometries[gid].faces.length;
+	}
 	
-		//for each face get vertices, normals and uvs
+	// build attribute buffers (cid = 'current id' is used for setting the right value in the data array)
+	var buffer = { 
+		'position': { data: new Float32Array(total_vertices * 3), components: 3, cid: 0 },
+		'normal':	{ data: new Float32Array(total_vertices * 3), components: 3, cid: 0 },
+		'uv':		{ data: new Float32Array(total_vertices * 3), components: 3, cid: 0 }
+	};
+	
+	for(var attribute_name in random_attributes) {
+		var ncomp = random_attributes[attribute_name]['components']
+		buffer[attribute_name] = { data: new Float32Array(total_vertices * ncomp), components: ncomp, cid: 0 };
+	}
+	
+	// fill attributes buffers
+	for(var particle = 0; particle < number_of_particles; particle++) {
+
+		sample_geometry = particles_geometries[particle];
+	
+		//for each face get vertices, normals and uvs + additional random attribute
 		for(var face in sample_geometry.faces) {
 			
-			//randomize attributes
+			var v1 = sample_geometry.vertices[face.a];
+			var v2 = sample_geometry.vertices[face.b];
+			var v3 = sample_geometry.vertices[face.c];
+			var n1 = face.vertexNormals[0];
+			var n2 = face.vertexNormals[0];
+			var n3 = face.vertexNormals[0];
 			
-			// add values to attributes buffers
+			var verts	= [v1.x, v1.y, v1.z, v2.x, v2.y, v2.z, v3.x, v3.y, v3.z];
+			var norms	= [n1.x, n1.y, n1.z, n2.x, n2.y, n2.z, n3.x, n3.y, n3.z];
+			var uvs		= [];	//TODO
+			
+			for(var i = 0; i < 9; i++) {
+				buffer['position'].data[ buffer['position'].cid++ ] = verts[i];
+				buffer['normal'].data[ buffer['normal'].cid++ ] 	= norms[i];
+				buffer['uv'].data[ buffer['uv'].cid++ ] 			= uvs[i];
+			}
+			
+			//randomize additional attributes TODO
+			for(var attribute in random_attributes) {
+				var components = random_attributes[attribute].components;
+				var max = random_attributes[attribute].max;
+				var min = random_attributes[attribute].min;
+				
+				var random_value = 
+				
+				for(var j = 0; j < components; j++) {
+					buffer[attribute].data[ buffer[attribute].cid++ ] = random_value;
+				}
+			}
+			
 		}
 		
 
 	}
+	
+	
+	// build and return new BufferGeometry for the particles system
+	var geometry = new THREE.BufferGeometry();
+	
+	for(var buffer_name in buffer)
+		geometry.addAttribute( buffer_name, new THREE.BufferAttribute(buffer[buffer_name].data, buffer[buffer_name].components) );
+		
+	//geometry.offsets = [];
+	//geometry.computeBoundingSphere();
 	
 	return geometry;
 	
