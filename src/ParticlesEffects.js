@@ -1,5 +1,5 @@
-
-function deform_sphere_geometry(geometry) {
+// function that applies a random perturbation to each vertex of the geometry passed as parameter
+function deform_geometry(geometry) {
 	for( var vertex in geometry.vertices ) {
 		var vector_scale = Math.random() + 0.5;
 		vertex.multiplyScalar(vector_scale);
@@ -56,8 +56,8 @@ function randomized_particles_from_geometries(geometries, random_attributes, num
 			var v2 = sample_geometry.vertices[face.b];
 			var v3 = sample_geometry.vertices[face.c];
 			var n1 = face.vertexNormals[0];
-			var n2 = face.vertexNormals[0];
-			var n3 = face.vertexNormals[0];
+			var n2 = face.vertexNormals[1];
+			var n3 = face.vertexNormals[2];
 			var u1 = sample_geometry.faceVertexUvs[0][current_uv++];
 			var u2 = sample_geometry.faceVertexUvs[0][current_uv++];
 			var u3 = sample_geometry.faceVertexUvs[0][current_uv++];
@@ -74,19 +74,26 @@ function randomized_particles_from_geometries(geometries, random_attributes, num
 			for(var i = 0; i < 6; i++)
 				buffer['uv'].data[ buffer['uv'].cid++ ] = uvs[i];
 			
-			//randomize additional attributes TODO
-			for(var attribute in random_attributes) {
-				var components = random_attributes[attribute].components;
-				var max = random_attributes[attribute].max;
-				var min = random_attributes[attribute].min;
-				
-				var random_value = 
-				
-				for(var j = 0; j < components; j++) {
-					buffer[attribute].data[ buffer[attribute].cid++ ] = random_value;
-				}
-			}
 			
+			
+		}
+		
+		//randomize additional attributes (per particle) TODO
+		var particle_vertices = 3 * sample_geometry.faces.length;
+		
+		for(var attribute in random_attributes) {
+			var components = random_attributes[attribute].components;
+			var max = random_attributes[attribute].max;
+			var min = random_attributes[attribute].min;
+			
+			var random_value = [];
+			
+			for(var j = 0; j < components; j++)
+				random_value[j] = Math.random() * (max - min) + min;
+			
+			for(var v = 0; v < particle_vertices; v++)
+				for(var j = 0; j < components; j++)
+					buffer[attribute].data[ buffer[attribute].cid++ ] = random_value[j];
 		}
 		
 
@@ -101,7 +108,6 @@ function randomized_particles_from_geometries(geometries, random_attributes, num
 		
 	//geometry.offsets = [];
 	//geometry.computeBoundingSphere();
-	
 	return geometry;
 	
 }
@@ -109,8 +115,57 @@ function randomized_particles_from_geometries(geometries, random_attributes, num
 
 
 // Particles Effect class
-function RotatingParticlesEffect() {
+function MeteoritesCloud(number_of_meteorites, meteorites_resolution, configuration_parameters) {
+	this.type = 'MeteoritesCloud';	
 	
+	//this.number_of_particles = 10;
+	
+	var section_radius = 100.0;
+	var size = 3.0;
+	
+	var sample_geometries = [];
+	for(var i = 0; i < 1; ++i) {
+		var geometry = new SphereGeometry(1.0, meteorites_resolution, meteorites_resolution);
+		deform_geometry(geometry);
+		sample_geometries[i] = geometry;
+	}
+	
+	var random_attributes = {
+		'aRotation':	{ components: 3, min: 0.0, max: Math.PI }
+		'aOffset':		{ components: 2, min: -1.0, max: 1.0 	}
+		'aSpeed':		{ components: 1, min: 50.0, max: 100.0 	}
+	};
+	
+	this.uniforms = {
+		u_time:				{ type: 'f', value: 0.0 },
+		u_section_radius:	{ type: 'f', value: this.section_radius },
+		u_scale:			{ type: 'f', value: this.size },
+		u_texture:			{ type: 't', value: THREE.ImageUtils.loadTexture('images/meteorite.jpg') }
+	};
+	
+	this.geometry = randomized_particles_from_geometries(sample_geometries, random_attributes, number_of_meteorites);
+	
+	this.material = new THREE.ShaderMaterial( {
+		uniforms:		this.uniforms,
+		vertexShader:	document.getElementById("meteoritesVertexShader").textContent,
+		fragmentShader:	document.getElementById("meteoritesFragmentShader").textContent,
+		//vertexColors:   THREE.VertexColors
+	});
+	
+	THREE.Mesh.call( this, this.geometry, this.material );
+}
+
+MeteoritesParticlesEffect.prototype = Object.create( THREE.Mesh.prototype );
+MeteoritesParticlesEffect.prototype.constructor = MeteoritesParticlesEffect;
+
+
+MeteoritesParticlesEffect.prototype.setNumberOfParticles = function(value) {
+    set_particles(this, value);
+}
+
+
+MeteoritesParticlesEffect.prototype.update = function(time) {
+	this.uniforms.u_time.value = time;
 }
 
 
@@ -176,8 +231,6 @@ function SphereParticleEffect(number_of_particles, start_distance, end_distance)
 	
 	this.type = 'SphereParticleEffect';	
 	
-	//this.number_of_particles = 10;
-	
 	this.start_distance = start_distance;	//distance (from the center) from where particles appear
 	this.end_distance = end_distance;		//distance (from the center) from where particles disappear
 	
@@ -224,6 +277,5 @@ SphereParticleEffect.prototype.setNumberOfParticles = function(value) {
 
 
 SphereParticleEffect.prototype.update = function(time) {
-	//this.uniforms.uCenter = [this.position.x, this.position.y, this.position.z];
 	this.uniforms.uTime.value = time;
 }

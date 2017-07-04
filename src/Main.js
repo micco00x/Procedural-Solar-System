@@ -341,6 +341,12 @@ window.onload = function() {
 	var mars = new Planet("mars", marsRadius, marsRotationSpeed, marsRevolutionSpeed, marsOrbitalDistance,
 						   marsChunkPerFaceSide, marsLodParams, marsMaterial, noiseHeightGenerator );
 	sun.add(mars);
+	
+	
+	// Add meteorites
+	var meteorites = new MeteoritesCloud(100, 10);
+	scene.add(meteorites);
+	
 
 	// Add starfield (spherified cube):
 	var starfieldSphere = new THREE.BoxGeometry(1, 1, 1, 32, 32, 32);
