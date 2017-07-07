@@ -4,6 +4,10 @@ function deform_geometry(geometry) {
 		var vector_scale = Math.random() * 0.2 + 0.9;
 		vertex.multiplyScalar(vector_scale);
 	}
+	var sx = Math.random() + 0.5;
+	var sy = Math.random() + 0.5;
+	var sz = Math.random() + 0.5;
+	geometry.scale(sx ,sy ,sz);
 	//geometry.verticesNeedUpdate = true;
 	geometry.computeFaceNormals();
 	geometry.computeVertexNormals();
@@ -104,12 +108,9 @@ function randomized_particles_from_geometries(geometries, random_attributes, num
 	var geometry = new THREE.BufferGeometry();
 	
 	for(var buffer_name in buffer) {
-		//alert(buffer_name);
-		//alert(buffer[buffer_name].data);
 		geometry.addAttribute( buffer_name, new THREE.BufferAttribute(buffer[buffer_name].data, buffer[buffer_name].components) );
 	}
-	//geometry.offsets = [];
-	//geometry.computeBoundingSphere();
+	
 	return geometry;
 	
 }
@@ -118,15 +119,14 @@ function randomized_particles_from_geometries(geometries, random_attributes, num
 
 // Particles Effect class
 function MeteoritesCloud(number_of_meteorites, meteorites_resolution, configuration_parameters) {
-	this.type = 'MeteoritesCloud';	
+	this.type = 'MeteoritesCloud';
 	
-	//this.number_of_particles = 10;
+	this.cloud_radius = 300.0;
+	this.section_radius = 150.0;
 	
-	this.cloud_radius = 10.0;
-	this.section_radius = 20.0;
-	
+	var different_geometries = 100;
 	var sample_geometries = [];
-	for(var i = 0; i < 1; ++i) {
+	for(var i = 0; i < different_geometries; ++i) {
 		var geometry = new THREE.SphereGeometry(1.0, meteorites_resolution, meteorites_resolution);
 		deform_geometry(geometry);
 		sample_geometries[i] = geometry;
@@ -136,18 +136,21 @@ function MeteoritesCloud(number_of_meteorites, meteorites_resolution, configurat
 		'yangle':	{ components: 1, min: 0.0, max: Math.PI * 2	},
 		'rotation':	{ components: 3, min: 0.0, max: Math.PI 	},
 		'offset':	{ components: 2, min: -1.0, max: 1.0 		},
-		'speed':	{ components: 1, min: 50.0, max: 100.0 		},
-		'scale':	{ components: 3, min: 110.0, max: 120.0		}
+		'speed':	{ components: 1, min: 0.1, max: 0.2 		},
+		'scale':	{ components: 1, min: 2.0, max: 5.0			}
 	};
 	
-	this.uniforms = {
-		u_time:					{ type: 'f', value: 0.0 },
-		u_section_radius:		{ type: 'f', value: this.section_radius },
-		u_cloud_radius:			{ type: 'f', value: this.cloud_radius },
-		u_texture:				{ type: 't', value: THREE.ImageUtils.loadTexture('images/moon/moon0.jpg') },
-		pointLightIntensity:	{ type: "fv1", value: [1.0, 0.1] },
-		emissiveLightIntensity:	{ type: "f", value: 0.0 }
-	};
+	this.uniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
+					{
+						u_time:					{ type: 'f', value: 0.0 				},
+						u_section_radius:		{ type: 'f', value: this.section_radius	},
+						u_cloud_radius:			{ type: 'f', value: this.cloud_radius 	},
+						u_texture:				{ type: 't', value: null 				},
+						pointLightIntensity:	{ type: "fv1", value: [1.0, 0.1] 		},
+						emissiveLightIntensity:	{ type: "f", value: 0.0 				}
+					}]);
+					
+	this.uniforms.u_texture.value = THREE.ImageUtils.loadTexture('images/moon/moon0.jpg');
 	
 	this.geometry = randomized_particles_from_geometries(sample_geometries, random_attributes, number_of_meteorites);
 	
@@ -155,8 +158,7 @@ function MeteoritesCloud(number_of_meteorites, meteorites_resolution, configurat
 		uniforms:		this.uniforms,
 		vertexShader:	document.getElementById("meteoritesVertexShader").textContent,
 		fragmentShader:	document.getElementById("meteoritesFragmentShader").textContent,
-		//lights:			true
-		//vertexColors:   THREE.VertexColors
+		lights: 		true
 	});
 	
 	THREE.Mesh.call( this, this.geometry, this.material );

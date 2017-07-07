@@ -344,7 +344,8 @@ window.onload = function() {
 	*/
 	
 	// Add meteorites
-	var meteorites = new MeteoritesCloud(1, 10);
+	var meteorites = new MeteoritesCloud(500, 10);
+	meteorites.frustumCulled = false;
 	sun.add(meteorites);
 
 	// Add starfield (spherified cube):
