@@ -167,12 +167,14 @@
 			attribute vec2 uvs;			// texture uv mapping
 			attribute float yangle;		// starting postion y angle 
 			attribute vec3 rotation;	// rotation speed
-			attribute vec2 offset;		// position inside the cloud
+			attribute vec2 direction;	// direction inside the cloud
+			attribute vec2 offset;		// position inside the cloud (computed together with direction)
 			attribute float scale;		// particle scale	
 			attribute float speed;		// particle angular speed
 			
 			uniform float u_time;
 			uniform float u_cloud_radius;
+			uniform float u_section_ratio;
 			uniform float u_section_radius;
 			
 			varying vec3 pos;
@@ -203,9 +205,14 @@
 						0.0,  0.0, 0.0, 1.0 );
 				
 				// translate particle
+				vec2 in_section_offset = normalize(direction) * u_section_radius;
+				in_section_offset.xy *= offset;
+				in_section_offset.y *= u_section_ratio;
+				
 				vec4 translation = vec4(u_cloud_radius, 0.0, 0.0, 0.0);
-				translation.x += u_section_radius * offset.x;
-				translation.y += u_section_radius * offset.y;
+				translation.xy += in_section_offset;
+				//translation.x += u_section_radius * offset.x;
+				//translation.y += u_section_radius * offset.y;
 				
 				vec3 in_cloud_rotation = vec3(0.0, yangle + speed * u_time, 0.0);
 				c = cos(in_cloud_rotation);

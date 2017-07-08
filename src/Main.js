@@ -86,7 +86,7 @@ window.onload = function() {
 	var sun_particles = new SphereParticleEffect(100000, sunRadius-2, sunRadius+2);
 	sun_particles.frustumCulled = false;
 	sun.add(sun_particles);
-	/*
+	
 	// Mercury parameters:
 	noiseHeightGenerator.scale = 50;
 	var mercuryRadius = 20; // earth: 2440km
@@ -177,7 +177,7 @@ window.onload = function() {
 	var venus = new Planet("venus", venusRadius, venusRotationSpeed, venusRevolutionSpeed, venusOrbitalDistance,
 						   venusChunkPerFaceSide, venusLodParams, venusMaterial, noiseHeightGenerator );
 	sun.add(venus);
-	
+	/*
 	// Earth parameters:
 	noiseHeightGenerator.scale = 15;
 	var earthRadius = 40; // earth: 6371km
@@ -490,9 +490,9 @@ window.onload = function() {
 		
 		// Update position of the planets:
 		sun.updatePosition(time);
-		/*mercury.updatePosition(time);
+		mercury.updatePosition(time);
 		venus.updatePosition(time);
-		earth.updatePosition(time);
+		/*earth.updatePosition(time);
 		moon.updatePosition(time);
 		mars.updatePosition(time);
 		*/
@@ -501,9 +501,9 @@ window.onload = function() {
 		
 		// Send position of the planets to the shader:
 		sunUniforms.planetPosition.value = sun.position;
-		/*mercuryUniforms.planetPosition.value = mercury.position;
+		mercuryUniforms.planetPosition.value = mercury.position;
 		venusUniforms.planetPosition.value = venus.position;
-		earthUniforms.planetPosition.value = earth.position;
+		/*earthUniforms.planetPosition.value = earth.position;
 		moonUniforms.planetPosition.value = moon.position;
 		marsUniforms.planetPosition.value = mars.position;
 		*/
@@ -514,9 +514,9 @@ window.onload = function() {
 		// Update matrixWorld of the objects before the rendering
 		// this permits to compute collisions and tags position with more accuracy
 		sun.updateMatrixWorld(true);
-		/*mercury.updateMatrixWorld(true);
+		mercury.updateMatrixWorld(true);
 		venus.updateMatrixWorld(true);
-		earth.updateMatrixWorld(true);
+		/*earth.updateMatrixWorld(true);
 		moon.updateMatrixWorld(true);
 		mars.updateMatrixWorld(true);
 		*/

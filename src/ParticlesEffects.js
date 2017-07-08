@@ -8,7 +8,6 @@ function deform_geometry(geometry) {
 	var sy = Math.random() + 0.5;
 	var sz = Math.random() + 0.5;
 	geometry.scale(sx ,sy ,sz);
-	//geometry.verticesNeedUpdate = true;
 	geometry.computeFaceNormals();
 	geometry.computeVertexNormals();
 }
@@ -112,7 +111,6 @@ function randomized_particles_from_geometries(geometries, random_attributes, num
 	}
 	
 	return geometry;
-	
 }
 
 
@@ -123,6 +121,7 @@ function MeteoritesCloud(number_of_meteorites, meteorites_resolution, configurat
 	
 	this.cloud_radius = 300.0;
 	this.section_radius = 150.0;
+	this.section_ratio = 0.3;
 	
 	var different_geometries = 100;
 	var sample_geometries = [];
@@ -135,6 +134,7 @@ function MeteoritesCloud(number_of_meteorites, meteorites_resolution, configurat
 	var random_attributes = {
 		'yangle':	{ components: 1, min: 0.0, max: Math.PI * 2	},
 		'rotation':	{ components: 3, min: 0.0, max: Math.PI 	},
+		'direction':{ components: 2, min: -1.0, max: 1.0		},
 		'offset':	{ components: 2, min: -1.0, max: 1.0 		},
 		'speed':	{ components: 1, min: 0.1, max: 0.2 		},
 		'scale':	{ components: 1, min: 2.0, max: 5.0			}
@@ -144,6 +144,7 @@ function MeteoritesCloud(number_of_meteorites, meteorites_resolution, configurat
 					{
 						u_time:					{ type: 'f', value: 0.0 				},
 						u_section_radius:		{ type: 'f', value: this.section_radius	},
+						u_section_ratio:		{ type: 'f', value: this.section_ratio	},
 						u_cloud_radius:			{ type: 'f', value: this.cloud_radius 	},
 						u_texture:				{ type: 't', value: null 				},
 						pointLightIntensity:	{ type: "fv1", value: [1.0, 0.1] 		},
