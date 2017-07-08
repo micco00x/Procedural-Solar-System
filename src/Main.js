@@ -83,9 +83,9 @@ window.onload = function() {
 	sun.add(lightSun);
 	
 	//Sun particles effects
-	var sun_particles = new SphereParticleEffect(100000, sunRadius-2, sunRadius+2);
-	sun_particles.frustumCulled = false;
-	sun.add(sun_particles);
+	//var sun_particles = new SphereParticleEffect(100000, sunRadius-2, sunRadius+2);
+	//sun_particles.frustumCulled = false;
+	//sun.add(sun_particles);
 	
 	// Mercury parameters:
 	noiseHeightGenerator.scale = 50;
@@ -177,7 +177,7 @@ window.onload = function() {
 	var venus = new Planet("venus", venusRadius, venusRotationSpeed, venusRevolutionSpeed, venusOrbitalDistance,
 						   venusChunkPerFaceSide, venusLodParams, venusMaterial, noiseHeightGenerator );
 	sun.add(venus);
-	/*
+	
 	// Earth parameters:
 	noiseHeightGenerator.scale = 15;
 	var earthRadius = 40; // earth: 6371km
@@ -341,12 +341,12 @@ window.onload = function() {
 	var mars = new Planet("mars", marsRadius, marsRotationSpeed, marsRevolutionSpeed, marsOrbitalDistance,
 						   marsChunkPerFaceSide, marsLodParams, marsMaterial, noiseHeightGenerator );
 	sun.add(mars);
-	*/
+	
 	
 	// Add meteorites
-	var meteorites = new MeteoritesCloud(500, 8);
-	meteorites.frustumCulled = false;
-	sun.add(meteorites);
+	//var meteorites = new MeteoritesCloud(800, 8);
+	//meteorites.frustumCulled = false;
+	//sun.add(meteorites);
 
 	// Add starfield (spherified cube):
 	var starfieldSphere = new THREE.BoxGeometry(1, 1, 1, 32, 32, 32);
@@ -359,7 +359,7 @@ window.onload = function() {
 	scene.add(starfieldMesh);
 	
 	// Add celestial objects tags
-	/*var mars_tag_texture = generateTextureFromCanvas(drawTagsTexture, ['Mars', 'Terrestrial planet']);
+	var mars_tag_texture = generateTextureFromCanvas(drawTagsTexture, ['Mars', 'Terrestrial planet']);
 	var moon_tag_texture = generateTextureFromCanvas(drawTagsTexture, ['Moon', 'Natural satellite']);
 	var earth_tag_texture = generateTextureFromCanvas(drawTagsTexture, ['Earth', 'Terrestrial planet']);
 	var venus_tag_texture = generateTextureFromCanvas(drawTagsTexture, ['Venus', 'Terrestrial planet']);
@@ -379,9 +379,11 @@ window.onload = function() {
 	scene.add(earthTag);
 	scene.add(moonTag);
 	scene.add(marsTag);
-	*/
+	
 	// Move camera:
 	camera.position.z = 500;
+	camera.position.y = 200;
+	camera.lookAt(new THREE.Vector3(0,0,0));
 
 	// Time:
 	var clock = new THREE.Clock();
@@ -396,8 +398,8 @@ window.onload = function() {
 	
 	
 	// Input handler functions:
-	var solarSystem = { 'sun': sun/*, 'mercury': mercury, 'venus': venus,
-							'earth': earth, 'moon': moon, 'mars': mars */}; 
+	var solarSystem = { 'sun': sun, 'mercury': mercury, 'venus': venus,
+							'earth': earth, 'moon': moon, 'mars': mars }; 
 	
 	var lookAtPlanet = function(planetName) {
 		var selectedPlanet = solarSystem[planetName];
@@ -492,21 +494,21 @@ window.onload = function() {
 		sun.updatePosition(time);
 		mercury.updatePosition(time);
 		venus.updatePosition(time);
-		/*earth.updatePosition(time);
+		earth.updatePosition(time);
 		moon.updatePosition(time);
 		mars.updatePosition(time);
-		*/
-		sun_particles.update(time);
-		meteorites.update(time);
+		
+		//sun_particles.update(time);
+		//meteorites.update(time);
 		
 		// Send position of the planets to the shader:
 		sunUniforms.planetPosition.value = sun.position;
 		mercuryUniforms.planetPosition.value = mercury.position;
 		venusUniforms.planetPosition.value = venus.position;
-		/*earthUniforms.planetPosition.value = earth.position;
+		earthUniforms.planetPosition.value = earth.position;
 		moonUniforms.planetPosition.value = moon.position;
 		marsUniforms.planetPosition.value = mars.position;
-		*/
+		
 		// Update controls:
 		controls.update(delta);
 		
@@ -516,20 +518,20 @@ window.onload = function() {
 		sun.updateMatrixWorld(true);
 		mercury.updateMatrixWorld(true);
 		venus.updateMatrixWorld(true);
-		/*earth.updateMatrixWorld(true);
+		earth.updateMatrixWorld(true);
 		moon.updateMatrixWorld(true);
 		mars.updateMatrixWorld(true);
-		*/
+		
 		camera.updateMatrixWorld(true);
 		
 		// Update tags positions:
-		/*sunTag.update();
+		sunTag.update();
 		mercuryTag.update();
 		venusTag.update();
 		earthTag.update();
 		moonTag.update();
 		marsTag.update();
-		*/
+		
 		// Check for collisions:
 		for(planetName in solarSystem) {
 			planet = solarSystem[planetName];

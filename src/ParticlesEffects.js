@@ -119,9 +119,9 @@ function randomized_particles_from_geometries(geometries, random_attributes, num
 function MeteoritesCloud(number_of_meteorites, meteorites_resolution, configuration_parameters) {
 	this.type = 'MeteoritesCloud';
 	
-	this.cloud_radius = 300.0;
-	this.section_radius = 150.0;
-	this.section_ratio = 0.3;
+	this.cloud_radius = 1900.0;
+	this.section_radius = 500.0;
+	this.section_ratio = 0.2;
 	
 	var different_geometries = 100;
 	var sample_geometries = [];
@@ -137,7 +137,7 @@ function MeteoritesCloud(number_of_meteorites, meteorites_resolution, configurat
 		'direction':{ components: 2, min: -1.0, max: 1.0		},
 		'offset':	{ components: 2, min: -1.0, max: 1.0 		},
 		'speed':	{ components: 1, min: 0.1, max: 0.2 		},
-		'scale':	{ components: 1, min: 2.0, max: 5.0			}
+		'scale':	{ components: 1, min: 1.0, max: 3.0			}
 	};
 	
 	this.uniforms = THREE.UniformsUtils.merge([THREE.UniformsLib["lights"],
