@@ -42,7 +42,7 @@ function Planet(name, radius, rotationSpeed, revolutionSpeed, orbitalDistance,
 		this.pivot.rotation.y = this.rotationSpeed * time;
 		
 		this.position.x = Math.sin(time * this.revolutionSpeed) * this.orbitalDistance;
-		this.position.y = Math.cos(time * this.revolutionSpeed) * this.orbitalDistance;
+		this.position.z= Math.cos(time * this.revolutionSpeed) * this.orbitalDistance;
 	};
 }
 

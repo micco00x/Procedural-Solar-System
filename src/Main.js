@@ -344,7 +344,7 @@ window.onload = function() {
 	*/
 	
 	// Add meteorites
-	var meteorites = new MeteoritesCloud(500, 10);
+	var meteorites = new MeteoritesCloud(500, 8);
 	meteorites.frustumCulled = false;
 	sun.add(meteorites);
 

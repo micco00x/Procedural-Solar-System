@@ -211,8 +211,6 @@
 				
 				vec4 translation = vec4(u_cloud_radius, 0.0, 0.0, 0.0);
 				translation.xy += in_section_offset;
-				//translation.x += u_section_radius * offset.x;
-				//translation.y += u_section_radius * offset.y;
 				
 				vec3 in_cloud_rotation = vec3(0.0, yangle + speed * u_time, 0.0);
 				c = cos(in_cloud_rotation);
