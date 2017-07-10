@@ -362,6 +362,76 @@ spherified cube, instead of a sphere, to solve, again, stratching of the image a
 
 %----------------------------------------------------------------------------------------
 
+\section{Collisions}
+
+
+%----------------------------------------------------------------------------------------
+
+\section{Planet Labels}
+
+%----------------------------------------------------------------------------------------
+
+\section{Sun Particle Effects}
+
+
+%----------------------------------------------------------------------------------------
+
+\section{Asteroids cloud}
+
+After the four planet of the solar sytemn, in the outer zone of the scene there is a cloud of asteroids. The cloud is composed by several asteroids which move circularly around the sun, each with a different speed and at different distance from the center; to reach a more realistic visual effect, every asteroid has also a different rotation speed, scale factor and geometry. With regard to the last property, there were used about one hundred randomly deformed THREE.SphereGemoetry: the deformation includes a random translation from the center of each vertex and a random scaling on the three axis. During the creation of the cloud one of these deformed geometries is then assigned to each asteroid.\\
+Due to the high number of object desired inside the cloud, the idea behind the implementation of the cloud was similar to the one of the sun particle system: in this case we can see an asteroid as a single particle and the entire cloud is made up with a unique mesh.\\
+Here a particle is clearly not built from a triangle alone but instead with a more complex mesh; in the BufferGeometry it was necessary to build the buffers related to vertices, normal and texture mapping by concatenating same the buffers from the geometry associated with all the asteroids; furthermore, as in the case of the sun particles, addtional buffers were created in order to provide to the shader extra informations for the asteroids' appearence and behaviour.\\
+The informations regarding each asteroid are computed once at initialization time without any further computations excepts for the updates of the uniforms: for example at every animation frame the \textit{time} uniform is updated and then used in the vertex shader for calculating the right position and rotation of the asteroids in according with the informations stored in the attribute buffers.\\
+The advantages of this approach is to show in the scene up to several thousand meshes with a single webgl draw call, decreasing the number of communications with the GPU and lightening the cpu load.\\
+A graphical representation of the introduced custom geometry can be seen in figure \ref{fig:buffer_geometry} while a sneak peak of the asteroids cloud is show in figure \ref{fig:meteorites}.
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{\textwidth}
+		\centering
+		\includegraphics[width=1.0\linewidth]{images/asteroids_geometry.png}
+	\end{subfigure}
+	\caption{Comparison between \textit{n} single geometry and one BufferGeometry}
+	\label{fig:buffer_geometry}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{.4\textwidth}
+		\centering
+		\includegraphics[width=1.0\linewidth]{images/meteorites_near.png}
+	\end{subfigure}
+	\begin{subfigure}{.4\textwidth}
+		\centering
+		\includegraphics[width=1.0\linewidth]{images/meteorites_near.png}
+	\end{subfigure}
+	\caption{Opened and closed dat.GUI menu}
+	\label{fig:meteorites}
+\end{figure}
+%----------------------------------------------------------------------------------------
+
+\section{Menu}
+
+In addition to the use of the FlyControl, the user can interact with the program also through a simple gui menu. This is was implemented using a third party library called \textit{dat.GUI} \cite{datgui} which offers different input controls like buttons, checkbox, combobox, sliders and text inputs; moreover all of these can be grouped in folders. In order to implement a menu with dat.GUI is necessary to give at each desired control an initial value and extra informations about its behaviour: for example, a button needs a event listener, a slider needs a numerical range while a combobox needs a list of items. Note that the control type is not specified but indeed is automatically detected from the given extra information.\\
+In this application the overlay provides input controls useful to manage the time speed or handle the camera position. In fact, through the apposites buttons is possible to rotate or move the camera toward each planets of the solar system.
+As shown in figure \ref{fig:menu}, every input control is placed in a folder based on his scope: folders in dat.GUI are basically openable and closable menu.\\
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{.4\textwidth}
+		\centering
+		\includegraphics[width=1.0\linewidth]{images/venus_d0.png}
+	\end{subfigure}
+	\begin{subfigure}{.4\textwidth}
+		\centering
+		\includegraphics[width=1.0\linewidth]{images/venus_d1.png}
+	\end{subfigure}
+	\caption{Opened and closed dat.GUI menu}
+	\label{fig:menu}
+\end{figure}
+
+%----------------------------------------------------------------------------------------
+
 \section{How to Use}
 
 Before launching the HTML file on the browser, it's necessary to execute a
