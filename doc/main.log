@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6100 64-bit) (preloaded format=pdflatex 2016.12.13)  10 JUL 2017 11:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6100 64-bit) (preloaded format=pdflatex 2016.12.13)  10 JUL 2017 17:56
 entering extended mode
 **./main.tex
 (main.tex
@@ -714,29 +714,30 @@ File: images/solar_system.png Graphic file (type png)
 <use images/solar_system.png>
 Package pdftex.def Info: images/solar_system.png used on input line 341.
 (pdftex.def)             Requested size: 342.27982pt x 320.19724pt.
- [5 <./images/earth_moon.png>] [6 <./images/solar_system.png>] [7]
-<images/asteroids_geometry.png, id=39, 701.95583pt x 127.14166pt>
+ [5 <./images/earth_moon.png>] [6 <./images/solar_system.png>]
+LaTeX Font Info:    Font shape `FMX/futm/m/n' will be
+(Font)              scaled to size 8.27998pt on input line 393.
+LaTeX Font Info:    Font shape `FMX/futm/m/n' will be
+(Font)              scaled to size 6.99199pt on input line 393.
+LaTeX Font Info:    Font shape `U/futm/m/n' will be
+(Font)              scaled to size 8.27998pt on input line 393.
+LaTeX Font Info:    Font shape `U/futm/m/n' will be
+(Font)              scaled to size 6.99199pt on input line 393.
+
+Overfull \hbox (6.43922pt too wide) in paragraph at lines 386--395
+\T1/futs/m/n/10.95 THREE.js the only way to spec-ify at-tribute buffers is by u
+s-ing a cus-tom THREE.BufferGeometry,
+ []
+
+[7] <images/asteroids_geometry.png, id=39, 701.95583pt x 127.14166pt>
 File: images/asteroids_geometry.png Graphic file (type png)
 
 <use images/asteroids_geometry.png>
-Package pdftex.def Info: images/asteroids_geometry.png used on input line 399.
+Package pdftex.def Info: images/asteroids_geometry.png used on input line 411.
 (pdftex.def)             Requested size: 418.25555pt x 75.75789pt.
+ [8]
 
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.404 \newline
-              
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-LaTeX Warning: File `images/meteorites_near.png' not found on input line 409.
+LaTeX Warning: File `images/meteorites_near.png' not found on input line 421.
 
 
 ! Package pdftex.def Error: File `images/meteorites_near.png' not found.
@@ -745,19 +746,19 @@ See the pdftex.def package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.409 ....0\linewidth]{images/meteorites_near.png}
+l.421 ....0\linewidth]{images/meteorites_near.png}
                                                   
 Using draft setting for this image.
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 409.
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 421.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\base\t1cmtt.fd"
 File: t1cmtt.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 
-LaTeX Warning: File `images/meteorites_near.png' not found on input line 413.
+LaTeX Warning: File `images/meteorites_near.png' not found on input line 425.
 
 
 ! Package pdftex.def Error: File `images/meteorites_near.png' not found.
@@ -766,23 +767,22 @@ See the pdftex.def package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.413 ....0\linewidth]{images/meteorites_near.png}
+l.425 ....0\linewidth]{images/meteorites_near.png}
                                                   
 Using draft setting for this image.
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-LaTeX Warning: Citation `datgui' on page 8 undefined on input line 422.
+LaTeX Warning: Citation `datgui' on page 9 undefined on input line 434.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 422--425
+Underfull \hbox (badness 10000) in paragraph at lines 434--437
 
  []
 
-[8 <./images/asteroids_geometry.png>]
 
-LaTeX Warning: File `images/menu_open.png' not found on input line 430.
+LaTeX Warning: File `images/menu_open.png' not found on input line 442.
 
 
 ! Package pdftex.def Error: File `images/menu_open.png' not found.
@@ -791,14 +791,14 @@ See the pdftex.def package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.430 ...idth=1.0\linewidth]{images/menu_open.png}
+l.442 ...idth=1.0\linewidth]{images/menu_open.png}
                                                   
 Using draft setting for this image.
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-LaTeX Warning: File `images/menu_closed.png' not found on input line 434.
+LaTeX Warning: File `images/menu_closed.png' not found on input line 446.
 
 
 ! Package pdftex.def Error: File `images/menu_closed.png' not found.
@@ -807,17 +807,20 @@ See the pdftex.def package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.434 ...th=1.0\linewidth]{images/menu_closed.png}
+l.446 ...th=1.0\linewidth]{images/menu_closed.png}
                                                   
 Using draft setting for this image.
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-LaTeX Font Info:    Try loading font information for TS1+futs on input line 454
+[9 <./images/asteroids_geometry.png>]
+LaTeX Font Info:    Try loading font information for TS1+futs on input line 466
 .
+
 ("C:\Program Files\MiKTeX 2.9\tex\latex\fourier\ts1futs.fd"
 File: ts1futs.fd 2004/03/26 Fontinst v1.926 font definitions for TS1/futs.
-) [9] [10] (main.bbl
+) [10] [11]
+(main.bbl
 
 Class scrartcl Warning: incompatible usage of \@ssect detected.
 (scrartcl)              You've used the KOMA-Script implementation of \@ssect
@@ -826,17 +829,17 @@ Class scrartcl Warning: incompatible usage of \@ssect detected.
 (scrartcl)              This could result in several error messages on input li
 ne 1.
 
-) [11] (main.aux)
+) [12] (main.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 7967 strings out of 493333
- 126189 string characters out of 3139193
- 375308 words of memory out of 3000000
- 11304 multiletter control sequences out of 15000+200000
- 93667 words of font info for 101 fonts, out of 3000000 for 9000
+ 7986 strings out of 493333
+ 126438 string characters out of 3139193
+ 375309 words of memory out of 3000000
+ 11319 multiletter control sequences out of 15000+200000
+ 105520 words of font info for 120 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  49i,10n,52p,8817b,448s stack positions out of 5000i,500n,10000p,200000b,50000s
  <C:\Users\ivanb\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\
@@ -845,9 +848,9 @@ m Files/MiKTeX 2.9/fonts/type1/public/fourier/fourier-ms.pfb><C:/Program Files/
 MiKTeX 2.9/fonts/type1/adobe/utopia/putb8a.pfb><C:/Program Files/MiKTeX 2.9/fon
 ts/type1/adobe/utopia/putr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/adobe
 /utopia/putri8a.pfb>
-Output written on main.pdf (11 pages, 5216275 bytes).
+Output written on main.pdf (12 pages, 5219368 bytes).
 PDF statistics:
- 106 PDF objects out of 1000 (max. 8388607)
+ 109 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  31 words of extra memory for PDF output out of 10000 (max. 10000000)
 

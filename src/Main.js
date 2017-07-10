@@ -18,7 +18,14 @@ window.onload = function() {
 	// Stats monitor:
 	var stats = new Stats();
 	stats.showPanel(0);
-	document.body.appendChild(stats.dom);	
+	document.body.appendChild(stats.dom);
+	
+	var rendererStats  = new THREEx.RendererStats();
+	
+	rendererStats.domElement.style.position   = 'absolute';
+	rendererStats.domElement.style.left  = '0px';
+	rendererStats.domElement.style.bottom    = '0px';
+	document.body.appendChild( rendererStats.domElement );
 	
 	// Perlin noise parameters:
 	var scale = 40;
@@ -84,7 +91,7 @@ window.onload = function() {
 	
 	//Sun particles effects
 	var sun_particles = new SphereParticleEffect(100000, sunRadius-2, sunRadius+2);
-	sun_particles.frustumCulled = false;
+	//sun_particles.frustumCulled = false;
 	sun.add(sun_particles);
 	
 	// Mercury parameters:
@@ -487,6 +494,7 @@ window.onload = function() {
 		
 		// Update performance monitor:
 		stats.update();
+		rendererStats.update(renderer);
 		
 		requestAnimationFrame(render);
 		

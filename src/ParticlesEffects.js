@@ -232,7 +232,16 @@ function build_particles_geometry(particles_system, number_of_particles) {
 	geometry.addAttribute( 'color', new THREE.BufferAttribute( particles_color, 3 ) );
 	
 	geometry.offsets = [];
+	
+	// computing approximated bounding sphere
+	var tmp1 = geometry.attributes.position.array[0];
+	var tmp2 = geometry.attributes.position.array[3];
+	geometry.attributes.position.array[0] =  particles_system.end_distance * 1.1;
+	geometry.attributes.position.array[3] = -particles_system.end_distance * 1.1;
 	geometry.computeBoundingSphere();
+	geometry.attributes.position.array[0] = tmp1;
+	geometry.attributes.position.array[3] = tmp2;
+	
 	
 	particles_system.number_of_particles = number_of_particles;
 	return geometry;
