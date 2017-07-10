@@ -371,16 +371,22 @@ spherified cube, instead of a sphere, to solve, again, stratching of the image a
 
 %----------------------------------------------------------------------------------------
 
-\section{Sun Particle Effects}
+\section{Earth's Ocean and Atmosphere}
+The previously introduces procedural planet system deals with the generation of mountains and valleys for a celestial corps; at the top of that textures are applied in order to give to the planets or stars a more suitable appereance. However for a planet like the earth these steps are not enough.\\
+In fact the earth has oceans on the surface and like many other planets presents an atmosphere; these features were 
 
+%----------------------------------------------------------------------------------------
+
+\section{Sun Particle Effects}
+Until now the presented graphical objects do not show any particular effect, showing a static appeareance apart from the LOD system and the movement animation. 
 
 %----------------------------------------------------------------------------------------
 
 \section{Asteroids cloud}
 
-After the four planet of the solar sytemn, in the outer zone of the scene there is a cloud of asteroids. The cloud is composed by several asteroids which move circularly around the sun, each with a different speed and at different distance from the center; to reach a more realistic visual effect, every asteroid has also a different rotation speed, scale factor and geometry. With regard to the last property, there were used about one hundred randomly deformed THREE.SphereGemoetry: the deformation includes a random translation from the center of each vertex and a random scaling on the three axis. During the creation of the cloud one of these deformed geometries is then assigned to each asteroid.\\
+After the four planet of the solar system, in the outer zone of the scene there is a cloud of asteroids. The cloud is composed by several asteroids which move circularly around the sun, each with a different speed and at different distance from the center; to reach a more realistic visual effect, every asteroid has also a different rotation speed, scale factor and geometry. With regard to the last property, there were used about one hundred randomly deformed THREE.SphereGeometry: the deformation includes a random translation from the center of each vertex and a random scaling of the whole mesh on the three axis. During the creation of the cloud one of these deformed geometries is then assigned to each asteroid.\\
 Due to the high number of object desired inside the cloud, the idea behind the implementation of the cloud was similar to the one of the sun particle system: in this case we can see an asteroid as a single particle and the entire cloud is made up with a unique mesh.\\
-Here a particle is clearly not built from a triangle alone but instead with a more complex mesh; in the BufferGeometry it was necessary to build the buffers related to vertices, normal and texture mapping by concatenating same the buffers from the geometry associated with all the asteroids; furthermore, as in the case of the sun particles, addtional buffers were created in order to provide to the shader extra informations for the asteroids' appearence and behaviour.\\
+Here a particle is clearly not built from a triangle alone but instead using a more complex mesh; in the BufferGeometry it was necessary to build the buffers related to vertices, normal and texture mapping by concatenating the equivalent buffers from the geometry associated with all the asteroids; furthermore, as in the case of the sun particles, addtional buffers were created in order to provide to the shader extra informations for the asteroids' appearence and behaviour.\\
 The informations regarding each asteroid are computed once at initialization time without any further computations excepts for the updates of the uniforms: for example at every animation frame the \textit{time} uniform is updated and then used in the vertex shader for calculating the right position and rotation of the asteroids in according with the informations stored in the attribute buffers.\\
 The advantages of this approach is to show in the scene up to several thousand meshes with a single webgl draw call, decreasing the number of communications with the GPU and lightening the cpu load.\\
 A graphical representation of the introduced custom geometry can be seen in figure \ref{fig:buffer_geometry} while a sneak peak of the asteroids cloud is show in figure \ref{fig:meteorites}.
@@ -394,7 +400,7 @@ A graphical representation of the introduced custom geometry can be seen in figu
 	\caption{Comparison between \textit{n} single geometry and one BufferGeometry}
 	\label{fig:buffer_geometry}
 \end{figure}
-
+\newline
 \begin{figure}
 	\centering
 	\begin{subfigure}{.4\textwidth}
@@ -420,11 +426,11 @@ As shown in figure \ref{fig:menu}, every input control is placed in a folder bas
 	\centering
 	\begin{subfigure}{.4\textwidth}
 		\centering
-		\includegraphics[width=1.0\linewidth]{images/venus_d0.png}
+		\includegraphics[width=1.0\linewidth]{images/menu_open.png}
 	\end{subfigure}
 	\begin{subfigure}{.4\textwidth}
 		\centering
-		\includegraphics[width=1.0\linewidth]{images/venus_d1.png}
+		\includegraphics[width=1.0\linewidth]{images/menu_closed.png}
 	\end{subfigure}
 	\caption{Opened and closed dat.GUI menu}
 	\label{fig:menu}
