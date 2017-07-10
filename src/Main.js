@@ -83,9 +83,9 @@ window.onload = function() {
 	sun.add(lightSun);
 	
 	//Sun particles effects
-	//var sun_particles = new SphereParticleEffect(100000, sunRadius-2, sunRadius+2);
-	//sun_particles.frustumCulled = false;
-	//sun.add(sun_particles);
+	var sun_particles = new SphereParticleEffect(100000, sunRadius-2, sunRadius+2);
+	sun_particles.frustumCulled = false;
+	sun.add(sun_particles);
 	
 	// Mercury parameters:
 	noiseHeightGenerator.scale = 50;
@@ -498,7 +498,7 @@ window.onload = function() {
 		moon.updatePosition(time);
 		mars.updatePosition(time);
 		
-		//sun_particles.update(time);
+		sun_particles.update(time);
 		//meteorites.update(time);
 		
 		// Send position of the planets to the shader:

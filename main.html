@@ -105,6 +105,7 @@
 		
 			attribute vec3 direction;
 			attribute vec3 rotation;
+			attribute vec2 uvs;
 			attribute float speed;
 			
 			uniform float uStartDistance;
@@ -113,6 +114,7 @@
 			uniform float uParticleSize;
 			
 			varying vec3 vColor;
+			varying vec2 vUV;
 			
 			void main() {
 				
@@ -150,15 +152,21 @@
 				vec4 translation = vec4(movement * direction, 0.0);
 				npos = npos + translation;
 				
+				vUV = uvs;
 				vColor = color;
 				gl_Position = projectionMatrix * modelViewMatrix * npos;
 			}
 		</script>
 		<script type="x-shader/x-fragment" id="particlesFragmentShader">
+			uniform sampler2D uTexture;
+			
+			varying vec2 vUV;
 			varying vec3 vColor;
+			
 			void main() 
 			{
-				gl_FragColor = vec4(vColor, 1.0);
+				gl_FragColor = texture2D(uTexture, vUV);
+				gl_FragColor = gl_FragColor * vec4(vColor, 1.0);
 			}
 		</script>
 		

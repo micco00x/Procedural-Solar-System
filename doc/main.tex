@@ -373,7 +373,8 @@ spherified cube, instead of a sphere, to solve, again, stratching of the image a
 
 \section{Earth's Ocean and Atmosphere}
 The previously introduces procedural planet system deals with the generation of mountains and valleys for a celestial corps; at the top of that textures are applied in order to give to the planets or stars a more suitable appereance. However for a planet like the earth these steps are not enough.\\
-In fact the earth has oceans on the surface and like many other planets presents an atmosphere; these features were 
+In fact the earth has oceans on the surface and like many other planets presents an atmosphere; these features were implemented using simple sphere meshes. In the first case we use a transparent blue sphere with a different shininess with respect to the ground. A texture mapped sphere was used for the atmosphere: the texture is a semi-transparent image of the Earth's clouds.\\
+The ocean and atmosphere spheres were then added as child to the Earth object; to give a little animation to these sphere, they didn't rotate as the parent do: in this way clouds will rotate around the planet and oceans will show some movement due to the imperfection of the sphere geometry.
 
 %----------------------------------------------------------------------------------------
 
@@ -411,7 +412,7 @@ A graphical representation of the introduced custom geometry can be seen in figu
 		\centering
 		\includegraphics[width=1.0\linewidth]{images/meteorites_near.png}
 	\end{subfigure}
-	\caption{Opened and closed dat.GUI menu}
+	\caption{Two views of the implemented cloud of asteroids}
 	\label{fig:meteorites}
 \end{figure}
 %----------------------------------------------------------------------------------------
