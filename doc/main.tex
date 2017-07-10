@@ -364,6 +364,11 @@ spherified cube, instead of a sphere, to solve, again, stratching of the image a
 
 \section{Collisions}
 
+As said before the FlyControl gives to the users the possibility to move freerly inside the scene. However this control has also a drawback: if not properly controlled, it allows the movement of the camera also inside the planets or the sun, which is not a desired behaviour.\\
+In order to solve this problem, after the update of the planets and the camera position, a check for the last one has been inserted. The camera cannot move inside the planets and these are basically spheres thus the check consists of monitoring the distance between the camera and the planets: if for each planet the distance is greater than an approximation\footnote{The bounding sphere must have a radius greater to the radius of the corresponding planet plus an additional distance to cover its mountains.} of the corrispondent radius then there isn't any collision to handle. In the other case the camera position must be reevaluated.\\
+The new position for the camera is computed in two steps. At first is calculated the direction of the line that connects the camera to the planet involved in the collision; secondly the camera is placed at a limit distance from the planet: this new position belongs to the line that pass through the planet centre and has the same direction as the one calculated in the first point.\\
+Note that the check is independent from the FlyControl and can handle both the situation where the user go towards a planet and the inverse situation where a planet moves towards the camera. In the second case, according to this positions check, the camera would be moved away by the planet without enter inside it.\\
+This technique is also used to prevent the user to go out of the space sphere\footnote{The space sphere represent the starred background of the scene.}: clearly the control is executed coverserly to the previous case. The camera must be inside the box so the distance between its position and the world origin must be less than the radius of the space sphere box.
 
 %----------------------------------------------------------------------------------------
 
@@ -375,7 +380,7 @@ spherified cube, instead of a sphere, to solve, again, stratching of the image a
 
 \section{Earth's Ocean and Atmosphere}
 
-The previously introduces procedural planet system deals with the generation of mountains and valleys for a celestial corps; at the top of that textures are applied in order to give to the planets or stars a more suitable appereance. However for a planet like the earth these steps are not enough.\\
+The previously introduced procedural planet system deals with the generation of mountains and valleys for a celestial corps; at the top of that textures are applied in order to give to the planets or stars a more suitable appereance. However for a planet like the earth these steps are not enough.\\
 In fact the earth has oceans on the surface and like many other planets presents an atmosphere; these features were implemented using simple sphere meshes. In the first case we use a transparent blue sphere with a different shininess with respect to the ground. A texture mapped sphere was used for the atmosphere: the texture is a semi-transparent image of the Earth's clouds.\\
 The ocean and atmosphere spheres were then added as child to the Earth object; to give a little animation to these entities, they didn't rotate as the parent do: in this way clouds will rotate around the planet and oceans will show some movement due to the imperfection of the sphere geometry.
 
@@ -391,7 +396,21 @@ The goal is then to minimize these compuations; a solution suitable to the descr
 It is important to remember that each particle moves independetly from the others so it is not possible to compute the right position from the cpu without modify the mesh geometry and loose in performance. For this reason all the particles are initialized in the same position (origin of the mesh) and then repisitioned in their right position directly from the vertex shader.\\
 The set of informations required by the vertex shader for the particles placement includes movement direction, speed, scale, angular speed for each particle and the starting and ending movement distance from the centre of the entire system.\\
 The information about each particle are concatenated and stored inside attribute buffers while the shared data like the distance range or the frame time are passed with uniforms. In THREE.js the only way to specify attribute buffers is by using a custom THREE.BufferGeometry, rewriting also the vertex, normal and UVs buffers. For the sun particle effects, normals and lights weren't use in the fragment shader considered the massive quantity of ligth emitted by a star: each particles is rendered from a semi-transparent texture\footnote{The texture has a semi-transaprent white drawing that is multiplicated with the random color of the particle.} colored with a random shades between yellow, orange and red.\\
-In conclusion, using the tecnique just described it was possible to render up to a million indipendent particles (i.e. one million triagles ) but in order to optimize the performances this number has been reduced to 100 thousands elements.
+In conclusion, using the tecnique just described it was possible to render up to a million indipendent particles (i.e. one million triagles) but in order to optimize the performances this number has been reduced to 100 thousands elements.
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{.4\textwidth}
+		\centering
+		\includegraphics[width=1.0\linewidth]{images/meteorites_near.png}
+	\end{subfigure}
+	\begin{subfigure}{.4\textwidth}
+		\centering
+		\includegraphics[width=1.0\linewidth]{images/meteorites_near.png}
+	\end{subfigure}
+	\caption{Sun with and without the particles effects}
+	\label{fig:meteorites}
+\end{figure}
 
 %----------------------------------------------------------------------------------------
 
@@ -401,7 +420,8 @@ After the four planet of the solar system, in the outer zone of the scene there 
 Due to the high number of object desired inside the cloud, the idea behind the implementation of the cloud was similar to the one of the sun particle system: in this case we can see an asteroid as a single particle and the entire cloud is made up with a unique mesh.\\
 Here a particle is clearly not built from a triangle alone but instead using a more complex mesh; in the BufferGeometry it was necessary to build the buffers related to vertices, normal and texture mapping by concatenating the equivalent buffers from the geometry associated with all the asteroids; furthermore, as in the case of the sun particles, addtional buffers were created in order to provide to the shader extra informations for the asteroids' appearence and behaviour.\\
 The informations regarding each asteroid are computed once at initialization time without any further computations excepts for the updates of the uniforms: for example at every animation frame the \textit{time} uniform is updated and then used in the vertex shader for calculating the right position and rotation of the asteroids in according with the informations stored in the attribute buffers.\\
-The advantages of this approach is to show in the scene up to several thousand meshes with a single webgl draw call, decreasing the number of communications with the GPU and lightening the cpu load.\\
+Differently from the particles system used for the sun, here the rendering of each asteroid requires the use of lights and normals. Having only one mesh for all the asteroids, it hasn't been possible to use, inside the shaders, the modelView and normal matrices computed by THREE.js. In this situation the modelView matrix is computed directly inside the vertex shader and the same is for the normal matrix; usually the normal matrix is computed as the transpose of the inverse of the modelView matrix but this technique would results in a higher load for the gpu so, considering that there isn't any non-isotropic scaling\footnote{Asteroids' geometry are subjected to a non-isotropic scaling during the sphere deformastion phase and normals are computed after this mesh transformation. Then, in the vertex shader, each asteroids is isotropically scaled. Isotropic scaling does not make the normals incorrect.} in the shader, it has calculated as the 3x3 upper left matrix of the modelView.\\
+The advantages of the described appraoch is to draw in the scene up to several thousand meshes with a single webgl draw call, decreasing the number of communications with the GPU and lightening the cpu load.\\
 A graphical representation of the introduced custom geometry can be seen in figure \ref{fig:buffer_geometry} while a sneak peak of the asteroids cloud is show in figure \ref{fig:meteorites}.
 
 \begin{figure}
