@@ -1,7 +1,0 @@
-\begin{thebibliography}{1}
-
-\bibitem{threejs}
-``three.js.'' \url{https://threejs.org}.
-\newblock A Javascript 3D library build on top of WebGL.
-
-\end{thebibliography}
