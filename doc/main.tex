@@ -110,8 +110,8 @@ procedural graphics. The aim is to study in depth procedural meshes developing
 a system that ease the creation of pseudorandomly generated planets.
 
 The program is characterized by having a solar system composed by four planets,
-a star and a satellite (the Sun, the first four planets of our solar system and the
-Moon, orbiting the Earth) plus a cloud of asteroids. The sun also has a particles system that simulates its surface activity. The meshes are generated using Perlin noise, each
+a star, a satellite (the Sun, the first four planets of our solar system and the
+Moon, orbiting the Earth) and a cloud of asteroids. The sun also has a particle system that simulates its surface activity. The meshes are generated using Perlin noise, each
 planet is composed by multiple chunks which change definition depending on
 the distance, allowing high performances even with a high number of details.
 The system supports multiple lights and textures, managed in shaders developed
@@ -365,23 +365,45 @@ spherified cube, instead of a sphere, to solve, again, stratching of the image a
 
 \section{Collisions}
 
-As said before the FlyControl gives to the users the possibility to move freerly inside the scene. However this control has also a drawback: if not properly controlled, it allows the movement of the camera also inside the planets or the sun, which is not a desired behaviour.\\
-In order to solve this problem, after the update of the planets and the camera position, a check for the last one has been inserted. The camera cannot move inside the planets and these are basically spheres thus the check consists of monitoring the distance between the camera and the planets: if for each planet the distance is greater than an approximation\footnote{The bounding sphere must have a radius greater to the radius of the corresponding planet plus an additional distance to cover its mountains.} of the corrispondent radius then there isn't any collision to handle. In the other case the camera position must be reevaluated.\\
-The new position for the camera is computed in two steps. At first is calculated the direction of the line that connects the camera to the planet involved in the collision; secondly the camera is placed at a limit distance from the planet: this new position belongs to the line that pass through the planet centre and has the same direction as the one calculated in the first point.\\
-Note that the check is independent from the FlyControl and can handle both the situation where the user go towards a planet and the inverse situation where a planet moves towards the camera. In the second case, according to this positions check, the camera would be moved away by the planet without enter inside it.\\
-This technique is also used to prevent the user to go out of the space sphere\footnote{The space sphere represent the starred background of the scene.}: clearly the control is executed coverserly to the previous case. The camera must be inside the box so the distance between its position and the world origin must be lower than the radius of the space sphere box.
+As said before FlyControl allows to move freely inside the scene.
+Nevertheless, if not properly controlled, it is possible to move the camera
+inside the planets as well.
+In order to solve this problem, the position of the camera is always double
+checked to avoid collisions. Thus, the camera cannot move inside the planets.
+
+To perform this operation efficiently, planets are treated as spheres. If,
+for each planet, the distance is greater than an approximation\footnote{The bounding sphere must have a radius greater than the radius of the corresponding planet plus an additional distance to cover the mountains.} of the corrispondent radius then there isn't any collision to handle, otherwise the camera position is reevaluated.\\
+The new position of camera is computed in two steps. First, the direction of the line that connects the camera to the planet is computed, then the camera is placed at a limit distance from the planet. This new position belongs to the line that pass through the planet centre and has the same direction as the one computed in the first step.\\
+Note that the whole computation is independent from FlyControl and it can handle both the situation where the user go towards a planet and the inverse situation where a planet moves towards the camera. In the latter case, according to this position reevaluation, the camera would be moved away without enter inside 
+the planet.\\
+This technique is also used to prevent the user to go out of the space sphere\footnote{The space sphere represent starfield of the scene.}. Here the
+position is recomputed is executed coverserly to the previous case. Since the camera must be inside the box, the distance between its position and the world origin must be lower than the radius of the space sphere box.
 
 %----------------------------------------------------------------------------------------
 
 \section{Planets Labels}
 
-To help the user during his trip inside the developed solar system, several descriptive labels were added to the scene; in fact the sun, the moon and the other planets have a label that shows their name and their type (i.e. Sun - Yellow dwarf).\\
-Basically these labels are simple textured planes that keeps their rotation so to face the camera and they are placed near the associated object. For achieve this results, a label is placed on the line that pass through the camera and the associated planet, at a fixed distance from the last one; then it is rotated towards the camera but maintaining the rotation on the z-axis of the camera.\\
-The labels, being objects of the scene and not just a window overlay, are subject to the projective transformation made by the camera and in fact distant labels will be projected much smaller than the closer ones. For counteract this transformations, labels are scaled in base of their distance from the camera so that they all appear almost of the same size (i.e. closer labels have a smaller scaling than the furthers ones); their don't have the same apparent size because it was decided to make the labels with a distance from the camera lower than a given threshold just a little bigger.\\
-In addition all the labels change also their opacity according to the camera distance; when the camera is moving towards them, under a certain treshold they start to became more and more transparent until they completely disappear. In this way a label does not hide its planet when the camera is really close to them.\\
-The last step is to draw the labels using their specific texture. As we said before these labels contain some information about the associated celestial object so each of them has a different content. All the informations are directly draw inside the label texture; however the texture are not images stored in the hard disk. In fact all the textures are created at runtime directly by the application so to make possible a better customization with the information that they must show.\\
-The textures creation is executed using the HTML5 canvas components. Initially the planet informations and the tag background are drawn inside the canvas; then a Texture object is built from the canvas content. This new texture is finally passed as uniforms to the fragment shader for the label rendering.\\
-In figure \ref{fig:labels} it is possible to see the resulting effects of the labels.
+To improve the navigation inside the solar system, descriptive labels
+were added to the scene. Each label shows the name and the type of the
+object associated to it (e.g. Sun - Yellow Dwarf).
+Basically these labels, placed near the associated object, are simple textured planes that keeps their rotation. To achieve this result, a label is placed on the line that passes through the camera and the corresponding planet, at a fixed distance from the latter. The label is then rotated towards the camera
+keeping the rotation on the z-axis fixed.
+
+Since the labels are objects of the scene, they are subject a the projective
+transformation. This step is exploited to make further labels smaller than
+the closer ones. Labels are thus scaled with respect to their distance from the camera (i.e. closer labels have a smaller scaling factor than the further ones).
+Moreover, the opacity of the labels change according to the camera distance.
+When the camera is moving towards a label, reached a certain threshold distance,
+it starts to become more and more
+transparent until it completely dissapears.
+In this way a label never hides its planet when the camera is close to it.
+
+Each label is drawn using a specific texture, which is not loaded from the
+storage but it's created at runtime. This allows a better customization of the
+information contained in each label.
+
+The textures creation is executed using the HTML5 canvas components. Initially the planet informations and the tag background are drawn inside the canvas, then a Texture object is built from the canvas content. The new texture is finally passed as a uniform to the fragment shader in order to be rendered.\\
+Figure \ref{fig:labels} shows a label associated to its planet.
 
 \begin{figure}
 	\centering
@@ -401,7 +423,7 @@ In figure \ref{fig:labels} it is possible to see the resulting effects of the la
 
 \section{Earth's Ocean and Atmosphere}
 
-The previously introduced procedural planet system deals with the generation of mountains and valleys for a celestial corps; at the top of that textures are applied in order to give to the planets or stars a more suitable appereance. However for a planet like the earth these steps are not enough.\\
+The previously introduced procedural planet system deals with the generation of mountains and valleys for celestial bodies; at the top of that textures are applied in order to give to the planets or stars a more suitable appereance. However for a planet like the earth these steps are not enough.\\
 In fact the earth has oceans on the surface and like many other planets presents an atmosphere; these features were implemented using simple sphere meshes. In the first case we use a transparent blue sphere with a different shininess with respect to the ground. A texture mapped sphere was used for the atmosphere: the texture is a semi-transparent image of the Earth's clouds.\\
 The ocean and atmosphere spheres were then added as child to the Earth object; to give a little animation to these entities, they didn't rotate as the parent do: in this way clouds will rotate around the planet and oceans will show some movement due to the imperfection of the sphere geometry.
 
