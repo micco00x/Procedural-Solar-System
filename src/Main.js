@@ -90,8 +90,7 @@ window.onload = function() {
 	sun.add(lightSun);
 	
 	//Sun particles effects
-	var sun_particles = new SphereParticleEffect(100000, sunRadius-2, sunRadius+2);
-	//sun_particles.frustumCulled = false;
+	var sun_particles = new SphereParticleEffect(100000, sunRadius-2, sunRadius+2.5);
 	sun.add(sun_particles);
 	
 	// Mercury parameters:
@@ -351,9 +350,9 @@ window.onload = function() {
 	
 	
 	// Add meteorites
-	//var meteorites = new MeteoritesCloud(800, 8);
-	//meteorites.frustumCulled = false;
-	//sun.add(meteorites);
+	var meteorites = new MeteoritesCloud(6000, 8);
+	meteorites.frustumCulled = false;
+	sun.add(meteorites);
 
 	// Add starfield (spherified cube):
 	var starfieldSphere = new THREE.BoxGeometry(1, 1, 1, 32, 32, 32);
@@ -496,8 +495,6 @@ window.onload = function() {
 		stats.update();
 		rendererStats.update(renderer);
 		
-		requestAnimationFrame(render);
-		
 		// Update position of the planets:
 		sun.updatePosition(time);
 		mercury.updatePosition(time);
@@ -507,7 +504,7 @@ window.onload = function() {
 		mars.updatePosition(time);
 		
 		sun_particles.update(time);
-		//meteorites.update(time);
+		meteorites.update(time);
 		
 		// Send position of the planets to the shader:
 		sunUniforms.planetPosition.value = sun.position;
@@ -523,12 +520,12 @@ window.onload = function() {
 		
 		// Update matrixWorld of the objects before the rendering
 		// this permits to compute collisions and tags position with more accuracy
-		sun.updateMatrixWorld(true);
-		mercury.updateMatrixWorld(true);
-		venus.updateMatrixWorld(true);
-		earth.updateMatrixWorld(true);
-		moon.updateMatrixWorld(true);
-		mars.updateMatrixWorld(true);
+		//sun.updateMatrixWorld(true);
+		//mercury.updateMatrixWorld(true);
+		//venus.updateMatrixWorld(true);
+		//earth.updateMatrixWorld(true);
+		//moon.updateMatrixWorld(true);
+		//mars.updateMatrixWorld(true);
 		
 		camera.updateMatrixWorld(true);
 		
@@ -568,6 +565,7 @@ window.onload = function() {
 		);
 		
 		renderer.render(scene, camera);
+		requestAnimationFrame(render);
 	};
 
 	render();

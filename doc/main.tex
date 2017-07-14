@@ -111,7 +111,7 @@ a system that ease the creation of pseudorandomly generated planets.
 
 The program is characterized by having a solar system composed by four planets,
 a star, a satellite (the Sun, the first four planets of our solar system and the
-Moon, orbiting the Earth) and a cloud of asteroids. The sun also has a particle system that simulates its surface activity. The meshes are generated using Perlin noise, each
+Moon, orbiting the Earth) and a cloud of asteroids. The sun also has a particle system that simulates its surface activity while the Earth has oceans and an atmosphere. Moreover each object between the planets, the sun and the moon is matched with a graphical label which contains informations about the associatedcelestial corp. The meshes are generated using Perlin noise, each
 planet is composed by multiple chunks which change definition depending on
 the distance, allowing high performances even with a high number of details.
 The system supports multiple lights and textures, managed in shaders developed
@@ -120,6 +120,7 @@ revolution around the parents' object (the Sun for the planets, the Earth for
 the Moon). A simple flying system has been implemented with the help of
 THREE.js \cite{threejs}, which simplifies the development of the whole program as well.
 Moreover it is possible to interact with the scene through an apposite menu.
+Finally a collision system was implemented in order to avoid the user to move the camera inside the planets or the sun.
 
 The program obtains optimal performances running smoothly both when the
 camera is far away, where all the objects can be seen altogether, and when the camera
@@ -377,7 +378,7 @@ The new position of camera is computed in two steps. First, the direction of the
 Note that the whole computation is independent from FlyControl and it can handle both the situation where the user go towards a planet and the inverse situation where a planet moves towards the camera. In the latter case, according to this position reevaluation, the camera would be moved away without enter inside 
 the planet.\\
 This technique is also used to prevent the user to go out of the space sphere\footnote{The space sphere represent starfield of the scene.}. Here the
-position is recomputed is executed coverserly to the previous case. Since the camera must be inside the box, the distance between its position and the world origin must be lower than the radius of the space sphere box.
+position is recomputed coverserly to the previous case. Since the camera must be inside the box, the distance between its position and the world origin must be lower than the radius of the space sphere box.
 
 %----------------------------------------------------------------------------------------
 
@@ -385,13 +386,12 @@ position is recomputed is executed coverserly to the previous case. Since the ca
 
 To improve the navigation inside the solar system, descriptive labels
 were added to the scene. Each label shows the name and the type of the
-object associated to it (e.g. Sun - Yellow Dwarf).
-Basically these labels, placed near the associated object, are simple textured planes that keeps their rotation. To achieve this result, a label is placed on the line that passes through the camera and the corresponding planet, at a fixed distance from the latter. The label is then rotated towards the camera
+object associated with it (e.g. Sun - Yellow Dwarf).
+Basically these labels, placed near the associated object, are simple textured planes that keep looking in the direction of the camera. To achieve this result, a label is placed on the line that passes through the camera and the corresponding planet, at a fixed distance from the latter. The label is then rotated towards the camera
 keeping the rotation on the z-axis fixed.
 
-Since the labels are objects of the scene, they are subject a the projective
-transformation. This step is exploited to make further labels smaller than
-the closer ones. Labels are thus scaled with respect to their distance from the camera (i.e. closer labels have a smaller scaling factor than the further ones).
+Since the labels are objects of the scene, they are subject to the projective
+transformation made by the camera. Normally as the distance from the camera increase then the labels would look smaller. Labels are thus scaled with respect to their distance from the camera (i.e. closer labels have a smaller scaling factor than the further ones), making them look the same size.
 Moreover, the opacity of the labels change according to the camera distance.
 When the camera is moving towards a label, reached a certain threshold distance,
 it starts to become more and more
@@ -423,22 +423,21 @@ Figure \ref{fig:labels} shows a label associated to its planet.
 
 \section{Earth's Ocean and Atmosphere}
 
-The previously introduced procedural planet system deals with the generation of mountains and valleys for celestial bodies; at the top of that textures are applied in order to give to the planets or stars a more suitable appereance. However for a planet like the earth these steps are not enough.\\
-In fact the earth has oceans on the surface and like many other planets presents an atmosphere; these features were implemented using simple sphere meshes. In the first case we use a transparent blue sphere with a different shininess with respect to the ground. A texture mapped sphere was used for the atmosphere: the texture is a semi-transparent image of the Earth's clouds.\\
+The previously introduced procedural planet system deals with the generation of mountains and valleys for celestial bodies; at the top of that textures are applied in order to give to the planets or stars a more suitable appereance. However planets like Earth may have additional features such as an atmosphere or oceans; in the created solar system these features of the Earth were implemented using simple sphere meshes rendered with a Phong shader. For the oceans rendering it has been used a transparent blue sphere with a different shininess with respect to the ground. A texture mapped sphere was used for the atmosphere: the texture is a semi-transparent image of the Earth's clouds.\\
 The ocean and atmosphere spheres were then added as child to the Earth object; to give a little animation to these entities, they didn't rotate as the parent do: in this way clouds will rotate around the planet and oceans will show some movement due to the imperfection of the sphere geometry.
 
 %----------------------------------------------------------------------------------------
 
 \section{Sun Particle Effects}
 
-Until now the presented graphical objects do not show any particular effect, showing a static appeareance apart from the LOD system and the movement animation. For this reason we implemented a custom particles system with the aim of simulating a simple solar activity.\\
+Until now the presented graphical objects do not show any particular effect, showing a static appeareance apart from the LOD system and the movement animation. For this reason a custom particles system was implemented with the aim of simulating a simple solar activity.\\
 The basic idea is to add a high number of moving particles around the surface of the sun; more precisiously every particle move from the surface of the star to the outer space and disappear after having traveled for a fixed distance.\\
 This effects makes sense if thousands of small particles are used; in order to achieve this result, keep the particles as simple as possible is absolutly essential: for this reason each particle of the system is composed by only one triangle.\\
 However using thousands of objects, even if constructed with a single triangle, is still not possible: the 3D managements of such a large number of elements, the enormous number of draw call needed and a greater communication between cpu and gpu will drastically compromise the performances of the webgl application.\\
 The goal is then to minimize these compuations; a solution suitable to the described situation is to incorporate all the particles inside one geometry so to draw the particles system with only one draw call at render time.\\
-It is important to remember that each particle moves independetly from the others so it is not possible to compute the right position from the cpu without modify the mesh geometry and loose in performance. For this reason all the particles are initialized in the same position (origin of the mesh) and then repisitioned in their right position directly from the vertex shader.\\
+It is important to remember that each particle moves independetly from the others so it is not possible to compute the right position from the cpu without modify the mesh geometry and loose in performance. For this reason all the particles are initialized in the same position (origin of the mesh) and then repositioned in their right position directly inside the vertex shader.\\
 The set of informations required by the vertex shader for the particles placement includes movement direction, speed, scale, angular speed for each particle and the starting and ending movement distance from the centre of the entire system.\\
-The information about each particle are concatenated and stored inside attribute buffers while the shared data like the distance range or the frame time are passed with uniforms. In THREE.js the only way to specify attribute buffers is by using a custom THREE.BufferGeometry, rewriting also the vertex, normal and UVs buffers. For the sun particle effects, normals and lights weren't use in the fragment shader considered the massive quantity of ligth emitted by a star: each particles is rendered from a semi-transparent texture\footnote{The texture has a semi-transaprent white drawing that is multiplicated with the random color of the particle.} colored with a random shades between yellow, orange and red.\\
+The information about each particle are concatenated and stored inside attribute buffers while the shared data like the distance range or the frame time are passed with uniforms. In THREE.js the only way to specify attribute buffers is by using a custom THREE.BufferGeometry which forces rewriting also the vertex, normal and UVs buffers. For the sun particles effects, normals and lights weren't use in the fragment shader considered the massive quantity of light emitted by a star: each particles is rendered from a semi-transparent texture\footnote{The texture has a semi-transaprent white drawing that is multiplicated with the random color of the particle.} colored with a random shades between yellow, orange and red.\\
 In conclusion, using the tecnique just described it was possible to render up to a million indipendent particles (i.e. one million triagles) but in order to optimize the performances this number has been reduced to 100 thousands elements.
 
 \begin{figure}
@@ -459,12 +458,12 @@ In conclusion, using the tecnique just described it was possible to render up to
 
 \section{Asteroids cloud}
 
-After the four planet of the solar system, in the outer zone of the scene there is a cloud of asteroids. The cloud is composed by several asteroids which move circularly around the sun, each with a different speed and at different distance from the center; to reach a more realistic visual effect, every asteroid has also a different rotation speed, scale factor and geometry. With regard to the last property, there were used about one hundred randomly deformed THREE.SphereGeometry: the deformation includes a random translation from the center of each vertex and a random scaling of the whole mesh on the three axis. During the creation of the cloud one of these deformed geometries is then assigned to each asteroid.\\
-Due to the high number of object desired inside the cloud, the idea behind the implementation of the cloud was similar to the one of the sun particle system: in this case we can see an asteroid as a single particle and the entire cloud is made up with a unique mesh.\\
-Here a particle is clearly not built from a triangle alone but instead using a more complex mesh; in the BufferGeometry it was necessary to build the buffers related to vertices, normal and texture mapping by concatenating the equivalent buffers from the geometry associated with all the asteroids; furthermore, as in the case of the sun particles, addtional buffers were created in order to provide to the shader extra informations for the asteroids' appearence and behaviour.\\
+After the four planet of the solar system, in the outer zone of the scene it was inserted a cloud of asteroids. The cloud is composed by several asteroids which move circularly around the sun, each with a different speed and at different distance from the center; to reach a more realistic visual effect, every asteroid has also a different rotation speed, scale factor and geometry. With regard to the last property, there were used about one hundred randomly deformed THREE.SphereGeometry: the deformation includes a random translation from the center of each vertex and a random scaling of the whole mesh on the three axis. During the creation of the cloud one of these deformed geometries is then assigned to each asteroid.\\
+Due to the high number of object desired inside the cloud, the idea behind the implementation of the cloud is similar to the one of the sun particle system: in this case it is possible to consider an asteroid as a single particle while  the entire cloud is made up with a unique mesh.\\
+Here a particle is clearly not built from a triangle alone but instead using a more complex mesh; in the BufferGeometry it was necessary to build the buffers related to vertices, normal and texture mapping by concatenating the equivalent buffers from the geometries associated with all the asteroids; furthermore, as in the case of the sun particles, additional buffers were created in order to provide to the shader extra informations for the asteroids' appearence and behaviour.\\
 The informations regarding each asteroid are computed once at initialization time without any further computations excepts for the updates of the uniforms: for example at every animation frame the \textit{time} uniform is updated and then used in the vertex shader for calculating the right position and rotation of the asteroids in according with the informations stored in the attribute buffers.\\
-Differently from the particles system used for the sun, here the rendering of each asteroid requires the use of lights and normals. Having only one mesh for all the asteroids, it hasn't been possible to use, inside the shaders, the modelView and normal matrices computed by THREE.js. In this situation the modelView matrix is computed directly inside the vertex shader and the same is for the normal matrix; usually the normal matrix is computed as the transpose of the inverse of the modelView matrix but this technique would results in a higher load for the gpu so, considering that there isn't any non-isotropic scaling\footnote{Asteroids' geometry are subjected to a non-isotropic scaling during the sphere deformastion phase and normals are computed after this mesh transformation. Then, in the vertex shader, each asteroids is isotropically scaled. Isotropic scaling does not make the normals incorrect.} in the shader, it has calculated as the 3x3 upper left matrix of the modelView.\\
-The advantages of the described appraoch is to draw in the scene up to several thousand meshes with a single webgl draw call, decreasing the number of communications with the GPU and lightening the cpu load.\\
+Differently from the particles system used for the sun, here the rendering of each asteroid requires the use of lights and normals. Considering that all the asteroids are part of a single mesh, it hasn't been possible to use the modelView and normal matrices calculated by THREE.js. In this situation the modelView matrix is computed directly inside the vertex shader and the same is for the normal matrix; usually the normal matrix is computed as the transpose of the inverse of the modelView matrix but this technique would results in a higher load for the gpu so, considering that there isn't any non-isotropic scaling\footnote{Asteroids' geometry are subjected to a non-isotropic scaling during the sphere deformastion phase and normals are computed after this mesh transformation. Then, in the vertex shader, each asteroids is isotropically scaled. Isotropic scaling does not make the normals incorrect.} in the shader, it has calculated as the 3x3 upper left matrix of the modelView.\\
+The advantages of the described approach is to draw in the scene up to several thousand meshes with a single webgl draw call, decreasing the number of communications with the GPU and lightening the cpu load.\\
 A graphical representation of the introduced custom geometry can be seen in figure \ref{fig:buffer_geometry} while a sneak peak of the asteroids cloud is show in figure \ref{fig:meteorites}.
 
 \begin{figure}
