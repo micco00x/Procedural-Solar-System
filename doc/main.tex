@@ -407,15 +407,19 @@ Figure \ref{fig:labels} shows a label associated to its planet.
 
 \begin{figure}
 	\centering
-	\begin{subfigure}{.4\textwidth}
+	\begin{subfigure}{.32\textwidth}
 		\centering
-		\includegraphics[width=1.0\linewidth]{images/labels_far.png}
+		\includegraphics[width=1.0\linewidth]{images/labels1.png}
 	\end{subfigure}
-	\begin{subfigure}{.4\textwidth}
+	\begin{subfigure}{.32\textwidth}
 		\centering
-		\includegraphics[width=1.0\linewidth]{images/labels_near.png}
+		\includegraphics[width=1.0\linewidth]{images/labels2.png}
 	\end{subfigure}
-	\caption{Several views of the labels associated to the planets}
+	\begin{subfigure}{.32\textwidth}
+		\centering
+		\includegraphics[width=1.0\linewidth]{images/labels3.png}
+	\end{subfigure}
+	\caption{Several views of the labels associated to the planets.}
 	\label{fig:labels}
 \end{figure}
 
@@ -425,6 +429,20 @@ Figure \ref{fig:labels} shows a label associated to its planet.
 
 The previously introduced procedural planet system deals with the generation of mountains and valleys for celestial bodies; at the top of that textures are applied in order to give to the planets or stars a more suitable appearance. However planets like Earth may have additional features such as an atmosphere or oceans; in the created solar system these features of the Earth were implemented using simple sphere meshes rendered with a Phong shader. For the oceans rendering it has been used a transparent blue sphere with a different shininess with respect to the ground. A texture mapped sphere was used for the atmosphere: the texture is a semi-transparent image of the Earth's clouds.\\
 The ocean and atmosphere spheres were then added as child to the Earth object; to give a little animation to these entities, they didn't rotate as the parent do: in this way clouds will rotate around the planet and oceans will show some movement due to the imperfection of the sphere geometry.
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[width=1.0\linewidth]{images/earth1.png}
+	\end{subfigure}
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[width=1.0\linewidth]{images/earth2.png}
+	\end{subfigure}
+	\caption{Views of the Earth's oceans and atmosphere.}
+	\label{fig:menu}
+\end{figure}
 
 %----------------------------------------------------------------------------------------
 
@@ -442,15 +460,15 @@ In conclusion, using the tecnique just described it was possible to render up to
 
 \begin{figure}
 	\centering
-	\begin{subfigure}{.4\textwidth}
+	\begin{subfigure}{.48\textwidth}
 		\centering
-		\includegraphics[width=1.0\linewidth]{images/meteorites_near.png}
+		\includegraphics[width=1.0\linewidth]{images/sun1.png}
 	\end{subfigure}
-	\begin{subfigure}{.4\textwidth}
+	\begin{subfigure}{.48\textwidth}
 		\centering
-		\includegraphics[width=1.0\linewidth]{images/meteorites_near.png}
+		\includegraphics[width=1.0\linewidth]{images/sun2.png}
 	\end{subfigure}
-	\caption{Sun with and without the particles effects}
+	\caption{Particles effect on the surface of the sun.}
 	\label{fig:meteorites}
 \end{figure}
 
@@ -472,21 +490,21 @@ A graphical representation of the introduced custom geometry can be seen in figu
 		\centering
 		\includegraphics[width=1.0\linewidth]{images/asteroids_geometry.png}
 	\end{subfigure}
-	\caption{Comparison between \textit{n} single geometry and one BufferGeometry}
+	\caption{Comparison between \textit{n} single geometry and one BufferGeometry.}
 	\label{fig:buffer_geometry}
 \end{figure}
 
 \begin{figure}
 	\centering
-	\begin{subfigure}{.4\textwidth}
+	\begin{subfigure}{.48\textwidth}
 		\centering
-		\includegraphics[width=1.0\linewidth]{images/meteorites_near.png}
+		\includegraphics[width=1.0\linewidth]{images/asteroids1.png}
 	\end{subfigure}
-	\begin{subfigure}{.4\textwidth}
+	\begin{subfigure}{.48\textwidth}
 		\centering
-		\includegraphics[width=1.0\linewidth]{images/meteorites_near.png}
+		\includegraphics[width=1.0\linewidth]{images/asteroids2.png}
 	\end{subfigure}
-	\caption{Two views of the implemented cloud of asteroids}
+	\caption{Two views of the implemented cloud of asteroids.}
 	\label{fig:meteorites}
 \end{figure}
 %----------------------------------------------------------------------------------------
@@ -499,15 +517,15 @@ As shown in figure \ref{fig:menu}, every input control is placed in a folder bas
 
 \begin{figure}
 	\centering
-	\begin{subfigure}{.4\textwidth}
+	\begin{subfigure}{.48\textwidth}
 		\centering
-		\includegraphics[width=1.0\linewidth]{images/menu_open.png}
+		\includegraphics[width=1.0\linewidth]{images/menu2.png}
 	\end{subfigure}
-	\begin{subfigure}{.4\textwidth}
+	\begin{subfigure}{.48\textwidth}
 		\centering
-		\includegraphics[width=1.0\linewidth]{images/menu_closed.png}
+		\includegraphics[width=1.0\linewidth]{images/menu1.png}
 	\end{subfigure}
-	\caption{Opened and closed dat.GUI menu}
+	\caption{Opened and closed dat.GUI menu.}
 	\label{fig:menu}
 \end{figure}
 
@@ -552,6 +570,11 @@ A few libraries have been used to ease the development of the whole project:
 		algorithm.
 	\item \textbf{SeedRandom}: this library is used to generate pseudo-random
 		numbers in order to create pseudo-random terrains.
+	\item \textbf{dat.GUI}: this library is used to create the menu through which users can
+		interact with the scene.
+	\item \textbf{Threex.renderstats}: this is an extension of THREE.js used for creating a box 
+		that shows statistics about the rendering. It collects informations about the number 
+		of vertices, faces, textures and meshes shown inside the scene.
 \end{itemize}
 
 %----------------------------------------------------------------------------------------
@@ -565,7 +588,8 @@ a simple tool like Perlin noise.
 The creation of a complex planet full of details is not straightforward, even
 by using tools made available by a library like THREE.js. Optimizing the structure of the program, in particular using chunks and
 level of details is a must to deal with large terrains and with a high number
-of meshes.
+of meshes. Moreover the application of particles systems has been analyzed with the aim of drawing 
+a high number of independent objects inside the scene.
 
 THREE.js simplifies the management of objects like planets and lights, making
 it easy to manage the scene; moreover, having a large number of tools, like
