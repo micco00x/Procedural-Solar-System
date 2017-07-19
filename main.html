@@ -245,15 +245,18 @@
 						0.0,  0.0, scale, 0.0,
 						0.0,  0.0, 0.0, 1.0 );
 						
-				mat4 modelMtx = tr * sc * ry * rx;
+				mat4 modelMtx = modelMatrix * tr * sc * ry * rx;
 				mat3 normalMtx = mat3(viewMatrix * modelMtx);
+				
+				vec4 localPos = modelMtx * vec4(position, 1.0);
+				vec4 globalPos = viewMatrix * localPos;
 				
 				vUV = uvs;
 				n = (normalMtx * normal).xyz;
-				pos = (modelMtx * vec4(position, 1.0)).xyz;
-				posCameraCoord = (viewMatrix * modelMtx * vec4(position, 1.0)).xyz;
+				pos = localPos.xyz;
+				posCameraCoord = globalPos.xyz;
 				
-				gl_Position = projectionMatrix * viewMatrix * modelMtx * vec4(position, 1.0);
+				gl_Position = projectionMatrix * globalPos;
 			}
 		</script>
 		<script type="x-shader/x-fragment" id="meteoritesFragmentShader">
